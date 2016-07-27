@@ -25,7 +25,7 @@ public class FastaHandler extends FileHandler{
         this.type = type;
         this.direction = direction;
 
-        readFasta();
+
     }
 
     public HashMap<String, DNASequence> readFasta( ArrayList<Gene> geneList) throws IOException {

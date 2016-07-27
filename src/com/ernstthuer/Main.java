@@ -1,7 +1,10 @@
 package com.ernstthuer;
 
+import org.biojava.nbio.core.sequence.DNASequence;
+
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Main {
 
@@ -9,6 +12,7 @@ public class Main {
     // gene List should be static
     static ArrayList<Gene> geneList = new ArrayList<>();
     ArrayList<SNP> snips = new ArrayList<>();
+    static HashMap<String, DNASequence> fasta = new HashMap<>();
 
     public static void main(String[] args) {
 
@@ -32,27 +36,43 @@ public class Main {
         //GFF import
 
         for (FileHandler file : parser.fileList) {
-            if(file instanceof GFFHandler && file.getDirection() == "Input")
-            //if(file.getType() == "GFF" && file.getDirection() == "Input"){
+            if (file instanceof GFFHandler && file.getDirection() == "Input")
+                //if(file.getType() == "GFF" && file.getDirection() == "Input"){
                 System.out.println("[STATUS]  parsing GFF file");
-                try {
-                    geneList = ((GFFHandler)file).getGeneList();
-                }catch(Exception e){
-                    System.out.println(e);
-                }
+            try {
+                geneList = ((GFFHandler) file).getGeneList();
+            } catch (Exception e) {
+                System.out.println(e);
             }
+        }
 
-            if (file.getType() == "FASTA" && file.getDirection() == "Input") {
+        // individual loadings
+        for (FileHandler file : parser.fileList) {
+            if (file instanceof FastaHandler && file.getDirection() == "Input") {
                 try {
-                    fasta = file.readFasta(geneList);
-
+                    fasta = (((FastaHandler) file).readFasta(geneList));
                     //fasta2gene
-
-
-
-
                     System.out.println("Read fasta");
                 } catch (IOException e) {
+                    System.out.println(e.getCause());
+                    fasta = null;
+                }
+            }
+        }
+
+        for (FileHandler file : parser.fileList) {
+            if (file instanceof BamHandler && file.getDirection() == "Input") {
+                try {
+                    //fasta = (((FastaHandler) file).readFasta(geneList));
+                    //fasta2gene
+                    //System.out.println("Read fasta");
+
+                    if (fasta != null) {
+                        BamHandler bhdlr = new BamHandler(file.getLocale(), "Bam", "Input");
+                        bhdlr.readBam(fasta,geneList);
+                    }
+
+                } catch (Exception e) {
                     System.out.println(e.getCause());
                     fasta = null;
                 }
