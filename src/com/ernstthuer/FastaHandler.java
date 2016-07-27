@@ -15,7 +15,7 @@ public class FastaHandler extends FileHandler{
     private String locale;
     private String type;
     private String direction;
-
+    private ArrayList<Gene> geneList;
 
     public FastaHandler(String locale, String type, String direction) {
 
@@ -26,9 +26,6 @@ public class FastaHandler extends FileHandler{
         this.direction = direction;
 
         readFasta();
-
-
-
     }
 
     public HashMap<String, DNASequence> readFasta( ArrayList<Gene> geneList) throws IOException {
