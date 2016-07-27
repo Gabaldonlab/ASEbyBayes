@@ -64,10 +64,14 @@ public class ArgParser {
             }
         }
 
-        FileHandler gffreader = new GFFHandler(ns.get("inGFF").toString(), "GFF", "Input", ns.get("feature").toString());
-        FileHandler inFasta = new FastaHandler(ns.get("inFasta").toString(), "FASTA", "Input");
-        FileHandler outFasta = new FastaHandler(ns.get("mOut").toString(), "FASTA", "Output");
-        FileHandler finalOut = new CSVHandler(ns.get("outFinal").toString(), "vcf", "Output");
+
+        //System.out.println(ns.get("inGFF").toString());
+
+        // String locale, String type, String feature, String direction))
+        GFFHandler gffreader = new GFFHandler(ns.get("inGFF").toString(), "GFF", "Input", ns.get("feature").toString());
+        FastaHandler inFasta = new FastaHandler(ns.get("inFasta").toString(), "FASTA", "Input");
+        FastaHandler outFasta = new FastaHandler(ns.get("mOut").toString(), "FASTA", "Output");
+        CSVHandler finalOut = new CSVHandler(ns.get("outFinal").toString(), "vcf", "Output");
 
         fileList.add(gffreader);
         fileList.add(inFasta);

@@ -30,7 +30,7 @@ public class GFFHandler extends FileHandler {
         this.feature = feature;
         this.direction = direction ; // gff is always input anyways
         try {
-            this.lineList = openGFF(direction);
+            this.lineList = openGFF(locale);
         } catch (IOException e) {
             System.out.println("GFF file not found");
             System.out.println(e);

@@ -3,10 +3,13 @@ package com.ernstthuer;
 import org.biojava.nbio.core.sequence.DNASequence;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Main {
+
 
     //ArrayList<Chromosome> chromosomeArrayList = new ArrayList<>();
     // gene List should be static
@@ -15,6 +18,7 @@ public class Main {
     static HashMap<String, DNASequence> fasta = new HashMap<>();
 
     public static void main(String[] args) {
+        System.out.println("Version  0.1");
 
         // open the input files in sequence,  fasta  gff then bam
 
@@ -36,19 +40,38 @@ public class Main {
         //GFF import
 
         for (FileHandler file : parser.fileList) {
-            if (file instanceof GFFHandler && file.getDirection() == "Input")
-                //if(file.getType() == "GFF" && file.getDirection() == "Input"){
-                System.out.println("[STATUS]  parsing GFF file");
             try {
-                geneList = ((GFFHandler) file).getGeneList();
-            } catch (Exception e) {
-                System.out.println(e);
+                if (file.getType() == "GFF" && file.getDirection() == "Input"){
+                    //if(file.getType() == "GFF" && file.getDirection() == "Input"){
+                    System.out.println("[STATUS]  parsing GFF file");
+                try {
+
+                    geneList = ((GFFHandler) file).getGeneList();
+
+                } catch (ClassCastException e) {
+                    System.out.println(e);
+                    System.out.println(e);
+                    StringWriter sw = new StringWriter();
+                    PrintWriter pw = new PrintWriter(sw);
+                    e.printStackTrace(pw);
+                    sw.toString();
+                    System.out.println(sw);
+
+                }}
+            }catch(ClassCastException expected){
+                System.out.println(expected);
+                System.out.println(expected);
+                StringWriter sw = new StringWriter();
+                PrintWriter pw = new PrintWriter(sw);
+                expected.printStackTrace(pw);
+                sw.toString();
+                System.out.println(sw);
             }
         }
 
         // individual loadings
         for (FileHandler file : parser.fileList) {
-            if (file instanceof FastaHandler && file.getDirection() == "Input") {
+            if (file.getType() == "FASTA" && file.getDirection() == "Input") {
                 try {
                     fasta = (((FastaHandler) file).readFasta(geneList));
                     //fasta2gene
@@ -61,11 +84,8 @@ public class Main {
         }
 
         for (FileHandler file : parser.fileList) {
-            if (file instanceof BamHandler && file.getDirection() == "Input") {
+            if (file.getType() == "BAM" && file.getDirection() == "Input") {
                 try {
-                    //fasta = (((FastaHandler) file).readFasta(geneList));
-                    //fasta2gene
-                    //System.out.println("Read fasta");
 
                     if (fasta != null) {
                         BamHandler bhdlr = new BamHandler(file.getLocale(), "Bam", "Input");
