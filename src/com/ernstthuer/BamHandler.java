@@ -77,17 +77,38 @@ public class BamHandler extends FileHandler {
 
             //System.out.println(iterator.toList().size());
             int count = 0;
+            // a default gene
+            //Gene currentGene = new Gene("default", 1 , 2, "bare");
+            Gene currentGene = null;
+
             while (iterator.hasNext()) {
+
 
                 // sort to the genes then parse for SNPs
 
                 SAMRecord read =  iterator.next();
+
                 // associate to gene and store barebone there
                 int start = read.getAlignmentStart();
                 String chromosome = read.getReferenceName();
 
-                
 
+                // MZ scores the mapping in form of a simple sequence
+                String MZ = read.getSAMString().split("\t")[11].split(":")[2];
+                SimpleRead splR = new SimpleRead(start,MZ);
+
+
+                try {
+                    currentGene = findGene(chromosome, start, geneList, currentGene);
+                    if(currentGene != null) {
+                        currentGene.addRead(splR);
+                    }
+
+                }catch(NullPointerException e){
+                    System.out.println(e);
+                }
+
+                count ++;
 
 
                 //System.out.println(locus.toString());
@@ -114,4 +135,25 @@ public class BamHandler extends FileHandler {
     public ArrayList<SNP> getSnpArrayList() {
         return snpArrayList;
     }
+
+    public Gene findGene(String chromosome, int start, ArrayList<Gene> geneList , Gene currentgene ){
+
+        // first check if read belongs to the same gene as before:  if not find the next one
+
+
+        if ( currentgene!= null && currentgene.getChromosome() == chromosome && currentgene.getStop() > start && currentgene.getStart() < start) {
+            return currentgene;
+        }
+
+
+        for (Gene gene:geneList){
+            if(gene.getChromosome().equals(chromosome)){
+                if(gene.getStart() < start && gene.getStop() > start){
+                    return gene;
+                }
+            }
+        }
+        return null;
+    }
+
 }

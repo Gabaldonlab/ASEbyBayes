@@ -105,6 +105,10 @@ public class Main {
         }
 
 
+        for(Gene gene:geneList){
+            System.out.println(gene.getIdent() + "  :  " +   gene.getGeneReadList().size());
+        }
+
 
     }
 }

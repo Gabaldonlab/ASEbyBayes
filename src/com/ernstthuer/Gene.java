@@ -94,7 +94,30 @@ public class Gene {
         this.geneReadList.add(read);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        Gene gene = (Gene) o;
+
+        if (start != gene.start) return false;
+        if (stop != gene.stop) return false;
+        return chromosome != null ? chromosome.equals(gene.chromosome) : gene.chromosome == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = chromosome != null ? chromosome.hashCode() : 0;
+        result = 31 * result + start;
+        result = 31 * result + stop;
+        return result;
+    }
+
+    public List<SimpleRead> getGeneReadList() {
+        return geneReadList;
+    }
 }
 
 
