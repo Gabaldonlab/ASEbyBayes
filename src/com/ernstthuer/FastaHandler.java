@@ -1,6 +1,7 @@
 package com.ernstthuer;
 
 import org.biojava.nbio.core.sequence.DNASequence;
+import org.slf4j.LoggerFactory;
 import org.biojava.nbio.core.sequence.io.FastaReaderHelper;
 
 import java.io.File;
@@ -39,11 +40,15 @@ public class FastaHandler extends FileHandler{
 
         // check if chromosomes or genes were used as reference ....
 
-
-
-
-
         HashMap<String, DNASequence> fastaMap;
+
+
+        for(Gene gene:geneList){
+            System.out.println("inside Fasta parser : " + gene.getIdent() + "  " + gene.getStart());
+        }
+
+
+
         try {
             File file = new File(this.locale);
             fastaMap = FastaReaderHelper.readFastaDNASequence(file);
@@ -52,8 +57,10 @@ public class FastaHandler extends FileHandler{
             for(Gene gene:geneList){
                 if(fastaMap.containsKey(gene.getChromosome())){
                     //it's on the chromosome
-                    gene.loadSequence(fastaMap.get(gene.getChromosome()),true);
+
+                    gene.loadSequence(fastaMap.get(gene.getChromosome()), true);
                     System.out.println("populating genes");
+
                 }
                 else{
                     //genes were used directly

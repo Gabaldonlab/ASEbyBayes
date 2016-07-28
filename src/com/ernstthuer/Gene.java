@@ -3,6 +3,8 @@ package com.ernstthuer;
 import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
 import org.biojava.nbio.core.sequence.DNASequence;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +21,7 @@ public class Gene {
     private String ident;
 
     // storing SNPs on the gene, and reads in a barebone form for reference.  this might be irrelevant due to Sam locus iteration...
-    private List<SNP> geneSNPList = new ArrayList<>();
+    //private List<SNP> geneSNPList = new ArrayList<>();
     private List<SimpleRead> geneReadList = new ArrayList<>();
     private String ASE;
 
@@ -28,7 +30,10 @@ public class Gene {
         this.start = start;
         this.stop = stop;
         this.ident = ident;
+        System.out.println("Created gene " + ident);
     }
+
+
 
     public String getChromosome() {
         return chromosome;
@@ -46,11 +51,28 @@ public class Gene {
         return ident;
     }
 
+
+
     public void loadSequence(DNASequence fullGenome, boolean fullChrom) {
+
         if (fullChrom) {
             try {
-                this.sequence = new DNASequence(fullGenome.getSubSequence(this.start, this.stop).toString());
-            } catch (CompoundNotFoundException e) {
+                //System.out.println( " Gene from here "+this.start);
+                try {
+
+                    this.sequence = new DNASequence(fullGenome.getSubSequence(this.start, this.stop).toString());
+                }
+                catch(CompoundNotFoundException e){
+                    System.out.println("Caught error in sequence parsing ");
+                    System.out.println(e);
+                    StringWriter sw = new StringWriter();
+                    PrintWriter pw = new PrintWriter(sw);
+                    e.printStackTrace(pw);
+                    sw.toString();
+                    System.out.println(sw);
+                }
+
+            } catch (Exception e) {
                 System.out.println("coldn't parse fasta sequence " + e);
             }
         } else {
@@ -60,12 +82,14 @@ public class Gene {
                 System.out.println("coldn't parse fasta sequence " + e);
             }
         }
-
     }
+
+
 
     public void addRead(SimpleRead read){
         this.geneReadList.add(read);
     }
+
 
 }
 

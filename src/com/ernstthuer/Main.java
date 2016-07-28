@@ -8,6 +8,8 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+//import org.slf4j.LoggerFactory;
+
 public class Main {
 
 
@@ -18,6 +20,9 @@ public class Main {
     static HashMap<String, DNASequence> fasta = new HashMap<>();
 
     public static void main(String[] args) {
+
+
+
         System.out.println("Version  0.1");
 
         // open the input files in sequence,  fasta  gff then bam
@@ -50,7 +55,6 @@ public class Main {
 
                 } catch (ClassCastException e) {
                     System.out.println(e);
-                    System.out.println(e);
                     StringWriter sw = new StringWriter();
                     PrintWriter pw = new PrintWriter(sw);
                     e.printStackTrace(pw);
@@ -59,7 +63,6 @@ public class Main {
 
                 }}
             }catch(ClassCastException expected){
-                System.out.println(expected);
                 System.out.println(expected);
                 StringWriter sw = new StringWriter();
                 PrintWriter pw = new PrintWriter(sw);
@@ -72,6 +75,7 @@ public class Main {
         // individual loadings
         for (FileHandler file : parser.fileList) {
             if (file.getType() == "FASTA" && file.getDirection() == "Input") {
+                System.out.println("Fasta file loading");
                 try {
                     fasta = (((FastaHandler) file).readFasta(geneList));
                     //fasta2gene
@@ -84,7 +88,8 @@ public class Main {
         }
 
         for (FileHandler file : parser.fileList) {
-            if (file.getType() == "BAM" && file.getDirection() == "Input") {
+            if (file.getType() == "Bam" && file.getDirection() == "Input") {
+                System.out.println(" BAM file " +file.getLocale());
                 try {
 
                     if (fasta != null) {

@@ -24,6 +24,7 @@ public class BamHandler extends FileHandler {
 
     // bam is only import, no direction,
     private String locale;
+    private String type ;
     // each BAM file contains a potential snplist, this should be merged after reading.  keep separate for threading.
     private ArrayList<SNP> snpArrayList = new ArrayList<>();
 
@@ -48,6 +49,9 @@ public class BamHandler extends FileHandler {
 
     public BamHandler(String locale, String type, String direction) {
         super(locale, type, direction);
+
+        this.type = type;
+        this.locale = locale;
 
 
     }
@@ -76,8 +80,8 @@ public class BamHandler extends FileHandler {
             int count = 0;
             while (iterator.hasNext()) {
                 Object locus = iterator.next();
-                System.out.println(locus.toString());
-                System.out.println();
+                //System.out.println(locus.toString());
+                //System.out.println();
             }
         }
             catch(Exception e){
@@ -87,16 +91,17 @@ public class BamHandler extends FileHandler {
             }
 
 
+    @Override
+    public String getLocale() {
+        return locale;
+    }
 
+    @Override
+    public String getType() {
+        return type;
+    }
 
-
-
-
-
-
-
-
-
-
-
+    public ArrayList<SNP> getSnpArrayList() {
+        return snpArrayList;
+    }
 }

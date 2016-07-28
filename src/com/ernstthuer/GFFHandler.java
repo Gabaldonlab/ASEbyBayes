@@ -17,6 +17,7 @@ public class GFFHandler extends FileHandler {
 
     private String locale;
     private String type;
+    private static String origin;
     private String direction;
     private String feature;
     private String[] lineList ;
@@ -24,10 +25,11 @@ public class GFFHandler extends FileHandler {
     //private ArrayList<String> lineList = new ArrayList<>();
 
 
-    public GFFHandler(String locale, String type, String feature, String direction) {
+    public GFFHandler(String locale, String type, String direction, String feature ) {
         super(locale, type, direction);
         this.locale = locale;
         this.feature = feature;
+        this.origin = null;
         this.direction = direction ; // gff is always input anyways
         try {
             this.lineList = openGFF(locale);
@@ -35,7 +37,9 @@ public class GFFHandler extends FileHandler {
             System.out.println("GFF file not found");
             System.out.println(e);
         }
+        //System.out.println("Total features " + lineList.length);
         geneList = geneList(this.lineList);
+        System.out.println(geneList.size() + "  "+ this.feature + " found ");
     }
 
     public String[] openGFF(String locale) throws IOException {
@@ -62,20 +66,26 @@ public class GFFHandler extends FileHandler {
     public ArrayList<Gene> geneList(String[] featureList) {
 
         ArrayList<Gene> outList = new ArrayList<>();
-        System.out.println("[Status] Parsing gff file for :" + this.feature + "s");
+        System.out.println("[Status] Parsing gff file for : " + this.feature + "s");
         for (int i = 0; i  <  featureList.length ; i++) {
             String[] row = featureList[i].split("\t");
             if (row[2].equals(this.feature)) {
                 String description = descriptionParser(row[8]);
                 int start = parseInt(row[3]);  //start and stop position are read as String
                 int stop = parseInt(row[4]);
-                Gene newGene = new Gene(row[0], start, stop, description );
-                outList.add(newGene);
+                //Gene newGene = new Gene(row[0], start, stop, description );
+                try {
+                    Gene gene = new Gene(row[0], start, stop, description);
 
+                    outList.add(gene);
 
+                }catch(Exception e){
+                    System.out.println( e );
+                }
                 //System.out.println(outList.size());//geneList.add(newGene);
             }
         }
+        System.out.println(outList.size());
         return outList;
     }
 
@@ -90,6 +100,7 @@ public class GFFHandler extends FileHandler {
         Pattern ENSEXP = Pattern.compile("hid=trf;");
 
         // Simple sniffer
+
         while (type == null) {
             for (String element : desc) {
                 if (element.contains("ID")) {
@@ -103,6 +114,7 @@ public class GFFHandler extends FileHandler {
                 }
                 if (element.contains("geneID")){
                     type = "ALTERNATIVE";
+                    //System.out.println(" -> " + type);
                 }
             }
         }
@@ -113,6 +125,7 @@ public class GFFHandler extends FileHandler {
                     if(element.contains("ID")){
                         featureID = element.split("=")[1];
                         return featureID;
+
                     }
                 }
                 break;
@@ -127,9 +140,11 @@ public class GFFHandler extends FileHandler {
                 break;
 
             case "ALTERNATIVE":
+                //System.out.println("casechoice = " + type);
                 for(String element: desc){
                     if(element.contains("ID")){
                         featureID = element.split("\"")[1];
+                        //System.out.println(featureID);
                         return featureID;
                     }
                 }

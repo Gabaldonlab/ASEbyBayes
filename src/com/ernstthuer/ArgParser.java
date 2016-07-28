@@ -2,7 +2,7 @@ package com.ernstthuer;
 
 import java.util.ArrayList;
 import java.util.List;
-
+//import org.slf4j.LoggerFactory;
 /**
  * Created by ethur on 7/26/16.
  */
