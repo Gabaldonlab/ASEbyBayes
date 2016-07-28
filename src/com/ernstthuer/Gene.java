@@ -55,12 +55,15 @@ public class Gene {
 
     public void loadSequence(DNASequence fullGenome, boolean fullChrom) {
 
+
+        //System.out.println(fullGenome.getSubSequence(100 , 102).getSequenceAsString());
+
         if (fullChrom) {
             try {
                 //System.out.println( " Gene from here "+this.start);
                 try {
 
-                    this.sequence = new DNASequence(fullGenome.getSubSequence(this.start, this.stop).toString());
+                    this.sequence = new DNASequence(fullGenome.getSubSequence(this.start, this.stop).getSequenceAsString());
                 }
                 catch(CompoundNotFoundException e){
                     System.out.println("Caught error in sequence parsing ");
@@ -82,6 +85,7 @@ public class Gene {
                 System.out.println("coldn't parse fasta sequence " + e);
             }
         }
+
     }
 
 

@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Map;
+
 /**
  * Created by ethur on 7/26/16.
  */
@@ -47,7 +49,7 @@ public class FastaHandler extends FileHandler{
             System.out.println("inside Fasta parser : " + gene.getIdent() + "  " + gene.getStart());
         }
 
-
+        //fastaMap = FastaReaderHelper.readFastaDNASequence(file)
 
         try {
             File file = new File(this.locale);
@@ -57,14 +59,15 @@ public class FastaHandler extends FileHandler{
             for(Gene gene:geneList){
                 if(fastaMap.containsKey(gene.getChromosome())){
                     //it's on the chromosome
+                    //System.out.println(" Found chromosome " +gene.getChromosome());
 
                     gene.loadSequence(fastaMap.get(gene.getChromosome()), true);
-                    System.out.println("populating genes");
+                    //System.out.println("populating genes");
 
                 }
                 else{
                     //genes were used directly
-                    gene.loadSequence(fastaMap.get(gene.getChromosome()),false);
+                    ////gene.loadSequence(fastaMap.get(gene.getChromosome()),false);
                     //gene.loadSequence(fastaMap.v);
                 }
             }

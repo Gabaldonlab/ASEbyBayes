@@ -5,13 +5,10 @@ package com.ernstthuer;
  */
 
 import htsjdk.samtools.*;
-import htsjdk.samtools.util.CloserUtil;
+import htsjdk.samtools.util.*;
 import htsjdk.samtools.ValidationStringency;
 import htsjdk.samtools.SamFileValidator;
 //import htsjdk.samtools.util.CloserUtil;
-import htsjdk.samtools.util.Locus;
-import htsjdk.samtools.util.LocusImpl;
-import htsjdk.samtools.util.SamLocusIterator;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -74,12 +71,25 @@ public class BamHandler extends FileHandler {
             SamReaderFactory factory = SamReaderFactory.makeDefault().validationStringency(ValidationStringency.STRICT);
             SamReader fileBam = factory.open(new File(this.locale));
             //SAMRecordIterator iterator = fileBam.iterator();
-            SamLocusIterator iterator = new SamLocusIterator(fileBam);
+            //SamLocusIterator iterator = new SamLocusIterator(fileBam);
+            SAMRecordIterator iterator = fileBam.iterator();
+
 
             //System.out.println(iterator.toList().size());
             int count = 0;
             while (iterator.hasNext()) {
-                Object locus = iterator.next();
+
+                // sort to the genes then parse for SNPs
+
+                SAMRecord read =  iterator.next();
+                // associate to gene and store barebone there
+                int start = read.getAlignmentStart();
+                String chromosome = read.getReferenceName();
+
+                
+
+
+
                 //System.out.println(locus.toString());
                 //System.out.println();
             }
