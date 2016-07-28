@@ -94,7 +94,14 @@ public class Main {
 
                     if (fasta != null) {
                         BamHandler bhdlr = new BamHandler(file.getLocale(), "Bam", "Input");
+
+                        // to loosen this for threading i should create copies of the genelists
                         bhdlr.readBam(fasta,geneList);
+
+                        bhdlr.findSNPs();
+
+
+
                     }
 
                 } catch (Exception e) {
@@ -103,6 +110,9 @@ public class Main {
                 }
             }
         }
+
+        // here comes the unification of the genes
+
 
 
         for(Gene gene:geneList){

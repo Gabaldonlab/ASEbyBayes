@@ -12,9 +12,7 @@ import htsjdk.samtools.SamFileValidator;
 
 import java.io.File;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 
 public class BamHandler extends FileHandler {
 
@@ -24,7 +22,7 @@ public class BamHandler extends FileHandler {
     private String type ;
     // each BAM file contains a potential snplist, this should be merged after reading.  keep separate for threading.
     private ArrayList<SNP> snpArrayList = new ArrayList<>();
-
+    private ArrayList<Gene> geneList = new ArrayList<>();
     // contain the reads   SAM format
 
     /**
@@ -49,6 +47,7 @@ public class BamHandler extends FileHandler {
 
         this.type = type;
         this.locale = locale;
+
 
 
     }
@@ -119,7 +118,47 @@ public class BamHandler extends FileHandler {
                 System.out.println(e);
             }
 
+        this.geneList = geneList;
+
             }
+
+
+    public void findSNPs(){
+        for(Gene gene:geneList){
+
+            /*
+            gene.getGeneReadList().sort(SimpleRead);
+
+            Collections.sort(Database, new Comparator<SimpleRead>() {
+                @Override public int compare(SimpleRead read1 , SimpleRead read2) {
+                    return read1.getStart() - read2.getStart(); // Ascending
+                }
+                */
+
+            List<SimpleRead> splRds = gene.getGeneReadList();
+            for(SimpleRead splRd:splRds ){
+                //System.out.println(splRd.getMZ());
+                // split between letters and digits or digits and letters
+                String[] MZArray = splRd.getMZ().split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
+
+                // digest the MZ score
+                try {
+                    for (int i = 0; i < MZArray.length; i++) {
+                        if (MZArray[i].matches("\\D")) {
+                            int position = Integer.parseInt(MZArray[i - 1]) + splRd.getStart();
+                            System.out.println(position + "  " + MZArray[i]);
+                        }
+                    }
+                }
+                catch(Exception e ){
+                    System.out.println("Caught badly formatted MZ string");
+                    System.out.println(e);
+                }
+            }
+        }
+    }
+
+
 
 
     @Override

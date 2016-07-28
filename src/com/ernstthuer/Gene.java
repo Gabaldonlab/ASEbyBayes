@@ -22,7 +22,7 @@ public class Gene {
 
     // storing SNPs on the gene, and reads in a barebone form for reference.  this might be irrelevant due to Sam locus iteration...
     //private List<SNP> geneSNPList = new ArrayList<>();
-    private List<SimpleRead> geneReadList = new ArrayList<>();
+    private ArrayList<SimpleRead> geneReadList = new ArrayList<>();
     private String ASE;
 
     public Gene(String chromosome, int start, int stop, String ident) {
