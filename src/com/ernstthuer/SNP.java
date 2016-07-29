@@ -14,9 +14,8 @@ public class SNP implements Comparable<SNP>{
      *
      */
 
-
     private Gene gene;
-    private char ORG;
+    private char ORG = "N".charAt(0);
     private char ALT;
     private int position;
     private int ORGcov = 0;
@@ -129,7 +128,9 @@ public class SNP implements Comparable<SNP>{
 
     @Override
     public String toString(){
-        return this.ALT + " " + this.position;
+
+        // chrom position ident ref alt qual filter info
+        return  this.gene.getChromosome() +  "\t"+  this.position + "\t" + this.gene.getIdent() +  "\t" +  this.ORG +  "\t" + this.ALT + "\t" + "TestInfo" +  "\t"  ;
     }
 
     @Override

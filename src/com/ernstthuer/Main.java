@@ -16,7 +16,7 @@ public class Main {
     //ArrayList<Chromosome> chromosomeArrayList = new ArrayList<>();
     // gene List should be static
     static ArrayList<Gene> geneList = new ArrayList<>();
-    ArrayList<SNP> snips = new ArrayList<>();
+    static ArrayList<SNP> snips = new ArrayList<>();
     static HashMap<String, DNASequence> fasta = new HashMap<>();
     static boolean verbose = true;
 
@@ -51,30 +51,12 @@ public class Main {
                     //if(file.getType() == "GFF" && file.getDirection() == "Input"){
                     System.out.println("[STATUS]  parsing GFF file");
                 try {
-
                     geneList = ((GFFHandler) file).getGeneList();
-
                 } catch (ClassCastException e) {
                     errorCaller(e);
-                    /*
-                    System.out.println(e);
-                    StringWriter sw = new StringWriter();
-                    PrintWriter pw = new PrintWriter(sw);
-                    e.printStackTrace(pw);
-                    sw.toString();
-                    System.out.println(sw);
-                    */
                 }}
             }catch(ClassCastException expected){
                 errorCaller(expected);
-                /*
-                System.out.println(expected);
-                StringWriter sw = new StringWriter();
-                PrintWriter pw = new PrintWriter(sw);
-                expected.printStackTrace(pw);
-                sw.toString();
-                System.out.println(sw);
-                */
             }
         }
 
@@ -119,9 +101,14 @@ public class Main {
         int poscount = 0;
         int totcount = 0;
 
+
+        // temporary SNPlist
+
+
         for(Gene gene:geneList){
             System.out.println(gene.getIdent() + "  :  " +   gene.getGeneReadList().size());
             for(SNP snp: gene.getSnpsOnGene()){
+                snips.add(snp);
                 if(snp.isValidated() > 0){
                     poscount ++; totcount++;
                     snp.addCoverageToSNPs(gene.getGeneReadList(),50);
@@ -134,6 +121,16 @@ public class Main {
 
         System.out.println("A total of " + totcount + " SNPs was found,  of which  " + poscount + " Could be validated");
 
+        for (FileHandler file : parser.fileList) {
+            if (file instanceof CSVHandler && file.getDirection() == "Output" ) {
+                System.out.println("[STATUS] Writing vcf like output to file to " + file.getLocale());
+                try {
+                    ((CSVHandler) file).writeSNPToVCF(snips,1);
+                } catch (Exception e) {
+                    errorCaller(e);
+                }
+            }
+        }
     }
 
     public static void errorCaller(Exception e ){
@@ -146,6 +143,4 @@ public class Main {
             System.out.println(sw);
         }
     }
-
-
 }
