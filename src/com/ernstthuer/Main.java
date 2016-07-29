@@ -114,10 +114,24 @@ public class Main {
         // here comes the unification of the genes
 
 
+        int poscount = 0;
+        int totcount = 0;
 
         for(Gene gene:geneList){
             System.out.println(gene.getIdent() + "  :  " +   gene.getGeneReadList().size());
+            for(SNP snp: gene.getSnpsOnGene()){
+                if(snp.isValidated() > 0){
+                    poscount ++; totcount++;
+
+                }else{
+                    totcount ++;
+                }
+
+
+            }
         }
+
+        System.out.println("A total of " + totcount + " SNPs was found,  of which  " + poscount + " Could be validated");
 
 
     }

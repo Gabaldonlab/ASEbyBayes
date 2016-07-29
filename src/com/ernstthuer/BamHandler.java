@@ -147,7 +147,7 @@ public class BamHandler extends FileHandler {
                     for (int i = 0; i < MZArray.length; i++) {
                         if (MZArray[i].matches("\\D")) {
                             int position = Integer.parseInt(MZArray[i - 1]) + splRd.getStart();
-                            System.out.println(position + "  " + MZArray[i]);
+                            //System.out.println(position + "  " + MZArray[i]);
                             // this should feed into a new SNP
                             SNP snp = new SNP(gene,MZArray[i].charAt(0), position);
                             gene.addSNP(snp);
