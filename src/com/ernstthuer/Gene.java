@@ -33,7 +33,25 @@ public class Gene {
         System.out.println("Created gene " + ident);
     }
 
+    public ArrayList<SNP> getSnpsOnGene() {
+        return snpsOnGene;
+    }
 
+    public boolean addSNP(SNP snp){
+
+        if(! snpsOnGene.contains(snp)){
+            snpsOnGene.add(snp);
+            return true;
+        }
+        else{
+            int idx = snpsOnGene.indexOf(snp);
+            snpsOnGene.get(idx).increaseAltCoverage();
+            if(snpsOnGene.get(idx).getALTcov() > 5 ){
+                snpsOnGene.get(idx).setValidated( 1 );
+            }
+            return false;
+        }
+    }
 
     public String getChromosome() {
         return chromosome;

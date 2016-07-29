@@ -21,6 +21,13 @@ public class SNP implements Comparable<SNP>{
     private int ALTcov = 1;
     private int validated ;
 
+    public SNP(Gene gene, char ALT, int position) {
+        this.gene = gene;
+        this.ALT = ALT;
+        this.position = position;
+        this.validated = 0;
+    }
+
     public SNP(Gene gene, char ORG, char ALT, int position) {
         this.gene = gene;
         this.ORG = ORG;
@@ -59,6 +66,10 @@ public class SNP implements Comparable<SNP>{
         return ALTcov;
     }
 
+    public void increaseAltCoverage(){
+        this.ALTcov ++;
+    }
+
     public void setALTcov(int ALTcov) {
         this.ALTcov = ALTcov;
     }
@@ -73,7 +84,6 @@ public class SNP implements Comparable<SNP>{
 
     public void setValidated(int validated) {
         this.validated = validated;
-
     }
 
     public void raiseValidation(){

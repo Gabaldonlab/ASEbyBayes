@@ -136,6 +136,7 @@ public class BamHandler extends FileHandler {
                 */
 
             List<SimpleRead> splRds = gene.getGeneReadList();
+            //List<SNP> snpOnGene = gene.getSnpsOnGene();
             for(SimpleRead splRd:splRds ){
                 //System.out.println(splRd.getMZ());
                 // split between letters and digits or digits and letters
@@ -147,6 +148,10 @@ public class BamHandler extends FileHandler {
                         if (MZArray[i].matches("\\D")) {
                             int position = Integer.parseInt(MZArray[i - 1]) + splRd.getStart();
                             System.out.println(position + "  " + MZArray[i]);
+                            // this should feed into a new SNP
+                            SNP snp = new SNP(gene,MZArray[i].charAt(0), position);
+                            gene.addSNP(snp);
+                            // the full coverage can be gotten from a locusiterator after SNP calling
                         }
                     }
                 }
