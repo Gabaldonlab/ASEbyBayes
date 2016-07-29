@@ -18,6 +18,7 @@ public class Main {
     static ArrayList<Gene> geneList = new ArrayList<>();
     ArrayList<SNP> snips = new ArrayList<>();
     static HashMap<String, DNASequence> fasta = new HashMap<>();
+    static boolean verbose = true;
 
     public static void main(String[] args) {
 
@@ -54,21 +55,26 @@ public class Main {
                     geneList = ((GFFHandler) file).getGeneList();
 
                 } catch (ClassCastException e) {
+                    errorCaller(e);
+                    /*
                     System.out.println(e);
                     StringWriter sw = new StringWriter();
                     PrintWriter pw = new PrintWriter(sw);
                     e.printStackTrace(pw);
                     sw.toString();
                     System.out.println(sw);
-
+                    */
                 }}
             }catch(ClassCastException expected){
+                errorCaller(expected);
+                /*
                 System.out.println(expected);
                 StringWriter sw = new StringWriter();
                 PrintWriter pw = new PrintWriter(sw);
                 expected.printStackTrace(pw);
                 sw.toString();
                 System.out.println(sw);
+                */
             }
         }
 
@@ -97,11 +103,7 @@ public class Main {
 
                         // to loosen this for threading i should create copies of the genelists
                         bhdlr.readBam(fasta,geneList);
-
                         bhdlr.findSNPs();
-
-
-
                     }
 
                 } catch (Exception e) {
@@ -122,17 +124,28 @@ public class Main {
             for(SNP snp: gene.getSnpsOnGene()){
                 if(snp.isValidated() > 0){
                     poscount ++; totcount++;
-
+                    snp.addCoverageToSNPs(gene.getGeneReadList(),50);
+                    //System.out.println(snp.getALTcov() + " alt : org  " + snp.getORGcov());
                 }else{
                     totcount ++;
                 }
-
-
             }
         }
 
         System.out.println("A total of " + totcount + " SNPs was found,  of which  " + poscount + " Could be validated");
 
-
     }
+
+    public static void errorCaller(Exception e ){
+        if(verbose) {
+            System.out.println(e);
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            sw.toString();
+            System.out.println(sw);
+        }
+    }
+
+
 }

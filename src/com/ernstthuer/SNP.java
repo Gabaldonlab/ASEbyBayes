@@ -1,5 +1,7 @@
 package com.ernstthuer;
 
+import java.util.List;
+
 /**
  * Created by ethur on 7/26/16.
  */
@@ -91,6 +93,19 @@ public class SNP implements Comparable<SNP>{
     }
 
 
+    public int addCoverageToSNPs( List<SimpleRead> splRds , int lengthOfReads) {
+        int totalCoverage = 0;
+        int length = lengthOfReads;
+        for (SimpleRead splrd : splRds) {
+            int position = splrd.getStart();
+            if(this.position > position && this.position < (position + length)){
+                totalCoverage ++;
+            }
+        }
+        this.ORGcov = totalCoverage - this.ALTcov;
+        return totalCoverage;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -125,6 +140,8 @@ public class SNP implements Comparable<SNP>{
             return 0;
         }
     }
+
+
 }
 
 

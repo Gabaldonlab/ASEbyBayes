@@ -18,6 +18,7 @@ public class BamHandler extends FileHandler {
 
 
     // bam is only import, no direction,
+    public int lengthOfReads = 0;
     private String locale;
     private String type ;
     // each BAM file contains a potential snplist, this should be merged after reading.  keep separate for threading.
@@ -44,12 +45,8 @@ public class BamHandler extends FileHandler {
 
     public BamHandler(String locale, String type, String direction) {
         super(locale, type, direction);
-
         this.type = type;
         this.locale = locale;
-
-
-
     }
 
 
@@ -69,9 +66,11 @@ public class BamHandler extends FileHandler {
             validator.setErrorsToIgnore(Collections.singletonList(SAMValidationError.Type.MISSING_READ_GROUP));
             SamReaderFactory factory = SamReaderFactory.makeDefault().validationStringency(ValidationStringency.STRICT);
             SamReader fileBam = factory.open(new File(this.locale));
+
             //SAMRecordIterator iterator = fileBam.iterator();
             //SamLocusIterator iterator = new SamLocusIterator(fileBam);
             SAMRecordIterator iterator = fileBam.iterator();
+
 
 
             //System.out.println(iterator.toList().size());
@@ -83,9 +82,15 @@ public class BamHandler extends FileHandler {
             while (iterator.hasNext()) {
 
 
+
                 // sort to the genes then parse for SNPs
 
                 SAMRecord read =  iterator.next();
+
+                if(this.lengthOfReads == 0) {
+                    this.lengthOfReads = (read.getReadLength());
+                }
+
 
                 // associate to gene and store barebone there
                 int start = read.getAlignmentStart();
@@ -156,8 +161,8 @@ public class BamHandler extends FileHandler {
                     }
                 }
                 catch(Exception e ){
-                    System.out.println("Caught badly formatted MZ string");
-                    System.out.println(e);
+                    //System.out.println("Caught badly formatted MZ string");
+                    //System.out.println(e);
                 }
             }
         }
