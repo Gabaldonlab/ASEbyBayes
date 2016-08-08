@@ -39,6 +39,12 @@ public class Main {
          * checking fasta reference against the bam files , store coverage of SNPs
          * add the SNPs to genes
          *
+         *THe flow of data:
+         * import of fasta and gff
+         * import of bam
+         * storage of simplereads(mz score + location) in genes
+         * parsing gene by gene for SNPs,  storing only occurances where more than 2 mappings were found.
+         * SNPs are validated from SNP class functions,
          *
          *
          */
@@ -109,6 +115,9 @@ public class Main {
 
 
         for(Gene gene:geneList){
+
+            gene.findORGCoverageOfSNPs();
+
             System.out.println(gene.getIdent() + "  :  " +   gene.getGeneReadList().size());
             for(SNP snp: gene.getSnpsOnGene()){
                 snips.add(snp);
@@ -116,13 +125,15 @@ public class Main {
 
                     // validate for noise
                     if (snp.validateSNP(bimodalPrimersForNoise)) {
-                        snp.setValidated(2);
+                        snp.raiseValidation();
 
                     }
                     ;
 
+                    System.out.println(snp.getALTcov() + "  " + snp.getORGcov());
 
-                    if (snp.isValidated() == 2) {
+
+                    if (snp.isValidated() > 1) {
                         poscount++;
                         totcount++;
                         snp.addCoverageToSNPs(gene.getGeneReadList(), 50);

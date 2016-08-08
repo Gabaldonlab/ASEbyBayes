@@ -8,6 +8,8 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ernstthuer.BamHandler.lengthOfReads;
+
 /**
  * Created by ethur on 7/26/16.
  */
@@ -51,6 +53,25 @@ public class Gene {
             }
             return false;
         }
+    }
+
+
+
+    public void findORGCoverageOfSNPs(){
+        // trigger this after the SNPs were loaded and the simplified reads are stored on the genes.
+        for(SNP snip: snpsOnGene){
+            if(snip.isValidated() > 0){
+                for(SimpleRead splRd : geneReadList){
+                    //System.out.println(lengthOfReads);
+                    if(splRd.getStart() <= snip.getPosition() && (splRd.getStart() + lengthOfReads) >= snip.getPosition()){
+                        // overlap, check if the positions are absolut or on gene level
+                        snip.increaseORGcov();
+                        //System.out.println(" increased SNP coverage with read : " );
+                    }
+                }
+            }
+        }
+
     }
 
     public String getChromosome() {
@@ -105,6 +126,7 @@ public class Gene {
         }
 
     }
+
 
 
 

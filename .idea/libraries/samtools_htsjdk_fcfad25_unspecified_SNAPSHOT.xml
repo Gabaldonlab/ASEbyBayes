@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="samtools-htsjdk-fcfad25-unspecified-SNAPSHOT">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/samtools-htsjdk-fcfad25/build/libs/samtools-htsjdk-fcfad25-unspecified-SNAPSHOT.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

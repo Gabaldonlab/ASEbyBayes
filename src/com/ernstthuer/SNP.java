@@ -93,6 +93,9 @@ public class SNP implements Comparable<SNP>{
         this.validated ++;
     }
 
+    public void increaseORGcov(){
+        this.ORGcov ++;
+    }
 
     public int addCoverageToSNPs( List<SimpleRead> splRds , int lengthOfReads) {
         int totalCoverage = 0;

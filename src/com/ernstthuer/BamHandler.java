@@ -18,7 +18,7 @@ public class BamHandler extends FileHandler {
 
 
     // bam is only import, no direction,
-    public int lengthOfReads = 0;
+    public static int lengthOfReads = 0;
     private String locale;
     private String type ;
     // each BAM file contains a potential snplist, this should be merged after reading.  keep separate for threading.
