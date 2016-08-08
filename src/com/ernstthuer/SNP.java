@@ -21,6 +21,8 @@ public class SNP implements Comparable<SNP>{
     private int ORGcov = 0;
     private int ALTcov = 1;
     private int validated ;
+    private double logDensityThreshold = 1;
+    private double borderApproximation = 0.01;
 
     public SNP(Gene gene, char ALT, int position) {
         this.gene = gene;
@@ -104,6 +106,22 @@ public class SNP implements Comparable<SNP>{
         this.ORGcov = totalCoverage - this.ALTcov;
         return totalCoverage;
     }
+
+
+    public boolean validateSNPforNoise(){
+        BayesClassify bcl = new BayesClassify(0.5,0.5,this.getALTcov(),this.getORGcov());
+        if(bcl.getBetaFunctionPosterior().logDensity(borderApproximation) < logDensityThreshold){
+            return false;
+        }else {
+            return true;
+        }
+    }
+
+    public boolean validateSNPforASE(){
+
+        return true;
+    }
+
 
     @Override
     public boolean equals(Object o) {

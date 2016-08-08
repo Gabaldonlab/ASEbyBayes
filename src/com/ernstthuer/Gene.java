@@ -100,7 +100,7 @@ public class Gene {
             try {
                 this.sequence = fullGenome;
             } catch (Exception e) {
-                System.out.println("coldn't parse fasta sequence " + e);
+                System.out.println("couldn't parse fasta sequence " + e);
             }
         }
 
