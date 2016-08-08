@@ -19,6 +19,8 @@ public class Main {
     static ArrayList<SNP> snips = new ArrayList<>();
     static HashMap<String, DNASequence> fasta = new HashMap<>();
     static boolean verbose = true;
+    static double bimodalPrimersForNoise = 0.5;
+
 
     public static void main(String[] args) {
 
@@ -99,6 +101,7 @@ public class Main {
 
 
         int poscount = 0;
+        int unvalidatedCount = 0;
         int totcount = 0;
 
 
@@ -109,12 +112,26 @@ public class Main {
             System.out.println(gene.getIdent() + "  :  " +   gene.getGeneReadList().size());
             for(SNP snp: gene.getSnpsOnGene()){
                 snips.add(snp);
-                if(snp.isValidated() > 0){
-                    poscount ++; totcount++;
-                    snp.addCoverageToSNPs(gene.getGeneReadList(),50);
+                if(snp.isValidated() == 1) {
+
+                    // validate for noise
+                    if (snp.validateSNP(bimodalPrimersForNoise)) {
+                        snp.setValidated(2);
+
+                    }
+                    ;
+
+
+                    if (snp.isValidated() == 2) {
+                        poscount++;
+                        totcount++;
+                        snp.addCoverageToSNPs(gene.getGeneReadList(), 50);
+                    }
                     //System.out.println(snp.getALTcov() + " alt : org  " + snp.getORGcov());
-                }else{
-                    totcount ++;
+                    else {
+                        totcount++;
+                        unvalidatedCount ++;
+                    }
                 }
             }
         }

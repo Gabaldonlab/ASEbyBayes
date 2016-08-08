@@ -108,8 +108,9 @@ public class SNP implements Comparable<SNP>{
     }
 
 
-    public boolean validateSNPforNoise(){
-        BayesClassify bcl = new BayesClassify(0.5,0.5,this.getALTcov(),this.getORGcov());
+
+    public boolean validateSNP(double alphaBetaValue){
+        BayesClassify bcl = new BayesClassify(alphaBetaValue,alphaBetaValue,this.getALTcov(),this.getORGcov());
         if(bcl.getBetaFunctionPosterior().logDensity(borderApproximation) < logDensityThreshold){
             return false;
         }else {
@@ -117,12 +118,17 @@ public class SNP implements Comparable<SNP>{
         }
     }
 
+    /*
     public boolean validateSNPforASE(){
-
-        return true;
+        BayesClassify bcl = new BayesClassify(25,25,this.getALTcov(),this.getORGcov());
+        if(bcl.getBetaFunctionPosterior().logDensity(borderApproximation) < logDensityThreshold){
+            return false;
+        }else {
+            return true;
+        }
     }
 
-
+*/
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

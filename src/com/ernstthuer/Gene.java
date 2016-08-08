@@ -46,7 +46,7 @@ public class Gene {
         else{
             int idx = snpsOnGene.indexOf(snp);
             snpsOnGene.get(idx).increaseAltCoverage();
-            if(snpsOnGene.get(idx).getALTcov() > 5 ){
+            if(snpsOnGene.get(idx).getALTcov() > 2 ){
                 snpsOnGene.get(idx).setValidated( 1 );
             }
             return false;

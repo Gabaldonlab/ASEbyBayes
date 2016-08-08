@@ -32,7 +32,7 @@ public class BayesClassify {
     private int CallsTotal;
     private BetaDistribution posterior;
     private double sigmaPosterior ;
-    
+
 
     private int expectation;
 
