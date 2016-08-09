@@ -114,9 +114,11 @@ public class SNP implements Comparable<SNP>{
 
     public boolean validateSNP(double alphaBetaValue){
         BayesClassify bcl = new BayesClassify(alphaBetaValue,alphaBetaValue,this.getALTcov(),this.getORGcov());
-        if(bcl.getBetaFunctionPosterior().logDensity(borderApproximation) < logDensityThreshold){
+        //System.out.println("logdensity : " + bcl.getBetaFunctionPosterior().logDensity(borderApproximation));
+        if(bcl.getBetaFunctionPosterior().logDensity(borderApproximation) > logDensityThreshold){
             return false;
         }else {
+
             return true;
         }
     }

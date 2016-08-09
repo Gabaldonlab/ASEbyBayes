@@ -127,10 +127,13 @@ public class Main {
                     if (snp.validateSNP(bimodalPrimersForNoise)) {
                         snp.raiseValidation();
 
+                    }else{
+                        //System.out.println(snp.getALTcov() + "  : " + snp.getORGcov() + "  was removed");
+                        snips.remove(snp);
                     }
                     ;
 
-                    System.out.println(snp.getALTcov() + "  " + snp.getORGcov());
+
 
 
                     if (snp.isValidated() > 1) {
