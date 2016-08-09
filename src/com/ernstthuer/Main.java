@@ -113,6 +113,7 @@ public class Main {
 
         // temporary SNPlist
 
+        int falsecount = 0;
 
         for(Gene gene:geneList){
 
@@ -137,6 +138,11 @@ public class Main {
                         poscount++;
                         totcount++;
                         snp.findTrueORG();
+                        if(snp.getORG() == snp.getALT()){
+                            System.out.println(snp.getORG() + "  _  " + snp.getALT());
+                            falsecount ++;
+                            System.out.println(falsecount);
+                        }
                         snp.addCoverageToSNPs(gene.getGeneReadList(), 50);
                     }
                     //System.out.println(snp.getALTcov() + " alt : org  " + snp.getORGcov());

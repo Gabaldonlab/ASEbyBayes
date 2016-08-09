@@ -59,6 +59,10 @@ public class SNP implements Comparable<SNP>{
         return ORG;
     }
 
+    public char getALT() {
+        return ALT;
+    }
+
     public Gene getGene() {
         return gene;
     }
@@ -128,9 +132,14 @@ public class SNP implements Comparable<SNP>{
     public void findTrueORG(){
         DNASequence dnaseq = gene.getSequence();
         //System.out.println("gene at " + gene.getStart() + " snp position" + position);
-        int snpPos = this.position - gene.getStart();
+        try {
+            int snpPos = (this.position ) - (gene.getStart() );
+            this.ORG = dnaseq.getCompoundAt(snpPos).toString().charAt(0);
+        }catch(Exception e){
+            System.out.println(" -> " + gene.getStart() + this.position );
+        }
 
-        this.ORG = dnaseq.getCompoundAt(snpPos).toString().charAt(0);
+
 
     }
 
