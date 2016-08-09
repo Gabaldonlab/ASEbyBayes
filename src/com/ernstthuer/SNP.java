@@ -1,5 +1,7 @@
 package com.ernstthuer;
 
+import org.biojava.nbio.core.sequence.DNASequence;
+
 import java.util.List;
 
 /**
@@ -121,6 +123,15 @@ public class SNP implements Comparable<SNP>{
 
             return true;
         }
+    }
+
+    public void findTrueORG(){
+        DNASequence dnaseq = gene.getSequence();
+        //System.out.println("gene at " + gene.getStart() + " snp position" + position);
+        int snpPos = this.position - gene.getStart();
+
+        this.ORG = dnaseq.getCompoundAt(snpPos).toString().charAt(0);
+
     }
 
     /*

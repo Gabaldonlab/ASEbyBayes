@@ -154,8 +154,10 @@ public class BamHandler extends FileHandler {
                             int position = Integer.parseInt(MZArray[i - 1]) + splRd.getStart();
                             //System.out.println(position + "  " + MZArray[i]);
                             // this should feed into a new SNP
-                            SNP snp = new SNP(gene,MZArray[i].charAt(0), position);
-                            gene.addSNP(snp);
+                            if(position < gene.getStop()) {
+                                SNP snp = new SNP(gene, MZArray[i].charAt(0), position);
+                                gene.addSNP(snp);
+                            }
                             // the full coverage can be gotten from a locusiterator after SNP calling
                         }
                     }

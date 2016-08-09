@@ -74,6 +74,10 @@ public class Gene {
 
     }
 
+    public DNASequence getSequence() {
+        return sequence;
+    }
+
     public String getChromosome() {
         return chromosome;
     }

@@ -118,7 +118,7 @@ public class Main {
 
             gene.findORGCoverageOfSNPs();
 
-            System.out.println(gene.getIdent() + "  :  " +   gene.getGeneReadList().size());
+            //System.out.println(gene.getIdent() + "  :  " +   gene.getGeneReadList().size());
             for(SNP snp: gene.getSnpsOnGene()){
                 snips.add(snp);
                 if(snp.isValidated() == 1) {
@@ -133,12 +133,10 @@ public class Main {
                     }
                     ;
 
-
-
-
                     if (snp.isValidated() > 1) {
                         poscount++;
                         totcount++;
+                        snp.findTrueORG();
                         snp.addCoverageToSNPs(gene.getGeneReadList(), 50);
                     }
                     //System.out.println(snp.getALTcov() + " alt : org  " + snp.getORGcov());
@@ -149,6 +147,7 @@ public class Main {
                 }
             }
         }
+
 
         System.out.println("A total of " + totcount + " SNPs was found,  of which  " + poscount + " Could be validated");
 
