@@ -60,6 +60,8 @@ public class Gene {
     public void findORGCoverageOfSNPs(){
         // trigger this after the SNPs were loaded and the simplified reads are stored on the genes.
         for(SNP snip: snpsOnGene){
+
+            // only for SNPs with at least 2 observations
             if(snip.isValidated() > 0){
                 for(SimpleRead splRd : geneReadList){
                     //System.out.println(lengthOfReads);

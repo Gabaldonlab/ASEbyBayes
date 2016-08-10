@@ -20,6 +20,7 @@ public class Main {
     static HashMap<String, DNASequence> fasta = new HashMap<>();
     static boolean verbose = true;
     static double bimodalPrimersForNoise = 0.5;
+    static int minCovThreshold = 100;
 
 
     public static void main(String[] args) {
@@ -112,7 +113,7 @@ public class Main {
 
         }
 
-        /**
+
 
 
         // here comes the unification of the genes
@@ -139,7 +140,12 @@ public class Main {
 
                     // validate for noise
                     if (snp.validateSNP(bimodalPrimersForNoise)) {
-                        snp.raiseValidation();
+                        if(snp.getORGcov() > minCovThreshold) {
+                            snp.raiseValidation();
+                        }
+                        else{
+                            snips.remove(snp);
+                        }
 
                     }else{
                         //System.out.println(snp.getALTcov() + "  : " + snp.getORGcov() + "  was removed");
@@ -157,7 +163,7 @@ public class Main {
                             falsecount ++;
                             System.out.println(falsecount);
                         }
-                        snp.addCoverageToSNPs(gene.getGeneReadList(), 50);
+                        //snp.addCoverageToSNPs(gene.getGeneReadList());
                     }
                     //System.out.println(snp.getALTcov() + " alt : org  " + snp.getORGcov());
                     else {
@@ -183,7 +189,7 @@ public class Main {
         }
     }
 
-         */}
+
     public static void errorCaller(Exception e ){
         if(verbose) {
             System.out.println(e);

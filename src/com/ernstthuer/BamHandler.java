@@ -122,24 +122,23 @@ public class BamHandler extends FileHandler {
                         if (MZArray.length > 1) {
                             for (int i = 0; i < MZArray.length; i++) {
                                 if (MZArray[i].matches("\\D")) {
+
                                     int placeOnRead = currentPosition + Integer.parseInt(MZArray[i - 1]);
                                     currentPosition = placeOnRead + 1;
 
                                     char altBase = read.getSAMString().split("\t")[9].charAt(placeOnRead);
                                     char refBase = MZArray[i].charAt(0);
 
-                                    int positionOnChrom = currentPosition + currentGene.getStart();
+                                    int positionOnChrom = placeOnRead + read.getStart();
                                     SNP snp = new SNP(currentGene, refBase, altBase, positionOnChrom);
 
-                                    if (refBase == altBase) {
-                                        count++;
-                                        System.out.println(currentPosition + " " + placeOnRead + " " + refBase + " " + altBase + "  : CIGAR " + read.getCigarString());
-                                        System.out.println(MZ);
-                                        System.out.println(read.getSAMString().split("\t")[9]);
-                                    }
-                                    if (refBase != altBase) {
+
+
+                                    if (refBase != altBase && ! CIGAR.contains("D") && ! CIGAR.contains("I")) {
                                         goodCount++;
                                         currentGene.addSNP(snp);
+                                        //System.out.println(" Created SNP on " + snp.getGene().getIdent());
+                                        //System.out.println(" on position " + snp.getPosition() + "  " + snp.getALT());
                                     }
                                 }
                             }
@@ -160,7 +159,7 @@ public class BamHandler extends FileHandler {
                     System.out.println(e);
                 }
             }
-            //System.out.println("bad SNPs counted : " + count + " vs good SNPs counted :" + goodCount);
+            System.out.println("bad SNPs counted : " + count + " vs good SNPs counted :" + goodCount);
         }
             catch(Exception e){
                 System.out.println(e);
@@ -200,7 +199,8 @@ public class BamHandler extends FileHandler {
                             System.out.println(altBase + "  " + refBase);
                             SNP snp = new SNP(currentGene, refBase, altBase, positionOnChrom);
 
-                         //System.out.println(" Created SNP on" + snp.getGene().getIdent() + currentGene.getIdent());
+                            System.out.println(" Created SNP on " + snp.getGene().getIdent() + currentGene.getIdent());
+                            System.out.println("  on position " + snp.getPosition() + "  " + snp.getALT());
                          currentGene.addSNP(snp);
                          }
 

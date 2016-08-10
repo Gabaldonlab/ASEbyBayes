@@ -103,12 +103,13 @@ public class SNP implements Comparable<SNP>{
         this.ORGcov ++;
     }
 
-    public int addCoverageToSNPs( List<SimpleRead> splRds , int lengthOfReads) {
+    public int addCoverageToSNPs( List<SimpleRead> splRds) {
         int totalCoverage = 0;
-        int length = lengthOfReads;
+        //int length = lengthOfReads;
         for (SimpleRead splrd : splRds) {
             int position = splrd.getStart();
-            if(this.position > position && this.position < (position + length)){
+            int stop = splrd.getStop();
+            if(this.position > position && this.position < stop){
                 totalCoverage ++;
             }
         }
@@ -183,7 +184,8 @@ public class SNP implements Comparable<SNP>{
     public String toString(){
 
         // chrom position ident ref alt qual filter info
-        return  this.gene.getChromosome() +  "\t"+  this.position + "\t" + this.gene.getIdent() +  "\t" +  this.ORG +  "\t" + this.ALT + "\t" + "TestInfo" +  "\t"  ;
+        return  this.gene.getChromosome() +  "\t"+  this.position + "\t" + this.gene.getIdent()
+                +  "\t" +  this.ORG +  "\t" + this.ALT + "\t" + this.getALTcov()+ "\t" + this.getORGcov() + "\t" + "TestInfo" +  "\t"  ;
     }
 
     @Override
