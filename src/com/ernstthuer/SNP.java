@@ -131,10 +131,14 @@ public class SNP implements Comparable<SNP>{
 
     public void findTrueORG(){
         DNASequence dnaseq = gene.getSequence();
+        String seq = dnaseq.toString();
+
         //System.out.println("gene at " + gene.getStart() + " snp position" + position);
         try {
-            int snpPos = (this.position ) - (gene.getStart() );
-            this.ORG = dnaseq.getCompoundAt(snpPos).toString().charAt(0);
+            int snpPos = (this.position ) - (gene.getStart() + 3 );
+
+
+            this.ORG = seq.charAt(snpPos);
         }catch(Exception e){
             System.out.println(" -> " + gene.getStart() + this.position );
         }

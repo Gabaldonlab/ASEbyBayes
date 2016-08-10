@@ -63,7 +63,7 @@ public class Gene {
             if(snip.isValidated() > 0){
                 for(SimpleRead splRd : geneReadList){
                     //System.out.println(lengthOfReads);
-                    if(splRd.getStart() <= snip.getPosition() && (splRd.getStart() + lengthOfReads) >= snip.getPosition()){
+                    if(splRd.getStart() <= snip.getPosition() && (splRd.getStop()) >= snip.getPosition()){
                         // overlap, check if the positions are absolut or on gene level
                         snip.increaseORGcov();
                         //System.out.println(" increased SNP coverage with read : " );

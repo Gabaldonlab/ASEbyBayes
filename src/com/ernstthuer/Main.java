@@ -93,7 +93,7 @@ public class Main {
 
                         // to loosen this for threading i should create copies of the genelists
                         bhdlr.readBam(fasta,geneList);
-                        bhdlr.findSNPs();
+                        //bhdlr.findSNPs();
                     }
 
                 } catch (Exception e) {
@@ -121,6 +121,7 @@ public class Main {
 
             //System.out.println(gene.getIdent() + "  :  " +   gene.getGeneReadList().size());
             for(SNP snp: gene.getSnpsOnGene()){
+                //System.out.println("SNP found on gene : " + snp.getPosition()+ " with coverage " + snp.getALTcov()+ " and total " + snp.getORGcov());
                 snips.add(snp);
                 if(snp.isValidated() == 1) {
 
@@ -137,7 +138,8 @@ public class Main {
                     if (snp.isValidated() > 1) {
                         poscount++;
                         totcount++;
-                        snp.findTrueORG();
+                        //snp.findTrueORG();
+                        //System.out.println(snp.getPosition() + "  " + snp.getALTcov() + "   " + snp.getORGcov());
                         if(snp.getORG() == snp.getALT()){
                             System.out.println(snp.getORG() + "  _  " + snp.getALT());
                             falsecount ++;
