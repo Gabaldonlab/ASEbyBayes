@@ -19,8 +19,13 @@ public class Main {
     static ArrayList<SNP> snips = new ArrayList<>();
     static HashMap<String, DNASequence> fasta = new HashMap<>();
     static boolean verbose = true;
+
+    // bimodial primers for noise correction
     static double bimodalPrimersForNoise = 0.5;
-    static int minCovThreshold = 100;
+
+    // strong informative primers for the assumption of 0.5 ratio expression
+    static double strongCentralInformativePrimers = 25;
+    static int minCovThreshold = 50;
 
 
     public static void main(String[] args) {
@@ -130,6 +135,7 @@ public class Main {
 
         for(Gene gene:geneList){
 
+            // this is not working yet, check SNP full coverage vs ALT cov.
             gene.findORGCoverageOfSNPs();
 
             //System.out.println(gene.getIdent() + "  :  " +   gene.getGeneReadList().size());
@@ -163,6 +169,11 @@ public class Main {
                             falsecount ++;
                             System.out.println(falsecount);
                         }
+
+                        // check Allele specific expression here:::
+                        boolean CentralExpressionEvidence =  snp.validateSNP(strongCentralInformativePrimers);
+                        boolean FullSNPevidence = snp.validateSNP(bimodalPrimersForNoise);
+
                         //snp.addCoverageToSNPs(gene.getGeneReadList());
                     }
                     //System.out.println(snp.getALTcov() + " alt : org  " + snp.getORGcov());
@@ -200,4 +211,7 @@ public class Main {
             System.out.println(sw);
         }
     }
+
+
+
 }

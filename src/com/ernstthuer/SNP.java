@@ -25,6 +25,8 @@ public class SNP implements Comparable<SNP>{
     private int validated ;
     private double logDensityThreshold = 1;
     private double borderApproximation = 0.01;
+    private int ratioExpression;
+    private enum expression {EQUALALLELIC,REGULATEDTOWARDSREF,REGULATEDAGAINSTREF}
 
     public SNP(Gene gene, char ALT, int position) {
         this.gene = gene;
@@ -103,6 +105,7 @@ public class SNP implements Comparable<SNP>{
         this.ORGcov ++;
     }
 
+    /*
     public int addCoverageToSNPs( List<SimpleRead> splRds) {
         int totalCoverage = 0;
         //int length = lengthOfReads;
@@ -116,8 +119,7 @@ public class SNP implements Comparable<SNP>{
         this.ORGcov = totalCoverage - this.ALTcov;
         return totalCoverage;
     }
-
-
+*/
 
     public boolean validateSNP(double alphaBetaValue){
         BayesClassify bcl = new BayesClassify(alphaBetaValue,alphaBetaValue,this.getALTcov(),this.getORGcov());
@@ -133,32 +135,30 @@ public class SNP implements Comparable<SNP>{
     public void findTrueORG(){
         DNASequence dnaseq = gene.getSequence();
         String seq = dnaseq.toString();
-
         //System.out.println("gene at " + gene.getStart() + " snp position" + position);
         try {
             int snpPos = (this.position ) - (gene.getStart() + 3 );
-
-
             this.ORG = seq.charAt(snpPos);
         }catch(Exception e){
             System.out.println(" -> " + gene.getStart() + this.position );
         }
+    }
 
-
-
+    public void setRatioExpression(int ratioExpression) {
+        this.ratioExpression = ratioExpression;
     }
 
     /*
-    public boolean validateSNPforASE(){
-        BayesClassify bcl = new BayesClassify(25,25,this.getALTcov(),this.getORGcov());
-        if(bcl.getBetaFunctionPosterior().logDensity(borderApproximation) < logDensityThreshold){
-            return false;
-        }else {
-            return true;
+        public boolean validateSNPforASE(){
+            BayesClassify bcl = new BayesClassify(25,25,this.getALTcov(),this.getORGcov());
+            if(bcl.getBetaFunctionPosterior().logDensity(borderApproximation) < logDensityThreshold){
+                return false;
+            }else {
+                return true;
+            }
         }
-    }
 
-*/
+    */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
