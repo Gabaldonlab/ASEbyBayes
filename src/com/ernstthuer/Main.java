@@ -101,7 +101,19 @@ public class Main {
                     fasta = null;
                 }
             }
+
         }
+
+
+        for(Gene gene:geneList){
+            System.out.println("Gene :" +gene.getIdent());
+            System.out.println("with " + gene.getGeneReadList().size() + " reads");
+            System.out.println("SNP" + gene.getSnpsOnGene().size());
+
+        }
+
+        /**
+
 
         // here comes the unification of the genes
 
@@ -171,6 +183,7 @@ public class Main {
         }
     }
 
+         */}
     public static void errorCaller(Exception e ){
         if(verbose) {
             System.out.println(e);
