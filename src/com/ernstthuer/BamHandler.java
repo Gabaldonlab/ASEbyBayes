@@ -22,22 +22,15 @@ public class BamHandler extends FileHandler {
     // bam is only import, no direction,
     public static int lengthOfReads = 0;
     private String locale;
-    private String type ;
+    private String type;
     // each BAM file contains a potential snplist, this should be merged after reading.  keep separate for threading.
     private ArrayList<SNP> snpArrayList = new ArrayList<>();
     private ArrayList<Gene> geneList = new ArrayList<>();
     // contain the reads   SAM format
 
     /**
-     *
      * Tricky,  no mpileup function available.
      * Samreader has to compensate
-     *
-     *
-     *
-     *
-     *
-     *
      *
      * @param locale
      * @param type
@@ -70,7 +63,6 @@ public class BamHandler extends FileHandler {
             SamReaderFactory factory = SamReaderFactory.makeDefault().validationStringency(ValidationStringency.STRICT);
             SamReader fileBam = factory.open(new File(this.locale));
             SAMRecordIterator iterator = fileBam.iterator();
-
 
 
             //System.out.println(iterator.toList().size());
@@ -133,8 +125,7 @@ public class BamHandler extends FileHandler {
                                     SNP snp = new SNP(currentGene, refBase, altBase, positionOnChrom);
 
 
-
-                                    if (refBase != altBase && ! CIGAR.contains("D") && ! CIGAR.contains("I")) {
+                                    if (refBase != altBase && !CIGAR.contains("D") && !CIGAR.contains("I")) {
                                         goodCount++;
                                         currentGene.addSNP(snp);
                                         //System.out.println(" Created SNP on " + snp.getGene().getIdent());
@@ -148,11 +139,7 @@ public class BamHandler extends FileHandler {
                                 //currentGene = findSNP(currentGene, chromosome, read.getStart(), MZArray, read.getSAMString().split("\t")[9]);
                             }
                         }
-
-                        // no longer necessary,  only start and stop are relevant since SNPs are already checked
-                        //SimpleRead splR = new SimpleRead(start, MZ, CIGAR);
-                        //System.out.println(locus.toString());
-                        //System.out.println();
+                        
                     }
 
                 } catch (NullPointerException e) {
@@ -160,25 +147,21 @@ public class BamHandler extends FileHandler {
                 }
             }
             System.out.println("bad SNPs counted : " + count + " vs good SNPs counted :" + goodCount);
+        } catch (Exception e) {
+            System.out.println(e);
         }
-            catch(Exception e){
-                System.out.println(e);
-            }
 
         this.geneList = geneList;
 
-            }
+    }
 
 
-    public Gene findSNP(Gene currentGene, String chromosome, int start, String[] MZArray, String readSeq){
+    public Gene findSNP(Gene currentGene, String chromosome, int start, String[] MZArray, String readSeq) {
 
 
         try {
             // if reads are sorted a memory of the last gene will speed things up significantly
             currentGene = findGene(chromosome, start, geneList, currentGene);
-
-            //if(currentGene != null) {
-            //    currentGene.addRead(splR);
 
             for (int i = 0; i < MZArray.length; i++) {
                 if (MZArray[i].matches("\\D")) {
@@ -187,40 +170,20 @@ public class BamHandler extends FileHandler {
                     //int positionOnChrom = positionOnRead + start;
                     // equals position on gene, if genes were used as a reference , then their start is 0
                     int positionOnChrom = positionOnRead + start - currentGene.getStart();
+                    if (positionOnChrom < currentGene.getStop() && positionOnChrom > currentGene.getStart()) {
+                        char refBase = currentGene.getSequence().getCompoundAt(positionOnChrom + 1).toString().charAt(0);
+                        //char altBase = readSeq.charAt(positionOnRead);
+                        System.out.println(altBase + "  " + refBase);
+                        SNP snp = new SNP(currentGene, refBase, altBase, positionOnChrom);
 
-                        //System.out.println(read.getSAMString().split("\t")[9].charAt(positionOnRead));
-
-                        //System.out.println(position + "  " + MZArray[i]);
-                        // this should feed into a new SNP
-                        //System.out.println("placement on gene "  + currentGene.getStart()+ "  " + currentGene.getStop() + "  " + positionOnChrom);
-                        if(positionOnChrom < currentGene.getStop() && positionOnChrom > currentGene.getStart()) {
-                            char refBase = currentGene.getSequence().getCompoundAt(positionOnChrom+1).toString().charAt(0);
-                            //char altBase = readSeq.charAt(positionOnRead);
-                            System.out.println(altBase + "  " + refBase);
-                            SNP snp = new SNP(currentGene, refBase, altBase, positionOnChrom);
-
-                            System.out.println(" Created SNP on " + snp.getGene().getIdent() + currentGene.getIdent());
-                            System.out.println("  on position " + snp.getPosition() + "  " + snp.getALT());
-                         currentGene.addSNP(snp);
-                         }
-
-                        // the full coverage can be gotten from a locusiterator after SNP calling
+                        System.out.println(" Created SNP on " + snp.getGene().getIdent() + currentGene.getIdent());
+                        System.out.println("  on position " + snp.getPosition() + "  " + snp.getALT());
+                        currentGene.addSNP(snp);
                     }
-
+                }
             }
             return currentGene;
-        }
-        catch(Exception e ){
-            /*for (int i = 0; i < MZArray.length; i++) {
-                if (MZArray[i].matches("\\D")) {
-                    int positionOnRead = Integer.parseInt(MZArray[i - 1]);
-                    int positionOnChrom = positionOnRead + start - geneStart;
-
-                    System.out.println(positionOnChrom + " : " + positionOnRead);
-                }
-            }*/
-
-
+        } catch (Exception e) {
             System.out.println("Caught badly formatted MZ string");
             System.out.println(currentGene.getStart() + "  " + currentGene.getSequence().getLength() + " " + currentGene.getStop());
             StringWriter sw = new StringWriter();
@@ -232,57 +195,6 @@ public class BamHandler extends FileHandler {
         }
         return currentGene;
     }
-
-
-/**
-    public void findSNPs(){
-        for(Gene gene:geneList){
-
-            /*
-            gene.getGeneReadList().sort(SimpleRead);
-
-            Collections.sort(Database, new Comparator<SimpleRead>() {
-                @Override public int compare(SimpleRead read1 , SimpleRead read2) {
-                    return read1.getStart() - read2.getStart(); // Ascending
-                }
-                */
-/**
-
-            List<SimpleRead> splRds = gene.getGeneReadList();
-            //List<SNP> snpOnGene = gene.getSnpsOnGene();
-            for(SimpleRead splRd:splRds ){
-                //System.out.println(splRd.getMZ());
-                // split between letters and digits or digits and letters
-
-
-
-                String[] MZArray = splRd.getMZ().split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
-
-                // digest the MZ score
-                try {
-                    for (int i = 0; i < MZArray.length; i++) {
-                        if (MZArray[i].matches("\\D")) {
-                            int position = Integer.parseInt(MZArray[i - 1]) + splRd.getStart();
-                            //System.out.println(position + "  " + MZArray[i]);
-                            // this should feed into a new SNP
-                            if(position < gene.getStop()) {
-                                SNP snp = new SNP(gene, MZArray[i].charAt(0), position);
-                                gene.addSNP(snp);
-                            }
-                            // the full coverage can be gotten from a locusiterator after SNP calling
-                        }
-                    }
-                }
-                catch(Exception e ){
-                    //System.out.println("Caught badly formatted MZ string");
-                    //System.out.println(e);
-                }
-            }
-        }
-
-    }
-*/
-
 
 
     @Override
@@ -299,19 +211,19 @@ public class BamHandler extends FileHandler {
         return snpArrayList;
     }
 
-    public Gene findGene(String chromosome, int start, ArrayList<Gene> geneList , Gene currentgene ){
+    public Gene findGene(String chromosome, int start, ArrayList<Gene> geneList, Gene currentgene) {
 
         // first check if read belongs to the same gene as before:  if not find the next one
 
 
-        if ( currentgene!= null && currentgene.getChromosome() == chromosome && currentgene.getStop() > start && currentgene.getStart() < start) {
+        if (currentgene != null && currentgene.getChromosome() == chromosome && currentgene.getStop() > start && currentgene.getStart() < start) {
             return currentgene;
         }
 
 
-        for (Gene gene:geneList){
-            if(gene.getChromosome().equals(chromosome)){
-                if(gene.getStart() < start && gene.getStop() > start){
+        for (Gene gene : geneList) {
+            if (gene.getChromosome().equals(chromosome)) {
+                if (gene.getStart() < start && gene.getStop() > start) {
                     return gene;
                 }
             }

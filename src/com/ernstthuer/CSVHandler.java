@@ -17,7 +17,6 @@ public class CSVHandler extends FileHandler {
     /**
      * implement tsv writer for the standard output in vcf format
      *
-     *
      * @param locale
      * @param type
      * @param direction
@@ -32,7 +31,7 @@ public class CSVHandler extends FileHandler {
         super(locale, type, direction);
         this.locale = locale;
         this.direction = direction;
-        this.type = type ;
+        this.type = type;
 
     }
 
@@ -41,25 +40,25 @@ public class CSVHandler extends FileHandler {
     }
 
 
-    public boolean writeSNPToVCF(ArrayList<SNP> snpArrayList, int validationLvL){
+    public boolean writeSNPToVCF(ArrayList<SNP> snpArrayList, int validationLvL) {
         List<String> lines = new ArrayList<String>();
         int writecount = 0;
-        for(SNP snp:snpArrayList){
-            if(snp.isValidated() >= validationLvL){
+        for (SNP snp : snpArrayList) {
+            if (snp.isValidated() >= validationLvL) {
                 // create String
                 lines.add(snp.toString());
-                writecount ++;
+                writecount++;
             }
         }
 
         Path outFile = Paths.get(locale);
         //if(Files.isWritable(outFile)) {
-            try {
-                System.out.println("Writing");
-                Files.write(outFile, lines, Charset.forName("UTF-8"));
-            }catch(IOException e){
-                System.out.println("No output file created" + e);
-            }
+        try {
+            System.out.println("Writing");
+            Files.write(outFile, lines, Charset.forName("UTF-8"));
+        } catch (IOException e) {
+            System.out.println("No output file created" + e);
+        }
         //}
 
         System.out.println(writecount + " SNPs written to file ");
@@ -78,10 +77,8 @@ public class CSVHandler extends FileHandler {
     */
 
 
-
     //Files.write(file, lines, Charset.forName("UTF-8"));
 //Files.write(file, lines, Charset.forName("UTF-8"), StandardOpenOption.APPEND);
-
 
 
 }

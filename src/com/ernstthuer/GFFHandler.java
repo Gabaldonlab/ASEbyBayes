@@ -20,17 +20,17 @@ public class GFFHandler extends FileHandler {
     private static String origin;
     private String direction;
     private String feature;
-    private String[] lineList ;
+    private String[] lineList;
     private ArrayList<Gene> geneList = new ArrayList<>();
     //private ArrayList<String> lineList = new ArrayList<>();
 
 
-    public GFFHandler(String locale, String type, String direction, String feature ) {
+    public GFFHandler(String locale, String type, String direction, String feature) {
         super(locale, type, direction);
         this.locale = locale;
         this.feature = feature;
         this.origin = null;
-        this.direction = direction ; // gff is always input anyways
+        this.direction = direction; // gff is always input anyways
         try {
             this.lineList = openGFF(locale);
         } catch (IOException e) {
@@ -39,19 +39,19 @@ public class GFFHandler extends FileHandler {
         }
         //System.out.println("Total features " + lineList.length);
         geneList = geneList(this.lineList);
-        System.out.println(geneList.size() + "  "+ this.feature + " found ");
+        System.out.println(geneList.size() + "  " + this.feature + " found ");
     }
 
     public String[] openGFF(String locale) throws IOException {
         ArrayList<String> outList = new ArrayList<String>();
         //System.out.println("This is where the file is " + direction);
-        try(BufferedReader br = new BufferedReader(new FileReader(locale))){
+        try (BufferedReader br = new BufferedReader(new FileReader(locale))) {
 
             String sCurrentLine;
             while ((sCurrentLine = br.readLine()) != null) {
                 outList.add(sCurrentLine);
             }
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -67,7 +67,7 @@ public class GFFHandler extends FileHandler {
 
         ArrayList<Gene> outList = new ArrayList<>();
         System.out.println("[Status] Parsing gff file for : " + this.feature + "s");
-        for (int i = 0; i  <  featureList.length ; i++) {
+        for (int i = 0; i < featureList.length; i++) {
             String[] row = featureList[i].split("\t");
             if (row[2].equals(this.feature)) {
                 String description = descriptionParser(row[8]);
@@ -79,8 +79,8 @@ public class GFFHandler extends FileHandler {
 
                     outList.add(gene);
 
-                }catch(Exception e){
-                    System.out.println( e );
+                } catch (Exception e) {
+                    System.out.println(e);
                 }
                 //System.out.println(outList.size());//geneList.add(newGene);
             }
@@ -112,7 +112,7 @@ public class GFFHandler extends FileHandler {
                 if (element.contains("gid")) {
                     type = "ENSEXP";
                 }
-                if (element.contains("geneID")){
+                if (element.contains("geneID")) {
                     type = "ALTERNATIVE";
                     //System.out.println(" -> " + type);
                 }
@@ -121,8 +121,8 @@ public class GFFHandler extends FileHandler {
 
         switch (type) {
             case "CGD":
-                for(String element: desc){
-                    if(element.contains("ID")){
+                for (String element : desc) {
+                    if (element.contains("ID")) {
                         featureID = element.split("=")[1];
                         return featureID;
 
@@ -131,8 +131,8 @@ public class GFFHandler extends FileHandler {
                 break;
 
             case "ESEMBL":
-                for(String element: desc){
-                    if(element.contains("_id")){
+                for (String element : desc) {
+                    if (element.contains("_id")) {
                         featureID = element.split("\"")[1];
                         return featureID;
                     }
@@ -141,8 +141,8 @@ public class GFFHandler extends FileHandler {
 
             case "ALTERNATIVE":
                 //System.out.println("casechoice = " + type);
-                for(String element: desc){
-                    if(element.contains("ID")){
+                for (String element : desc) {
+                    if (element.contains("ID")) {
                         featureID = element.split("\"")[1];
                         //System.out.println(featureID);
                         return featureID;

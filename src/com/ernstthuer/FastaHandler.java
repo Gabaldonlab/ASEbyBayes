@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Created by ethur on 7/26/16.
  */
-public class FastaHandler extends FileHandler{
+public class FastaHandler extends FileHandler {
 
     private String locale;
     private String type;
@@ -31,7 +31,7 @@ public class FastaHandler extends FileHandler{
 
     }
 
-    public HashMap<String, DNASequence> readFasta( ArrayList<Gene> geneList) throws IOException {
+    public HashMap<String, DNASequence> readFasta(ArrayList<Gene> geneList) throws IOException {
 
         /**
          * Method supplied by biojava to read fasta file into hashMap
@@ -45,7 +45,7 @@ public class FastaHandler extends FileHandler{
         HashMap<String, DNASequence> fastaMap;
 
 
-        for(Gene gene:geneList){
+        for (Gene gene : geneList) {
             System.out.println("inside Fasta parser : " + gene.getIdent() + "  " + gene.getStart());
         }
 
@@ -56,16 +56,15 @@ public class FastaHandler extends FileHandler{
             fastaMap = FastaReaderHelper.readFastaDNASequence(file);
 
 
-            for(Gene gene:geneList){
-                if(fastaMap.containsKey(gene.getChromosome())){
+            for (Gene gene : geneList) {
+                if (fastaMap.containsKey(gene.getChromosome())) {
                     //it's on the chromosome
                     //System.out.println(" Found chromosome " +gene.getChromosome());
 
                     gene.loadSequence(fastaMap.get(gene.getChromosome()), true);
                     //System.out.println("populating genes");
 
-                }
-                else{
+                } else {
                     //genes were used directly
                     ////gene.loadSequence(fastaMap.get(gene.getChromosome()),false);
                     //gene.loadSequence(fastaMap.v);

@@ -32,7 +32,6 @@ public class Main {
     public static void main(String[] args) {
 
 
-
         System.out.println("Running ASEbyBayes Version  0.2");
 
         // open the input files in sequence,  fasta  gff then bam
@@ -62,15 +61,16 @@ public class Main {
 
         for (FileHandler file : parser.fileList) {
             try {
-                if (file.getType() == "GFF" && file.getDirection() == "Input"){
+                if (file.getType() == "GFF" && file.getDirection() == "Input") {
                     //if(file.getType() == "GFF" && file.getDirection() == "Input"){
                     System.out.println("[STATUS]  parsing GFF file");
-                try {
-                    geneList = ((GFFHandler) file).getGeneList();
-                } catch (ClassCastException e) {
-                    errorCaller(e);
-                }}
-            }catch(ClassCastException expected){
+                    try {
+                        geneList = ((GFFHandler) file).getGeneList();
+                    } catch (ClassCastException e) {
+                        errorCaller(e);
+                    }
+                }
+            } catch (ClassCastException expected) {
                 errorCaller(expected);
             }
         }
@@ -92,14 +92,14 @@ public class Main {
 
         for (FileHandler file : parser.fileList) {
             if (file.getType() == "Bam" && file.getDirection() == "Input") {
-                System.out.println(" BAM file " +file.getLocale());
+                System.out.println(" BAM file " + file.getLocale());
                 try {
 
                     if (fasta != null) {
                         BamHandler bhdlr = new BamHandler(file.getLocale(), "Bam", "Input");
 
                         // to loosen this for threading i should create copies of the genelists
-                        bhdlr.readBam(fasta,geneList);
+                        bhdlr.readBam(fasta, geneList);
                         //bhdlr.findSNPs();
                     }
 
@@ -112,14 +112,12 @@ public class Main {
         }
 
 
-        for(Gene gene:geneList){
-            System.out.println("Gene :" +gene.getIdent());
+        for (Gene gene : geneList) {
+            System.out.println("Gene :" + gene.getIdent());
             System.out.println("with " + gene.getGeneReadList().size() + " reads");
             System.out.println("SNP" + gene.getSnpsOnGene().size());
 
         }
-
-
 
 
         // here comes the unification of the genes
@@ -134,63 +132,55 @@ public class Main {
 
         int falsecount = 0;
 
-        for(Gene gene:geneList){
+        for (Gene gene : geneList) {
 
             // this is not working yet, check SNP full coverage vs ALT cov.
             gene.findORGCoverageOfSNPs();
 
             //System.out.println(gene.getIdent() + "  :  " +   gene.getGeneReadList().size());
-            for(SNP snp: gene.getSnpsOnGene()){
+            for (SNP snp : gene.getSnpsOnGene()) {
                 //System.out.println("SNP found on gene : " + snp.getPosition()+ " with coverage " + snp.getALTcov()+ " and total " + snp.getORGcov());
                 snips.add(snp);
-                if(snp.isValidated() == 1) {
-
+                if (snp.isValidated() == 1) {
                     // validate for noise  set mode to 0 for validation
-                    if (snp.validateSNP(bimodalPrimersForNoise,bimodalPrimersForNoise, 0  )) {
-                        if(snp.getORGcov() > minCovThreshold) {
+                    if (snp.validateSNP(bimodalPrimersForNoise, bimodalPrimersForNoise, 0)) {
+                        if (snp.getORGcov() > minCovThreshold) {
                             snp.raiseValidation();
-                        }
-                        else{
+                        } else {
                             snips.remove(snp);
                         }
 
-                    }else{
+                    } else {
                         //System.out.println(snp.getALTcov() + "  : " + snp.getORGcov() + "  was removed");
                         snips.remove(snp);
                     }
-                    ;
 
                     if (snp.isValidated() > 1) {
                         poscount++;
                         totcount++;
                         //snp.findTrueORG();
                         //System.out.println(snp.getPosition() + "  " + snp.getALTcov() + "   " + snp.getORGcov());
-                        if(snp.getORG() == snp.getALT()){
+                        if (snp.getORG() == snp.getALT()) {
                             System.out.println(snp.getORG() + "  _  " + snp.getALT());
-                            falsecount ++;
+                            falsecount++;
                             System.out.println(falsecount);
                         }
 
                         // check Allele specific expression here:::
-                        boolean FullSNPevidence = snp.validateSNP(bimodalPrimersForNoise,bimodalPrimersForNoise,1);
-                        boolean CentralExpressionEvidence =  snp.validateSNP(strongCentralInformativePrimers,strongCentralInformativePrimers,2);
-
-
-                        if(FullSNPevidence){
+                        boolean FullSNPevidence = snp.validateSNP(bimodalPrimersForNoise, bimodalPrimersForNoise, 1);
+                        boolean CentralExpressionEvidence = snp.validateSNP(strongCentralInformativePrimers, strongCentralInformativePrimers, 2);
+                        if (FullSNPevidence) {
                             snp.setExpression("FULLSNP");
                         }
-
-                        if(CentralExpressionEvidence){
+                        if (CentralExpressionEvidence) {
                             snp.setExpression("EQUALALLELICEXPRESSION");
                         }
-
-
                         //snp.addCoverageToSNPs(gene.getGeneReadList());
                     }
                     //System.out.println(snp.getALTcov() + " alt : org  " + snp.getORGcov());
                     else {
                         totcount++;
-                        unvalidatedCount ++;
+                        unvalidatedCount++;
                     }
                 }
             }
@@ -200,10 +190,10 @@ public class Main {
         System.out.println("A total of " + totcount + " SNPs was found,  of which  " + poscount + " Could be validated");
 
         for (FileHandler file : parser.fileList) {
-            if (file instanceof CSVHandler && file.getDirection() == "Output" ) {
+            if (file instanceof CSVHandler && file.getDirection() == "Output") {
                 System.out.println("[STATUS] Writing vcf like output to file to " + file.getLocale());
                 try {
-                    ((CSVHandler) file).writeSNPToVCF(snips,1);
+                    ((CSVHandler) file).writeSNPToVCF(snips, 1);
                 } catch (Exception e) {
                     errorCaller(e);
                 }
@@ -212,8 +202,8 @@ public class Main {
     }
 
 
-    public static void errorCaller(Exception e ){
-        if(verbose) {
+    public static void errorCaller(Exception e) {
+        if (verbose) {
             System.out.println(e);
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
@@ -222,7 +212,6 @@ public class Main {
             System.out.println(sw);
         }
     }
-
 
 
 }

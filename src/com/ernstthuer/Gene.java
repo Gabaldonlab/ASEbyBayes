@@ -39,33 +39,31 @@ public class Gene {
         return snpsOnGene;
     }
 
-    public boolean addSNP(SNP snp){
+    public boolean addSNP(SNP snp) {
 
-        if(! snpsOnGene.contains(snp)){
+        if (!snpsOnGene.contains(snp)) {
             snpsOnGene.add(snp);
             return true;
-        }
-        else{
+        } else {
             int idx = snpsOnGene.indexOf(snp);
             snpsOnGene.get(idx).increaseAltCoverage();
-            if(snpsOnGene.get(idx).getALTcov() > 2 ){
-                snpsOnGene.get(idx).setValidated( 1 );
+            if (snpsOnGene.get(idx).getALTcov() > 2) {
+                snpsOnGene.get(idx).setValidated(1);
             }
             return false;
         }
     }
 
 
-
-    public void findORGCoverageOfSNPs(){
+    public void findORGCoverageOfSNPs() {
         // trigger this after the SNPs were loaded and the simplified reads are stored on the genes.
-        for(SNP snip: snpsOnGene){
+        for (SNP snip : snpsOnGene) {
 
             // only for SNPs with at least 2 observations
-            if(snip.isValidated() > 0){
-                for(SimpleRead splRd : geneReadList){
+            if (snip.isValidated() > 0) {
+                for (SimpleRead splRd : geneReadList) {
                     //System.out.println(lengthOfReads);
-                    if(splRd.getStart() <= snip.getPosition() && (splRd.getStop()) >= snip.getPosition()){
+                    if (splRd.getStart() <= snip.getPosition() && (splRd.getStop()) >= snip.getPosition()) {
                         // overlap, check if the positions are absolut or on gene level
                         snip.increaseORGcov();
                         //System.out.println(" increased SNP coverage with read : " );
@@ -97,7 +95,6 @@ public class Gene {
     }
 
 
-
     public void loadSequence(DNASequence fullGenome, boolean fullChrom) {
 
 
@@ -109,8 +106,7 @@ public class Gene {
                 try {
 
                     this.sequence = new DNASequence(fullGenome.getSubSequence(this.start, this.stop).getSequenceAsString());
-                }
-                catch(CompoundNotFoundException e){
+                } catch (CompoundNotFoundException e) {
                     System.out.println("Caught error in sequence parsing ");
                     System.out.println(e);
                     StringWriter sw = new StringWriter();
@@ -134,9 +130,7 @@ public class Gene {
     }
 
 
-
-
-    public void addRead(SimpleRead read){
+    public void addRead(SimpleRead read) {
         this.geneReadList.add(read);
     }
 

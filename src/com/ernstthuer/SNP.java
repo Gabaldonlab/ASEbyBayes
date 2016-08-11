@@ -7,13 +7,12 @@ import java.util.List;
 /**
  * Created by ethur on 7/26/16.
  */
-public class SNP implements Comparable<SNP>{
+public class SNP implements Comparable<SNP> {
 
     /**
      * Core of the analysis  the SNP class catches individual SNPs, evaluation has to be carried out here
-     *
-     *stored in their respective genes.  if no gene information is provided, chromosomes take the place of genes
-     *
+     * <p>
+     * stored in their respective genes.  if no gene information is provided, chromosomes take the place of genes
      */
 
     private Gene gene;
@@ -22,7 +21,7 @@ public class SNP implements Comparable<SNP>{
     private int position;
     private int ORGcov = 0;
     private int ALTcov = 1;
-    private int validated ;
+    private int validated;
     private double logDensityThreshold = 1;
     private double borderApproximation = 0.01;
     private int ratioExpression;
@@ -52,7 +51,6 @@ public class SNP implements Comparable<SNP>{
     }
 
 
-
     public int getORGcov() {
         return ORGcov;
     }
@@ -77,8 +75,8 @@ public class SNP implements Comparable<SNP>{
         return ALTcov;
     }
 
-    public void increaseAltCoverage(){
-        this.ALTcov ++;
+    public void increaseAltCoverage() {
+        this.ALTcov++;
     }
 
     public void setALTcov(int ALTcov) {
@@ -97,12 +95,12 @@ public class SNP implements Comparable<SNP>{
         this.validated = validated;
     }
 
-    public void raiseValidation(){
-        this.validated ++;
+    public void raiseValidation() {
+        this.validated++;
     }
 
-    public void increaseORGcov(){
-        this.ORGcov ++;
+    public void increaseORGcov() {
+        this.ORGcov++;
     }
 
     /*
@@ -122,12 +120,11 @@ public class SNP implements Comparable<SNP>{
 */
 
 
+    public boolean validateSNP(double alphaValue, double betaValue, int setMode) {
 
-    public boolean validateSNP(double alphaValue,double betaValue, int setMode){
-
-        BayesClassify bcl = new BayesClassify(alphaValue,betaValue,this.getALTcov(),this.getORGcov());
+        BayesClassify bcl = new BayesClassify(alphaValue, betaValue, this.getALTcov(), this.getORGcov());
         //System.out.println("logdensity : " + bcl.getBetaFunctionPosterior().logDensity(borderApproximation));
-        switch(setMode) {
+        switch (setMode) {
             case 0:
                 // lower bound validation
                 if (bcl.getBetaFunctionPosterior().logDensity(borderApproximation) > logDensityThreshold) {
@@ -137,7 +134,7 @@ public class SNP implements Comparable<SNP>{
                 }
             case 1:
                 // foll SNP validation
-                if (bcl.getBetaFunctionPosterior().logDensity(1-borderApproximation) > logDensityThreshold) {
+                if (bcl.getBetaFunctionPosterior().logDensity(1 - borderApproximation) > logDensityThreshold) {
                     return false;
                 } else {
                     return true;
@@ -155,15 +152,15 @@ public class SNP implements Comparable<SNP>{
         return false;
     }
 
-    public void findTrueORG(){
+    public void findTrueORG() {
         DNASequence dnaseq = gene.getSequence();
         String seq = dnaseq.toString();
         //System.out.println("gene at " + gene.getStart() + " snp position" + position);
         try {
-            int snpPos = (this.position ) - (gene.getStart() + 3 );
+            int snpPos = (this.position) - (gene.getStart() + 3);
             this.ORG = seq.charAt(snpPos);
-        }catch(Exception e){
-            System.out.println(" -> " + gene.getStart() + this.position );
+        } catch (Exception e) {
+            System.out.println(" -> " + gene.getStart() + this.position);
         }
     }
 
@@ -209,18 +206,18 @@ public class SNP implements Comparable<SNP>{
     }
 
     @Override
-    public String toString(){
+    public String toString() {
 
         // chrom position ident ref alt qual filter info
-        return  this.gene.getChromosome() +  "\t"+  this.position + "\t" + this.gene.getIdent()
-                +  "\t" +  this.ORG +  "\t" + this.ALT + "\t" + this.getALTcov()+ "\t" + this.getORGcov() + "\t" + "TestInfo" +  "\t"  ;
+        return this.gene.getChromosome() + "\t" + this.position + "\t" + this.gene.getIdent()
+                + "\t" + this.ORG + "\t" + this.ALT + "\t" + this.getALTcov() + "\t" + this.getORGcov() + "\t" + "TestInfo" + "\t";
     }
 
     @Override
     public int compareTo(SNP o) {
-        if (this.ALT == o.ALT && this.position == o.position){
+        if (this.ALT == o.ALT && this.position == o.position) {
             return 1;
-        }else {
+        } else {
             return 0;
         }
     }
