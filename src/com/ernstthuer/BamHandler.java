@@ -80,10 +80,12 @@ public class BamHandler extends FileHandler {
                 SAMRecord read = iterator.next();
 
 
+                /*
                 if (this.lengthOfReads == 0) {
                     this.lengthOfReads = (read.getReadLength());
                 }
 
+*/
 
                 // associate to gene and store barebone there
                 int start = read.getAlignmentStart();
@@ -126,7 +128,6 @@ public class BamHandler extends FileHandler {
 
 
                                     if (refBase != altBase && !CIGAR.contains("D") && !CIGAR.contains("I")) {
-                                        goodCount++;
                                         currentGene.addSNP(snp);
                                         //System.out.println(" Created SNP on " + snp.getGene().getIdent());
                                         //System.out.println(" on position " + snp.getPosition() + "  " + snp.getALT());
@@ -135,9 +136,9 @@ public class BamHandler extends FileHandler {
                             }
 
                             // case CIGAR string is more complex ...
-                            if (!CIGAR.contains("I") || CIGAR.contains("D")) {
+                           // if (!CIGAR.contains("I") || CIGAR.contains("D")) {
                                 //currentGene = findSNP(currentGene, chromosome, read.getStart(), MZArray, read.getSAMString().split("\t")[9]);
-                            }
+                           // }
                         }
 
                     }
@@ -146,7 +147,7 @@ public class BamHandler extends FileHandler {
                     System.out.println(e);
                 }
             }
-            System.out.println("bad SNPs counted : " + count + " vs good SNPs counted :" + goodCount);
+            //System.out.println("bad SNPs counted : " + count + " vs good SNPs counted :" + goodCount);
         } catch (Exception e) {
             System.out.println(e);
         }

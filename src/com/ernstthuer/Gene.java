@@ -32,7 +32,7 @@ public class Gene {
         this.start = start;
         this.stop = stop;
         this.ident = ident;
-        System.out.println("Created gene " + ident);
+        //System.out.println("Created gene " + ident);
     }
 
     public ArrayList<SNP> getSnpsOnGene() {

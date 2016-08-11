@@ -63,7 +63,7 @@ public class Main {
             try {
                 if (file.getType() == "GFF" && file.getDirection() == "Input") {
                     //if(file.getType() == "GFF" && file.getDirection() == "Input"){
-                    System.out.println("[STATUS]  parsing GFF file");
+                    //System.out.println("[STATUS] Parsing GFF file");
                     try {
                         geneList = ((GFFHandler) file).getGeneList();
                     } catch (ClassCastException e) {
@@ -78,11 +78,11 @@ public class Main {
         // individual loadings
         for (FileHandler file : parser.fileList) {
             if (file.getType() == "FASTA" && file.getDirection() == "Input") {
-                System.out.println("Fasta file loading");
+                System.out.println("[STATUS] loading Fasta file");
                 try {
                     fasta = (((FastaHandler) file).readFasta(geneList));
                     //fasta2gene
-                    System.out.println("Read fasta");
+                    //System.out.println("Read fasta");
                 } catch (IOException e) {
                     System.out.println(e.getCause());
                     fasta = null;
@@ -92,7 +92,7 @@ public class Main {
 
         for (FileHandler file : parser.fileList) {
             if (file.getType() == "Bam" && file.getDirection() == "Input") {
-                System.out.println(" BAM file " + file.getLocale());
+                System.out.println("[STATUS] Loading BAM file " + file.getLocale());
                 try {
 
                     if (fasta != null) {
@@ -111,23 +111,15 @@ public class Main {
 
         }
 
-
+/**  for testing purposes
         for (Gene gene : geneList) {
             System.out.println("Gene :" + gene.getIdent());
             System.out.println("with " + gene.getGeneReadList().size() + " reads");
             System.out.println("SNP" + gene.getSnpsOnGene().size());
 
         }
-
-
+*/
         // here comes the unification of the genes
-
-
-        int poscount = 0;
-        int unvalidatedCount = 0;
-        int totcount = 0;
-
-
         // temporary SNPlist
 
         int falsecount = 0;
@@ -156,14 +148,14 @@ public class Main {
                     }
 
                     if (snp.isValidated() > 1) {
-                        poscount++;
-                        totcount++;
+                        //poscount++;
+                        //totcount++;
                         //snp.findTrueORG();
                         //System.out.println(snp.getPosition() + "  " + snp.getALTcov() + "   " + snp.getORGcov());
                         if (snp.getORG() == snp.getALT()) {
-                            System.out.println(snp.getORG() + "  _  " + snp.getALT());
+                            //System.out.println(snp.getORG() + "  _  " + snp.getALT());
                             falsecount++;
-                            System.out.println(falsecount);
+                            System.out.println("[WARNING] malformed Read encountered in" +  snp.getGene().getIdent() +" number:" +falsecount);
                         }
 
                         // check Allele specific expression here:::
@@ -178,20 +170,16 @@ public class Main {
                         //snp.addCoverageToSNPs(gene.getGeneReadList());
                     }
                     //System.out.println(snp.getALTcov() + " alt : org  " + snp.getORGcov());
-                    else {
-                        totcount++;
-                        unvalidatedCount++;
-                    }
                 }
             }
         }
 
 
-        System.out.println("A total of " + totcount + " SNPs were found,  of which  " + poscount + " Could be validated");
+        //System.out.println("[STATUS] A total of " + totcount + " SNPs were found,  of which  " + poscount + " Could be validated");
 
         for (FileHandler file : parser.fileList) {
             if (file instanceof CSVHandler && file.getDirection() == "Output") {
-                System.out.println("[STATUS] Writing vcf like output to file to " + file.getLocale());
+                //System.out.println("[STATUS] Writing vcf like output to file to " + file.getLocale());
                 try {
                     ((CSVHandler) file).writeSNPToVCF(snips, 1);
                 } catch (Exception e) {
@@ -208,12 +196,7 @@ public class Main {
                     FastaSilencer fastaSilencer = new FastaSilencer(snips,fasta,file.getLocale());
                 }
             }
-
-
         }
-
-
-
     }
 
 

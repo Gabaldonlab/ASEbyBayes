@@ -54,14 +54,14 @@ public class CSVHandler extends FileHandler {
         Path outFile = Paths.get(locale);
         //if(Files.isWritable(outFile)) {
         try {
-            System.out.println("Writing");
+            System.out.println("[STATUS] Writing vcf like output file with " + writecount + " SNPs");
             Files.write(outFile, lines, Charset.forName("UTF-8"));
         } catch (IOException e) {
             System.out.println("No output file created" + e);
         }
         //}
 
-        System.out.println(writecount + " SNPs written to file ");
+        //System.out.println(writecount + " SNPs written to file ");
         return false;
     }
 
