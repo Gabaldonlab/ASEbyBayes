@@ -26,7 +26,7 @@ public class SNP implements Comparable<SNP>{
     private double logDensityThreshold = 1;
     private double borderApproximation = 0.01;
     private int ratioExpression;
-    private enum expression {EQUALALLELIC,REGULATEDTOWARDSREF,REGULATEDAGAINSTREF}
+    private enum expression {FULLSNP, EQUALALLELIC,REGULATEDTOWARDSREF,REGULATEDAGAINSTREF}
 
     public SNP(Gene gene, char ALT, int position) {
         this.gene = gene;
@@ -121,15 +121,36 @@ public class SNP implements Comparable<SNP>{
     }
 */
 
-    public boolean validateSNP(double alphaBetaValue){
-        BayesClassify bcl = new BayesClassify(alphaBetaValue,alphaBetaValue,this.getALTcov(),this.getORGcov());
-        //System.out.println("logdensity : " + bcl.getBetaFunctionPosterior().logDensity(borderApproximation));
-        if(bcl.getBetaFunctionPosterior().logDensity(borderApproximation) > logDensityThreshold){
-            return false;
-        }else {
+    public boolean validateSNP(double alphaValue,double betaValue, int setMode){
 
-            return true;
+        BayesClassify bcl = new BayesClassify(alphaValue,betaValue,this.getALTcov(),this.getORGcov());
+        //System.out.println("logdensity : " + bcl.getBetaFunctionPosterior().logDensity(borderApproximation));
+        switch(setMode) {
+            case 0:
+                // lower bound validation
+                if (bcl.getBetaFunctionPosterior().logDensity(borderApproximation) > logDensityThreshold) {
+                    return false;
+                } else {
+                    return true;
+                }
+            case 1:
+                // foll SNP validation
+                if (bcl.getBetaFunctionPosterior().logDensity(1-borderApproximation) > logDensityThreshold) {
+                    return false;
+                } else {
+                    return true;
+                }
+            case 2:
+                // Equal allele Expression
+                if (bcl.getBetaFunctionPosterior().logDensity(0.5) > logDensityThreshold) {
+                    return false;
+                } else {
+                    return true;
+                }
+
+
         }
+        return false;
     }
 
     public void findTrueORG(){
@@ -144,9 +165,8 @@ public class SNP implements Comparable<SNP>{
         }
     }
 
-    public void setRatioExpression(int ratioExpression) {
-        this.ratioExpression = ratioExpression;
-    }
+
+
 
     /*
         public boolean validateSNPforASE(){

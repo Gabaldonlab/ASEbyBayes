@@ -144,8 +144,8 @@ public class Main {
                 snips.add(snp);
                 if(snp.isValidated() == 1) {
 
-                    // validate for noise
-                    if (snp.validateSNP(bimodalPrimersForNoise)) {
+                    // validate for noise  set mode to 0 for validation
+                    if (snp.validateSNP(bimodalPrimersForNoise,bimodalPrimersForNoise, 0  )) {
                         if(snp.getORGcov() > minCovThreshold) {
                             snp.raiseValidation();
                         }
@@ -171,8 +171,16 @@ public class Main {
                         }
 
                         // check Allele specific expression here:::
-                        boolean CentralExpressionEvidence =  snp.validateSNP(strongCentralInformativePrimers);
-                        boolean FullSNPevidence = snp.validateSNP(bimodalPrimersForNoise);
+                        boolean CentralExpressionEvidence =  snp.validateSNP(strongCentralInformativePrimers,strongCentralInformativePrimers,2);
+                        boolean FullSNPevidence = snp.validateSNP(bimodalPrimersForNoise,bimodalPrimersForNoise,1);
+
+                        if(FullSNPevidence){
+
+                        }
+
+                        if(CentralExpressionEvidence){
+
+                        }
 
                         //snp.addCoverageToSNPs(gene.getGeneReadList());
                     }

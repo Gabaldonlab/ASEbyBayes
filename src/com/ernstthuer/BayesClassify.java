@@ -46,15 +46,9 @@ public class BayesClassify {
 
     }
 
-    public BayesClassify(int trueCalls, int callsTotal) {
-        this.TrueCalls = trueCalls;
-        this.CallsTotal = callsTotal;
-        this.alpha = 1.0;
-        this.beta = 1.0;
 
-    }
 
-    public void getConfidence (double input) {
+    public void getVerbose (double input) {
         System.out.println("Alpha and Beta : ");
         System.out.println(posterior.getAlpha());
         System.out.println(posterior.getBeta());
