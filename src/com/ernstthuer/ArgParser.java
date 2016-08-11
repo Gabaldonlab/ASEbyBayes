@@ -33,6 +33,8 @@ public class ArgParser {
                 .help("input file in GFF3 format").required(true).dest("inGFF");
         this.parser.addArgument("-o", "--outfile")
                 .help("output file in tsv format").required(false).setDefault("output.csv").dest("outFinal");
+        this.parser.addArgument("-OF", "--outfasta")
+                .help("output silenced fasta file,  all SNPs replaced by N ").required(false).setDefault("outfasta.fasta").dest("outFasta");
         this.parser.addArgument("-F", "--feature")
                 .choices("exon", "gene", "cds").setDefault("exon").dest("feature").help("choose feature to analyze, either exon, gene or cds");
         this.parser.addArgument("-m", "--mask")

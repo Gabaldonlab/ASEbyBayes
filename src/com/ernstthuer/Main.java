@@ -187,7 +187,7 @@ public class Main {
         }
 
 
-        System.out.println("A total of " + totcount + " SNPs was found,  of which  " + poscount + " Could be validated");
+        System.out.println("A total of " + totcount + " SNPs were found,  of which  " + poscount + " Could be validated");
 
         for (FileHandler file : parser.fileList) {
             if (file instanceof CSVHandler && file.getDirection() == "Output") {
@@ -199,6 +199,21 @@ public class Main {
                 }
             }
         }
+
+        // optional silenced Fasta writeout
+        if(parser.isMaskFasta()){
+            for(FileHandler file : parser.fileList){
+                if(file.getType()=="FASTA" && file.getDirection() == "Output"){
+                    System.out.println("[STATUS] Writing Silenced fasta sequence of SNPs to file : " + file.getLocale());
+                    FastaSilencer fastaSilencer = new FastaSilencer(snips,fasta,file.getLocale());
+                }
+            }
+
+
+        }
+
+
+
     }
 
 

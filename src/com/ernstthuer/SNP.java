@@ -25,7 +25,7 @@ public class SNP implements Comparable<SNP> {
     private double logDensityThreshold = 1;
     private double borderApproximation = 0.01;
     private int ratioExpression;
-    private String expression;
+    private String expression = " ";
 
     public SNP(Gene gene, char ALT, int position) {
         this.gene = gene;
@@ -210,7 +210,7 @@ public class SNP implements Comparable<SNP> {
 
         // chrom position ident ref alt qual filter info
         return this.gene.getChromosome() + "\t" + this.position + "\t" + this.gene.getIdent()
-                + "\t" + this.ORG + "\t" + this.ALT + "\t" + this.getALTcov() + "\t" + this.getORGcov() + "\t" + "TestInfo" + "\t";
+                + "\t" + this.ORG + "\t" + this.ALT + "\t" + this.getALTcov() + "\t" + this.getORGcov() + "\t" + "TestInfo" + "\t" + this.expression;
     }
 
     @Override

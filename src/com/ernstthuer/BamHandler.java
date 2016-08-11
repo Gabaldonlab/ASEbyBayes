@@ -139,7 +139,7 @@ public class BamHandler extends FileHandler {
                                 //currentGene = findSNP(currentGene, chromosome, read.getStart(), MZArray, read.getSAMString().split("\t")[9]);
                             }
                         }
-                        
+
                     }
 
                 } catch (NullPointerException e) {
