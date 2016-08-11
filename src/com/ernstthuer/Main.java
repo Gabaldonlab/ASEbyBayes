@@ -8,6 +8,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
 //import org.slf4j.LoggerFactory;
 
 public class Main {
@@ -32,7 +33,7 @@ public class Main {
 
 
 
-        System.out.println("Version  0.1");
+        System.out.println("Running ASEbyBayes Version  0.2");
 
         // open the input files in sequence,  fasta  gff then bam
 
@@ -171,16 +172,18 @@ public class Main {
                         }
 
                         // check Allele specific expression here:::
-                        boolean CentralExpressionEvidence =  snp.validateSNP(strongCentralInformativePrimers,strongCentralInformativePrimers,2);
                         boolean FullSNPevidence = snp.validateSNP(bimodalPrimersForNoise,bimodalPrimersForNoise,1);
+                        boolean CentralExpressionEvidence =  snp.validateSNP(strongCentralInformativePrimers,strongCentralInformativePrimers,2);
+
 
                         if(FullSNPevidence){
-
+                            snp.setExpression("FULLSNP");
                         }
 
                         if(CentralExpressionEvidence){
-
+                            snp.setExpression("EQUALALLELICEXPRESSION");
                         }
+
 
                         //snp.addCoverageToSNPs(gene.getGeneReadList());
                     }

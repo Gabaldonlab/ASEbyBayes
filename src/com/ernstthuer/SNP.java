@@ -26,7 +26,7 @@ public class SNP implements Comparable<SNP>{
     private double logDensityThreshold = 1;
     private double borderApproximation = 0.01;
     private int ratioExpression;
-    private enum expression {FULLSNP, EQUALALLELIC,REGULATEDTOWARDSREF,REGULATEDAGAINSTREF}
+    private String expression;
 
     public SNP(Gene gene, char ALT, int position) {
         this.gene = gene;
@@ -121,6 +121,8 @@ public class SNP implements Comparable<SNP>{
     }
 */
 
+
+
     public boolean validateSNP(double alphaValue,double betaValue, int setMode){
 
         BayesClassify bcl = new BayesClassify(alphaValue,betaValue,this.getALTcov(),this.getORGcov());
@@ -166,19 +168,25 @@ public class SNP implements Comparable<SNP>{
     }
 
 
+    public void setExpression(String expression) {
+        this.expression = expression;
+    }
 
+    public String getExpression() {
+        return expression;
+    }
 
     /*
-        public boolean validateSNPforASE(){
-            BayesClassify bcl = new BayesClassify(25,25,this.getALTcov(),this.getORGcov());
-            if(bcl.getBetaFunctionPosterior().logDensity(borderApproximation) < logDensityThreshold){
-                return false;
-            }else {
-                return true;
-            }
-        }
+                public boolean validateSNPforASE(){
+                    BayesClassify bcl = new BayesClassify(25,25,this.getALTcov(),this.getORGcov());
+                    if(bcl.getBetaFunctionPosterior().logDensity(borderApproximation) < logDensityThreshold){
+                        return false;
+                    }else {
+                        return true;
+                    }
+                }
 
-    */
+            */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
