@@ -2,10 +2,13 @@ package com.ernstthuer;
 
 import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
 import org.biojava.nbio.core.sequence.DNASequence;
+import org.biojava.nbio.core.sequence.compound.NucleotideCompound;
 
+import javax.sound.midi.Sequence;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.ernstthuer.BamHandler.lengthOfReads;
@@ -21,7 +24,8 @@ public class Gene {
     private int start;
     private int stop;
     private String ident;
-
+    private String orientation = "forward";
+    private HashMap<Integer, org.biojava.nbio.core.sequence.template.Sequence> codonList = new HashMap<>();
     // storing SNPs on the gene, and reads in a barebone form for reference.  this might be irrelevant due to Sam locus iteration...
     //private List<SNP> geneSNPList = new ArrayList<>();
     private ArrayList<SimpleRead> geneReadList = new ArrayList<>();
@@ -73,6 +77,45 @@ public class Gene {
         }
 
     }
+
+    public void geneToCodon(){
+        // Codon list for all positions, for each position
+        //HashMap<Integer, org.biojava.nbio.core.sequence.template.Sequence> CodonList = new HashMap<>();
+        // for each codon on sequence
+        for(int i = 0; i < this.sequence.getLength(); i = i+3) {
+
+           /* char first = sequence.getCompoundAt(i).toString().charAt(0);
+            char second = sequence.getCompoundAt(i+1).toString().charAt(0);
+            char third = sequence.getCompoundAt(i+2).toString().charAt(0);
+            */
+            org.biojava.nbio.core.sequence.template.Sequence codon = sequence.getSubSequence(i,i+2).getViewedSequence();
+
+            for(int j=i;j<(i+3);j++) {
+                codonList.put(i, codon);
+            }
+
+        }
+        }
+
+
+    public void findSynonymity(int validationLVL){
+        if(orientation == "forward"){
+        for(SNP snp : snpsOnGene){
+            if(snp.isValidated() >= validationLVL) {
+
+
+
+
+            }
+            }
+        }
+    }
+
+    public void evaluateGeneWiseExpression(){
+
+        
+    }
+
 
     public DNASequence getSequence() {
         return sequence;

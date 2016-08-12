@@ -60,25 +60,7 @@ public class CSVHandler extends FileHandler {
             System.out.println("No output file created" + e);
         }
         //}
-
         //System.out.println(writecount + " SNPs written to file ");
         return false;
     }
-
-
-    //List<String> lines = Arrays.asList("The first line", "The second line");
-    //Path file = Paths.get(this.getLocale());
-
-    /*
-
-
-
-    }
-    */
-
-
-    //Files.write(file, lines, Charset.forName("UTF-8"));
-//Files.write(file, lines, Charset.forName("UTF-8"), StandardOpenOption.APPEND);
-
-
 }
