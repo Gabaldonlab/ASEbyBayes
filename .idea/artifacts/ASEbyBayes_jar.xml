@@ -1,13 +1,8 @@
 <component name="ArtifactManager">
   <artifact type="jar" build-on-make="true" name="ASEbyBayes:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/ASEbyBayes_jar</output-path>
+    <output-path>$PROJECT_DIR$/out/ASEbyBayes_jar</output-path>
     <root id="archive" name="ASEbyBayes.jar">
       <element id="module-output" name="ASEbyBayes" />
-      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/biojava/biojava-core/4.2.4/biojava-core-4.2.4.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.14/slf4j-api-1.7.14.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/apache/logging/log4j/log4j-slf4j-impl/2.5/log4j-slf4j-impl-2.5.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/apache/logging/log4j/log4j-api/2.5/log4j-api-2.5.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/apache/logging/log4j/log4j-core/2.5/log4j-core-2.5.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/net/sourceforge/argparse4j/argparse4j/0.7.0/argparse4j-0.7.0.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/github/samtools/htsjdk/2.6.0/htsjdk-2.6.0.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar" path-in-jar="/" />
@@ -16,6 +11,11 @@
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/gov/nih/nlm/ncbi/ngs-java/1.2.4/ngs-java-1.2.4.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/apache/commons/commons-jexl/2.1.1/commons-jexl-2.1.1.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/xerial/snappy/snappy-java/1.0.3-rc3/snappy-java-1.0.3-rc3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/biojava/biojava-core/4.2.4/biojava-core-4.2.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.14/slf4j-api-1.7.14.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/apache/logging/log4j/log4j-slf4j-impl/2.5/log4j-slf4j-impl-2.5.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/apache/logging/log4j/log4j-api/2.5/log4j-api-2.5.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/apache/logging/log4j/log4j-core/2.5/log4j-core-2.5.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/apache/commons/commons-math3/3.6.1/commons-math3-3.6.1.jar" path-in-jar="/" />
     </root>
   </artifact>

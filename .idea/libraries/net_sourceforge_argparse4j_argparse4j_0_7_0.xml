@@ -3,6 +3,7 @@
     <properties maven-id="net.sourceforge.argparse4j:argparse4j:0.7.0" />
     <CLASSES>
       <root url="jar://$MAVEN_REPOSITORY$/net/sourceforge/argparse4j/argparse4j/0.7.0/argparse4j-0.7.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/net/sourceforge/argparse4j/argparse4j/0.7.0/argparse4j-0.7.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -25,7 +25,7 @@ public class Gene {
     private int stop;
     private String ident;
     private String orientation = "forward";
-    private HashMap<Integer, org.biojava.nbio.core.sequence.template.Sequence> codonList = new HashMap<>();
+    private HashMap<Integer, Codon> codonList = new HashMap<>();
     // storing SNPs on the gene, and reads in a barebone form for reference.  this might be irrelevant due to Sam locus iteration...
     //private List<SNP> geneSNPList = new ArrayList<>();
     private ArrayList<SimpleRead> geneReadList = new ArrayList<>();
@@ -84,12 +84,8 @@ public class Gene {
         //HashMap<Integer, org.biojava.nbio.core.sequence.template.Sequence> CodonList = new HashMap<>();
         // for each codon on sequence
         for(int i = 0; i < this.sequence.getLength(); i = i+3) {
-
-           /* char first = sequence.getCompoundAt(i).toString().charAt(0);
-            char second = sequence.getCompoundAt(i+1).toString().charAt(0);
-            char third = sequence.getCompoundAt(i+2).toString().charAt(0);
-            */
-            org.biojava.nbio.core.sequence.template.Sequence codon = sequence.getSubSequence(i,i+2).getViewedSequence();
+            //org.biojava.nbio.core.sequence.template.Sequence codon = sequence.getSubSequence(i,i+2).getViewedSequence();
+            Codon codon = new Codon(sequence.getSubSequence(i,i+2).getViewedSequence().getSequenceAsString());
             for(int j=i;j<(i+3);j++) {
                 codonList.put(j, codon);
             }
@@ -113,15 +109,20 @@ public class Gene {
                     int remain = relativePosition % 3;
 
 
-                    org.biojava.nbio.core.sequence.template.Sequence refCodon = codonList.get(relativePosition);
-                    if (refCodon.getCompoundAt(0).toString().charAt(0) == snp.getORG()) {
-                        String altCodon = getAltCodon(0, snp.getALT(), refCodon.getSequenceAsString());
+                    Codon refCodon = codonList.get(relativePosition);
+
+                    StringBuilder altSeq = new StringBuilder(refCodon.getSequence());
+                    altSeq.setCharAt(remain,snp.getALT());
+
+                    Codon altCodon = new Codon(altSeq.toString());
+
+                    snp.setSynonymous(altCodon.equals(refCodon));
+
+                    //String altCodon = getAltCodon(0, snp.getALT(), refCodon.getSequence());
                         //altCodon = snp.getALT() + altCodon.substring(1,2);
-                        StringBuilder newCodon = new StringBuilder(altCodon);
-                        newCodon.setCharAt(remain, snp.getALT());
-                    }else{
-                        System.out.println("Error in CodonParsing");
-                    }
+                    //StringBuilder newCodon = new StringBuilder(altCodon);
+                    //newCodon.setCharAt(remain, snp.getALT());
+
                 }
             }
         }
