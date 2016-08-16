@@ -39,7 +39,7 @@ public class GFFHandler extends FileHandler {
         }
         //System.out.println("Total features " + lineList.length);
         geneList = geneList(this.lineList);
-        System.out.println("[STATUS] " +   geneList.size() + "  " + this.feature + "s found ");
+        System.out.println("[STATUS] " + geneList.size() + "  " + this.feature + "s found ");
     }
 
     public String[] openGFF(String locale) throws IOException {
@@ -73,9 +73,25 @@ public class GFFHandler extends FileHandler {
                 String description = descriptionParser(row[8]);
                 int start = parseInt(row[3]);  //start and stop position are read as String
                 int stop = parseInt(row[4]);
-                //Gene newGene = new Gene(row[0], start, stop, description );
+
+                String orientation = "";
                 try {
+
+                    if (start < stop) {
+                        orientation = "forward";
+                    }
+                    if (stop < start) {
+                        // gene is on the reverse
+                        orientation = "reverse";
+                        int intermed = start;
+                        start = stop;
+                        stop = intermed;
+                    }
+
+                    //Gene newGene = new Gene(row[0], start, stop, description );
+
                     Gene gene = new Gene(row[0], start, stop, description);
+                    gene.setOrientation(orientation);
 
                     outList.add(gene);
 

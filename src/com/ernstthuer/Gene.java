@@ -36,7 +36,7 @@ public class Gene {
         this.start = start;
         this.stop = stop;
         this.ident = ident;
-        geneToCodon();
+
         //System.out.println("Created gene " + ident);
     }
 
@@ -79,13 +79,17 @@ public class Gene {
 
     }
 
-    public void geneToCodon(){
+    public void setOrientation(String orientation) {
+        this.orientation = orientation;
+    }
+
+    public void geneToCodon(String codingSequence){
         // Codon list for all positions, for each position
         //HashMap<Integer, org.biojava.nbio.core.sequence.template.Sequence> CodonList = new HashMap<>();
         // for each codon on sequence
-        for(int i = 0; i < this.sequence.getLength(); i = i+3) {
+        for(int i = 0; i < codingSequence.length(); i = i+3) {
             //org.biojava.nbio.core.sequence.template.Sequence codon = sequence.getSubSequence(i,i+2).getViewedSequence();
-            Codon codon = new Codon(sequence.getSubSequence(i,i+2).getViewedSequence().getSequenceAsString());
+            Codon codon = new Codon(codingSequence.substring(i,i+2));
             for(int j=i;j<(i+3);j++) {
                 codonList.put(j, codon);
             }
@@ -101,6 +105,12 @@ public class Gene {
 
     public void findSynonymity(int validationLVL) {
         if (orientation == "forward") {
+            geneToCodon(this.sequence.getSequenceAsString());
+
+        }
+        if (orientation == "reverse"){
+            geneToCodon(this.sequence.getInverse().getSequenceAsString());
+        }
             for (SNP snp : snpsOnGene) {
                 if (snp.isValidated() >= validationLVL) {
 
@@ -125,7 +135,7 @@ public class Gene {
 
                 }
             }
-        }
+
     }
 
     public void evaluateGeneWiseExpression(){
