@@ -93,7 +93,6 @@ public class Gene {
             for(int j=i;j<(i+3);j++) {
                 codonList.put(j, codon);
             }
-
         }
         }
 

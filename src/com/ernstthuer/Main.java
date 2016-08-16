@@ -29,6 +29,9 @@ public class Main {
     static double strongCentralInformativePrimers = 25;
     static int minCovThreshold = 50;
 
+    // 1 = more than 2 hits  ; 2 = significant true positive expectation
+    static int validationLVL = 2;
+
 
     public static void main(String[] args) {
 
@@ -163,6 +166,7 @@ public class Main {
                         // check Allele specific expression here:::
                         boolean FullSNPevidence = snp.validateSNP(bimodalPrimersForNoise, bimodalPrimersForNoise, 1);
                         boolean CentralExpressionEvidence = snp.validateSNP(strongCentralInformativePrimers, strongCentralInformativePrimers, 2);
+
                         if (FullSNPevidence) {
                             snp.setExpression("FULLSNP");
                         }
@@ -174,6 +178,10 @@ public class Main {
                     //System.out.println(snp.getALTcov() + " alt : org  " + snp.getORGcov());
                 }
             }
+
+            // asks for validationLimit
+            gene.findSynonymity(validationLVL);
+
         }
 
 
