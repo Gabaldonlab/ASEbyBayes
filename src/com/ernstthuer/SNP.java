@@ -26,6 +26,7 @@ public class SNP implements Comparable<SNP> {
     private double borderApproximation = 0.01;
     private int ratioExpression;
     private String expression = " ";
+    private boolean isSynonymous;
 
     public SNP(Gene gene, char ALT, int position) {
         this.gene = gene;
@@ -50,6 +51,14 @@ public class SNP implements Comparable<SNP> {
         this.validated = 0;
     }
 
+
+    public void setSynonymous(boolean synonymous) {
+        isSynonymous = synonymous;
+    }
+
+    public boolean isSynonymous() {
+        return isSynonymous;
+    }
 
     public int getORGcov() {
         return ORGcov;

@@ -20,6 +20,7 @@ public class Main {
     static ArrayList<SNP> snips = new ArrayList<>();
     static HashMap<String, DNASequence> fasta = new HashMap<>();
     static boolean verbose = true;
+    static HashMap<String,String> codonConversion = new HashMap<>();
 
     // bimodial primers for noise correction
     static double bimodalPrimersForNoise = 0.5;
@@ -33,6 +34,7 @@ public class Main {
 
 
         System.out.println("Running ASEbyBayes Version  0.2");
+        populateCodonConversion();
 
         // open the input files in sequence,  fasta  gff then bam
 
@@ -209,6 +211,73 @@ public class Main {
             sw.toString();
             System.out.println(sw);
         }
+    }
+
+    public static void  populateCodonConversion(){
+        codonConversion.put("TCT","Ser");
+        codonConversion.put("TAT","Tyr");
+        codonConversion.put("TGT","Cys");
+        codonConversion.put("TTC","Phe");
+        codonConversion.put("TCC","Ser");
+        codonConversion.put("TAC","Tyr");
+        codonConversion.put("TGC","Cys");
+        codonConversion.put("TTA","Leu");
+        codonConversion.put("TCA","Ser");
+        codonConversion.put("TAA","TER");
+        codonConversion.put("TGA","TER");
+        codonConversion.put("TTG","Leu");
+        codonConversion.put("TCG","Ser");
+        codonConversion.put("TAG","TER");
+        codonConversion.put("TGG","Trp");
+        codonConversion.put("CTT","Leu");
+        codonConversion.put("CCT","Pro");
+        codonConversion.put("CAT","His");
+        codonConversion.put("CGT","Arg");
+        codonConversion.put("CTC","Leu");
+        codonConversion.put("CCC","Pro");
+        codonConversion.put("CAC","His");
+        codonConversion.put("CGC","Arg");
+        codonConversion.put("CTA","Leu");
+        codonConversion.put("CCA","Pro");
+        codonConversion.put("CAA","Gln");
+        codonConversion.put("CGA","Arg");
+        codonConversion.put("CTG","Leu");
+        codonConversion.put("CCG","Pro");
+        codonConversion.put("CAG","Gln");
+        codonConversion.put("CGG","Arg");
+        codonConversion.put("ATT","Ile");
+        codonConversion.put("ACT","Thr");
+        codonConversion.put("AAT","Asn");
+        codonConversion.put("AGT","Ser");
+        codonConversion.put("ATC","Ile");
+        codonConversion.put("ACC","Thr");
+        codonConversion.put("AAC","Asn");
+        codonConversion.put("AGC","Ser");
+        codonConversion.put("ATA","Ile");
+        codonConversion.put("ACA","Thr");
+        codonConversion.put("AAA","Lys");
+        codonConversion.put("AGA","Arg");
+        codonConversion.put("ATG","Met");
+        codonConversion.put("ACG","Thr");
+        codonConversion.put("AAG","Lys");
+        codonConversion.put("AGG","Arg");
+        codonConversion.put("GTT","Val");
+        codonConversion.put("GCT","Ala");
+        codonConversion.put("GAT","Asp");
+        codonConversion.put("GGT","Gly");
+        codonConversion.put("GTC","Val");
+        codonConversion.put("GCC","Ala");
+        codonConversion.put("GAC","Asp");
+        codonConversion.put("GGC","Gly");
+        codonConversion.put("GTA","Val");
+        codonConversion.put("GCA","Ala");
+        codonConversion.put("GAA","Glu");
+        codonConversion.put("GGA","Gly");
+        codonConversion.put("GTG","Val");
+        codonConversion.put("GCG","Ala");
+        codonConversion.put("GAG","Glu");
+        codonConversion.put("GGG","Gly");
+
     }
 
 

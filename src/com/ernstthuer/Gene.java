@@ -36,6 +36,7 @@ public class Gene {
         this.start = start;
         this.stop = stop;
         this.ident = ident;
+        geneToCodon();
         //System.out.println("Created gene " + ident);
     }
 
@@ -89,24 +90,39 @@ public class Gene {
             char third = sequence.getCompoundAt(i+2).toString().charAt(0);
             */
             org.biojava.nbio.core.sequence.template.Sequence codon = sequence.getSubSequence(i,i+2).getViewedSequence();
-
             for(int j=i;j<(i+3);j++) {
-                codonList.put(i, codon);
+                codonList.put(j, codon);
             }
 
         }
         }
 
+    public String getAltCodon(int pos, char altChar, String orgCodon){
+        StringBuilder newCodon = new StringBuilder(orgCodon);
+        newCodon.setCharAt(pos,altChar);
+        return newCodon.toString();
+    }
 
-    public void findSynonymity(int validationLVL){
-        if(orientation == "forward"){
-        for(SNP snp : snpsOnGene){
-            if(snp.isValidated() >= validationLVL) {
+    public void findSynonymity(int validationLVL) {
+        if (orientation == "forward") {
+            for (SNP snp : snpsOnGene) {
+                if (snp.isValidated() >= validationLVL) {
+
+                    // find SNP on codon
+                    int relativePosition = snp.getPosition() - start;
+                    int remain = relativePosition % 3;
 
 
-
-
-            }
+                    org.biojava.nbio.core.sequence.template.Sequence refCodon = codonList.get(relativePosition);
+                    if (refCodon.getCompoundAt(0).toString().charAt(0) == snp.getORG()) {
+                        String altCodon = getAltCodon(0, snp.getALT(), refCodon.getSequenceAsString());
+                        //altCodon = snp.getALT() + altCodon.substring(1,2);
+                        StringBuilder newCodon = new StringBuilder(altCodon);
+                        newCodon.setCharAt(remain, snp.getALT());
+                    }else{
+                        System.out.println("Error in CodonParsing");
+                    }
+                }
             }
         }
     }
