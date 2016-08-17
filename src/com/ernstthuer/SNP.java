@@ -1,7 +1,9 @@
 package com.ernstthuer;
 
+import org.apache.logging.log4j.core.util.Integers;
 import org.biojava.nbio.core.sequence.DNASequence;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,6 +29,10 @@ public class SNP implements Comparable<SNP> {
     private int ratioExpression;
     private String expression = " ";
     private boolean isSynonymous;
+    private ArrayList<Integers> evaluationResults = new ArrayList<>();
+
+
+
 
     public SNP(Gene gene, char ALT, int position) {
         this.gene = gene;

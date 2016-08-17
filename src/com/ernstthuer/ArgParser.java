@@ -1,16 +1,11 @@
 package com.ernstthuer;
 
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
-//import org.slf4j.LoggerFactory;
 /**
  * Created by ethur on 7/26/16.
  */
 
-
-import java.util.ArrayList;
-import java.util.List;
 
 import net.sourceforge.argparse4j.ArgumentParsers;
 import net.sourceforge.argparse4j.inf.ArgumentParser;
@@ -99,16 +94,6 @@ public class ArgParser {
     }
 
 
-
-
-
-    public static void addArg(ArgumentParser parser) {
-        parser.addArgument();
-    }
-
-    public boolean isMaskFasta() {
-        return maskFasta;
-    }
 }
 
 

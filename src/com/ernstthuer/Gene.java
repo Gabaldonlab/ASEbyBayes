@@ -235,6 +235,23 @@ public class Gene {
     }
 
 
+
+    public void evaluateGeneExpression(){
+
+        for (SNP snp: snpsOnGene) {
+
+            
+
+
+        }
+
+
+
+
+    }
+
+
+
     public void addRead(SimpleRead read) {
         this.geneReadList.add(read);
     }

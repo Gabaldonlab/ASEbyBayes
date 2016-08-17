@@ -9,12 +9,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-//import org.slf4j.LoggerFactory;
-
 public class Main {
 
-
-    //ArrayList<Chromosome> chromosomeArrayList = new ArrayList<>();
     // gene List should be static
     static ArrayList<Gene> geneList = new ArrayList<>();
     static ArrayList<SNP> snips = new ArrayList<>();
