@@ -41,7 +41,7 @@ public class Gene {
         if(start == stop){
             System.out.println("Gene " + this.ident + " has no length" );
         }
-        else{
+        if(start > stop){
             orientation = "reverse";
             int intermed = start;
             this.start = stop;
@@ -58,8 +58,13 @@ public class Gene {
     public boolean addSNP(SNP snp) {
 
         if (!snpsOnGene.contains(snp)) {
-            snpsOnGene.add(snp);
-            return true;
+
+            if(snp.getPosition() > this.start && snp.getPosition() < this.stop) {
+
+                snpsOnGene.add(snp);
+                return true;
+
+            }return false;
         } else {
             int idx = snpsOnGene.indexOf(snp);
             snpsOnGene.get(idx).increaseAltCoverage();
@@ -71,6 +76,7 @@ public class Gene {
     }
 
 
+
     public void findORGCoverageOfSNPs() {
         // trigger this after the SNPs were loaded and the simplified reads are stored on the genes.
         for (SNP snip : snpsOnGene) {
@@ -78,16 +84,19 @@ public class Gene {
             // only for SNPs with at least 2 observations
             if (snip.isValidated() > 0) {
                 for (SimpleRead splRd : geneReadList) {
-                    //System.out.println(lengthOfReads);
+                    // System.out.println(lengthOfReads);
                     if (splRd.getStart() <= snip.getPosition() && (splRd.getStop()) >= snip.getPosition()) {
                         // overlap, check if the positions are absolut or on gene level
                         snip.increaseORGcov();
-                        //System.out.println(" increased SNP coverage with read : " );
+                        // System.out.println(" increased SNP coverage with read : " );
                     }
                 }
             }
         }
+    }
 
+    public String getOrientation() {
+        return orientation;
     }
 
     public void setOrientation(String orientation) {
@@ -98,9 +107,15 @@ public class Gene {
         // Codon list for all positions, for each position
         //HashMap<Integer, org.biojava.nbio.core.sequence.template.Sequence> CodonList = new HashMap<>();
         // for each codon on sequence
-        for(int i = 0; i < codingSequence.length(); i = i+3) {
+
+        // make sure coding sequence is divisible by 3
+        int overshot = codingSequence.length() % 3;
+
+
+
+        for(int i = 0; i < codingSequence.length() - overshot ; i = i+3) {
             //org.biojava.nbio.core.sequence.template.Sequence codon = sequence.getSubSequence(i,i+2).getViewedSequence();
-            Codon codon = new Codon(codingSequence.substring(i,i+2));
+            Codon codon = new Codon(codingSequence.substring(i,i+3));
             for(int j=i;j<(i+3);j++) {
                 codonList.put(j, codon);
             }
@@ -131,15 +146,22 @@ public class Gene {
 
                     Codon refCodon = codonList.get(relativePosition);
 
-                    StringBuilder altSeq = new StringBuilder(refCodon.getSequence());
-                    altSeq.setCharAt(remain,snp.getALT());
 
-                    Codon altCodon = new Codon(altSeq.toString());
+                    try {
 
-                    snp.setSynonymous(altCodon.equals(refCodon));
+                        StringBuilder altSeq = new StringBuilder(refCodon.getSequence());
+                        altSeq.setCharAt(remain, snp.getALT());
 
+                        Codon altCodon = new Codon(altSeq.toString());
+
+                        snp.setSynonymous(altCodon.equals(refCodon));
+
+                    }catch(NullPointerException e){
+                        System.out.println(e);
+                        System.out.println(snp.getPosition() + "  " + snp.getGene().getIdent());
+                    }
                     //String altCodon = getAltCodon(0, snp.getALT(), refCodon.getSequence());
-                        //altCodon = snp.getALT() + altCodon.substring(1,2);
+                    //altCodon = snp.getALT() + altCodon.substring(1,2);
                     //StringBuilder newCodon = new StringBuilder(altCodon);
                     //newCodon.setCharAt(remain, snp.getALT());
 

@@ -68,9 +68,17 @@ public class Main {
         // obligatory input
         try {
             GFFHandler gffHandler = (GFFHandler) parser.returnType("GFF", "Input");
+
+            System.out.println("[STATUS] loading Fasta file");
             FastaHandler fastaHandler = (FastaHandler) parser.returnType("FASTA","Input");
             geneList = gffHandler.getGeneList();
             fasta = fastaHandler.readFasta(geneList);
+
+            for(Gene gene:geneList){
+                System.out.println(gene.getIdent() + " " +gene.getStart() + "  " + gene.getStop());
+            }
+
+
         }
         catch (ClassCastException e){
             errorCaller(e);
@@ -79,9 +87,9 @@ public class Main {
         }
 
 
-        parser.returnType("FASTA","Input");
+        //parser.returnType("FASTA","Input");
 
-        /**
+        /** Primed for removal
 
         for (FileHandler file : parser.fileList) {
             try {
@@ -219,7 +227,7 @@ public class Main {
 
 
 
-        /**
+        /**  Primed for removal
         for (FileHandler file : parser.fileList) {
             if (file instanceof CSVHandler && file.getDirection() == "Output") {
                 //System.out.println("[STATUS] Writing vcf like output to file to " + file.getLocale());
@@ -258,6 +266,7 @@ public class Main {
         codonConversion.put("TCT","Ser");
         codonConversion.put("TAT","Tyr");
         codonConversion.put("TGT","Cys");
+        codonConversion.put("TTT","Phe");
         codonConversion.put("TTC","Phe");
         codonConversion.put("TCC","Ser");
         codonConversion.put("TAC","Tyr");
