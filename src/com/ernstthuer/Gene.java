@@ -26,8 +26,6 @@ public class Gene {
     private String ident;
     private String orientation = "forward";
     private HashMap<Integer, Codon> codonList = new HashMap<>();
-    // storing SNPs on the gene, and reads in a barebone form for reference.  this might be irrelevant due to Sam locus iteration...
-    //private List<SNP> geneSNPList = new ArrayList<>();
     private ArrayList<SimpleRead> geneReadList = new ArrayList<>();
     private String ASE;
 
@@ -36,6 +34,19 @@ public class Gene {
         this.start = start;
         this.stop = stop;
         this.ident = ident;
+
+        if(start < stop){
+            orientation = "forward";
+        }
+        if(start == stop){
+            System.out.println("Gene " + this.ident + " has no length" );
+        }
+        else{
+            orientation = "reverse";
+            int intermed = start;
+            this.start = stop;
+            this.stop = intermed;
+        }
 
         //System.out.println("Created gene " + ident);
     }

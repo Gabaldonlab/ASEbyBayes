@@ -29,7 +29,7 @@ public class Main {
     static double strongCentralInformativePrimers = 25;
     static int minCovThreshold = 50;
 
-    // 1 = more than 2 hits  ; 2 = significant true positive expectation
+    // 0= initiation state ; 1 = repeated observation  ; 2 = significant true positive expectation
     static int validationLVL = 2;
 
 
@@ -64,6 +64,8 @@ public class Main {
         // call the argument parser
         // GFF import   Fasta reference Input
 
+
+        // obligatory input
         try {
             GFFHandler gffHandler = (GFFHandler) parser.returnType("GFF", "Input");
             FastaHandler fastaHandler = (FastaHandler) parser.returnType("FASTA","Input");
@@ -128,8 +130,8 @@ public class Main {
                     }
 
                 } catch (Exception e) {
-                    System.out.println(e.getCause());
-                    fasta = null;
+                    errorCaller(e);
+                    //fasta = null;
                 }
             }
 
