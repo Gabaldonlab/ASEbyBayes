@@ -156,6 +156,9 @@ public class Gene {
 
                         snp.setSynonymous(altCodon.equals(refCodon));
 
+                        System.out.println(refCodon.getSequence() + "  " +  altCodon.getSequence() + "  " + altCodon.equals(refCodon) );
+
+
                     }catch(NullPointerException e){
                         System.out.println(e);
                         System.out.println(snp.getPosition() + "  " + snp.getGene().getIdent());

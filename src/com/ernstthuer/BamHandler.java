@@ -66,10 +66,7 @@ public class BamHandler extends FileHandler {
 
 
             //System.out.println(iterator.toList().size());
-            int count = 0;
-            int goodCount = 0;
             // a default gene
-            //Gene currentGene = new Gene("default", 1 , 2, "bare");
             Gene currentGene = null;
 
             while (iterator.hasNext()) {
@@ -80,13 +77,6 @@ public class BamHandler extends FileHandler {
                 SAMRecord read = iterator.next();
 
 
-                /*
-                if (this.lengthOfReads == 0) {
-                    this.lengthOfReads = (read.getReadLength());
-                }
-
-*/
-
                 // associate to gene and store barebone there
                 int start = read.getAlignmentStart();
                 String chromosome = read.getReferenceName();
@@ -94,17 +84,11 @@ public class BamHandler extends FileHandler {
                 // MZ scores the mapping in form of a simple sequence
 
                 String CIGAR = read.getCigarString();
-                // SNP calling has to be done here, so the information doesn't have to be stored...
-                // this has to change,  snp calling before read storage, or there will be more information
                 String MZ = read.getSAMString().split("\t")[11].split(":")[2];
                 String[] MZArray = MZ.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
 
-
-                // optionalize this,  if mz is clear, this is not necessary;
-
                 int stop = read.getStart() + read.getReadLength();
                 SimpleRead splR = new SimpleRead(start, stop);
-
 
                 try {
                     currentGene = findGene(chromosome, start, geneList, currentGene);
@@ -134,13 +118,7 @@ public class BamHandler extends FileHandler {
                                     }
                                 }
                             }
-
-                            // case CIGAR string is more complex ...
-                           // if (!CIGAR.contains("I") || CIGAR.contains("D")) {
-                                //currentGene = findSNP(currentGene, chromosome, read.getStart(), MZArray, read.getSAMString().split("\t")[9]);
-                           // }
                         }
-
                     }
 
                 } catch (NullPointerException e) {
@@ -168,12 +146,11 @@ public class BamHandler extends FileHandler {
                 if (MZArray[i].matches("\\D")) {
                     int positionOnRead = Integer.parseInt(MZArray[i - 1]);
                     char altBase = MZArray[i].charAt(0);
-                    //int positionOnChrom = positionOnRead + start;
+
                     // equals position on gene, if genes were used as a reference , then their start is 0
                     int positionOnChrom = positionOnRead + start - currentGene.getStart();
                     if (positionOnChrom < currentGene.getStop() && positionOnChrom > currentGene.getStart()) {
                         char refBase = currentGene.getSequence().getCompoundAt(positionOnChrom + 1).toString().charAt(0);
-                        //char altBase = readSeq.charAt(positionOnRead);
                         System.out.println(altBase + "  " + refBase);
                         SNP snp = new SNP(currentGene, refBase, altBase, positionOnChrom);
 
@@ -215,8 +192,6 @@ public class BamHandler extends FileHandler {
     public Gene findGene(String chromosome, int start, ArrayList<Gene> geneList, Gene currentgene) {
 
         // first check if read belongs to the same gene as before:  if not find the next one
-
-
         if (currentgene != null && currentgene.getChromosome() == chromosome && currentgene.getStop() > start && currentgene.getStart() < start) {
             return currentgene;
         }

@@ -64,7 +64,6 @@ public class Main {
         // call the argument parser
         // GFF import   Fasta reference Input
 
-
         // obligatory input
         try {
             GFFHandler gffHandler = (GFFHandler) parser.returnType("GFF", "Input");
