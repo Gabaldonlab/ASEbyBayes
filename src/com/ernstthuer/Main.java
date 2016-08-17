@@ -153,63 +153,62 @@ public class Main {
         for (Gene gene : geneList) {
 
             // this is not working yet, check SNP full coverage vs ALT cov.
-            gene.findORGCoverageOfSNPs();
+            gene.findORGCoverageOfSNPs();  //CHECK IF THIS WORKS RIGHT
 
             //System.out.println(gene.getIdent() + "  :  " +   gene.getGeneReadList().size());
             for (SNP snp : gene.getSnpsOnGene()) {
                 //System.out.println("SNP found on gene : " + snp.getPosition()+ " with coverage " + snp.getALTcov()+ " and total " + snp.getORGcov());
-                snips.add(snp);
+
                 if (snp.isValidated() == 1) {
                     // validate for noise  set mode to 0 for validation
                     if (snp.validateSNP(bimodalPrimersForNoise, bimodalPrimersForNoise, 0)) {
                         if (snp.getORGcov() > minCovThreshold) {
                             snp.raiseValidation();
                         } else {
-                            snips.remove(snp);
+                            //snips.remove(snp);
                         }
 
                     } else {
                         //System.out.println(snp.getALTcov() + "  : " + snp.getORGcov() + "  was removed");
-                        snips.remove(snp);
+                        //snips.remove(snp);
                     }
 
                     if (snp.isValidated() > 1) {
                         if (snp.getORG() == snp.getALT()) {
                             System.out.println("[WARNING] malformed Read encountered in" +  snp.getGene().getIdent());
                         }
-
-
-                        boolean FullSNPevidence = snp.validateSNP(bimodalPrimersForNoise, bimodalPrimersForNoise, 1);
-                        boolean CentralExpressionEvidence = snp.validateSNP(strongCentralInformativePrimers, strongCentralInformativePrimers, 2);
-
-                        if (FullSNPevidence) {
-                            snp.setExpression("FULLSNP");
-                        }
-                        if (CentralExpressionEvidence) {
-                            snp.setExpression("EQUALALLELICEXPRESSION");
-                        }
                         //snp.addCoverageToSNPs(gene.getGeneReadList());
                     }
                 }
+
             }
 
             // asks for validationLimit
             gene.findSynonymity(validationLVL);
 
+
         }
 
+        for (Gene gene : geneList) {
+
+
+            gene.evaluateGeneExpression();
+
+            for(SNP snp: gene.getSnpsOnGene()){
+                snips.add(snp);
+            }
+        }
 
         //System.out.println("[STATUS] A total of " + totcount + " SNPs were found,  of which  " + poscount + " Could be validated");
-
-
-
         // output processing
 
         try {
             CSVHandler csvHandler = (CSVHandler) parser.returnType("VCF", "Output");
             FastaHandler fastaHandler = (FastaHandler) parser.returnType("FASTA","Output");
 
-            csvHandler.writeSNPToVCF(snips,1);
+            int minThresh = 2;
+
+            csvHandler.writeSNPToVCF(snips,minThresh);
 
             // reimplemented the output into a fastasilencer class
             System.out.println("[STATUS] Writing Silenced fasta sequence of SNPs to file : " + fastaHandler.getLocale());

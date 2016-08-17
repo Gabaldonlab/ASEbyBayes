@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import static com.ernstthuer.BamHandler.lengthOfReads;
+import static com.ernstthuer.Main.bimodalPrimersForNoise;
+import static com.ernstthuer.Main.strongCentralInformativePrimers;
 
 /**
  * Created by ethur on 7/26/16.
@@ -240,14 +242,18 @@ public class Gene {
 
         for (SNP snp: snpsOnGene) {
 
-            
+            boolean FullSNPevidence = snp.validateSNP(bimodalPrimersForNoise, bimodalPrimersForNoise, 1);
+            boolean CentralExpressionEvidence = snp.validateSNP(strongCentralInformativePrimers, strongCentralInformativePrimers, 2);
 
 
+
+            if (FullSNPevidence) {
+                snp.setExpression("FULLSNP");
+            }
+            if (CentralExpressionEvidence) {
+                snp.setExpression("EQUALALLELICEXPRESSION");
+            }
         }
-
-
-
-
     }
 
 
