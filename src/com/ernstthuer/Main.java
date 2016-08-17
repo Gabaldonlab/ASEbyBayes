@@ -145,8 +145,6 @@ public class Main {
 */
         // here comes the unification of the genes
 
-        int falsecount = 0;
-
         for (Gene gene : geneList) {
 
             // this is not working yet, check SNP full coverage vs ALT cov.
@@ -172,9 +170,10 @@ public class Main {
 
                     if (snp.isValidated() > 1) {
                         if (snp.getORG() == snp.getALT()) {
-                            falsecount++;
-                            System.out.println("[WARNING] malformed Read encountered in" +  snp.getGene().getIdent() +" number:" +falsecount);
+                            System.out.println("[WARNING] malformed Read encountered in" +  snp.getGene().getIdent());
                         }
+
+
                         boolean FullSNPevidence = snp.validateSNP(bimodalPrimersForNoise, bimodalPrimersForNoise, 1);
                         boolean CentralExpressionEvidence = snp.validateSNP(strongCentralInformativePrimers, strongCentralInformativePrimers, 2);
 
@@ -199,6 +198,26 @@ public class Main {
 
 
 
+        // output processing
+
+        try {
+            CSVHandler csvHandler = (CSVHandler) parser.returnType("VCF", "Output");
+            FastaHandler fastaHandler = (FastaHandler) parser.returnType("FASTA","Output");
+
+            csvHandler.writeSNPToVCF(snips,1);
+
+            // reimplemented the output into a fastasilencer class
+            System.out.println("[STATUS] Writing Silenced fasta sequence of SNPs to file : " + fastaHandler.getLocale());
+            FastaSilencer fastaSilencer = new FastaSilencer(snips,fasta,fastaHandler.getLocale());
+        }
+        catch (ClassCastException e){
+            errorCaller(e);
+        }
+    }
+
+
+
+        /**
         for (FileHandler file : parser.fileList) {
             if (file instanceof CSVHandler && file.getDirection() == "Output") {
                 //System.out.println("[STATUS] Writing vcf like output to file to " + file.getLocale());
@@ -209,19 +228,19 @@ public class Main {
                 }
             }
         }
-
+         */
+/**
         // optional silenced Fasta writeout
         if(parser.isMaskFasta()){
             for(FileHandler file : parser.fileList){
                 if(file.getType()=="FASTA" && file.getDirection() == "Output"){
-                    System.out.println("[STATUS] Writing Silenced fasta sequence of SNPs to file : " + file.getLocale());
+
                     FastaSilencer fastaSilencer = new FastaSilencer(snips,fasta,file.getLocale());
                 }
             }
         }
     }
-
-
+ */
     public static void errorCaller(Exception e) {
         if (verbose) {
             System.out.println(e);

@@ -74,7 +74,7 @@ public class ArgParser {
         GFFHandler gffreader = new GFFHandler(ns.get("inGFF").toString(), "GFF", "Input", ns.get("feature").toString());
         FastaHandler inFasta = new FastaHandler(ns.get("inFasta").toString(), "FASTA", "Input");
         FastaHandler outFasta = new FastaHandler(ns.get("mOut").toString(), "FASTA", "Output");
-        CSVHandler finalOut = new CSVHandler(ns.get("outFinal").toString(), "vcf", "Output");
+        CSVHandler finalOut = new CSVHandler(ns.get("outFinal").toString(), "VCF", "Output");
 
         fileList.add(gffreader);
         fileList.add(inFasta);
