@@ -1,5 +1,6 @@
 package com.ernstthuer;
 
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 //import org.slf4j.LoggerFactory;
@@ -80,6 +81,26 @@ public class ArgParser {
         fileList.add(outFasta);
         fileList.add(finalOut);
     }
+
+
+    public FileHandler returnType(String type, String direction){
+        // type is self explanatory,
+        // direction is whether input or output file  fasta and vcf could be either
+
+        for(FileHandler fileHandler:fileList){
+            if (fileHandler.getType() == type && fileHandler.getDirection() == direction){
+                return fileHandler;
+            }
+
+        }
+
+        return null;
+
+    }
+
+
+
+
 
     public static void addArg(ArgumentParser parser) {
         parser.addArgument();

@@ -62,7 +62,24 @@ public class Main {
 
         ArgParser parser = new ArgParser(args);
         // call the argument parser
-        //GFF import
+        // GFF import   Fasta reference Input
+
+        try {
+            GFFHandler gffHandler = (GFFHandler) parser.returnType("GFF", "Input");
+            FastaHandler fastaHandler = (FastaHandler) parser.returnType("FASTA","Input");
+            geneList = gffHandler.getGeneList();
+            fasta = fastaHandler.readFasta(geneList);
+        }
+        catch (ClassCastException e){
+            errorCaller(e);
+        }catch (IOException IOex){
+            errorCaller(IOex);
+        }
+
+
+        parser.returnType("FASTA","Input");
+
+        /**
 
         for (FileHandler file : parser.fileList) {
             try {
@@ -94,6 +111,8 @@ public class Main {
                 }
             }
         }
+*/
+
 
         for (FileHandler file : parser.fileList) {
             if (file.getType() == "Bam" && file.getDirection() == "Input") {
@@ -125,7 +144,6 @@ public class Main {
         }
 */
         // here comes the unification of the genes
-        // temporary SNPlist
 
         int falsecount = 0;
 
@@ -153,17 +171,10 @@ public class Main {
                     }
 
                     if (snp.isValidated() > 1) {
-                        //poscount++;
-                        //totcount++;
-                        //snp.findTrueORG();
-                        //System.out.println(snp.getPosition() + "  " + snp.getALTcov() + "   " + snp.getORGcov());
                         if (snp.getORG() == snp.getALT()) {
-                            //System.out.println(snp.getORG() + "  _  " + snp.getALT());
                             falsecount++;
                             System.out.println("[WARNING] malformed Read encountered in" +  snp.getGene().getIdent() +" number:" +falsecount);
                         }
-
-                        // check Allele specific expression here:::
                         boolean FullSNPevidence = snp.validateSNP(bimodalPrimersForNoise, bimodalPrimersForNoise, 1);
                         boolean CentralExpressionEvidence = snp.validateSNP(strongCentralInformativePrimers, strongCentralInformativePrimers, 2);
 
@@ -175,7 +186,6 @@ public class Main {
                         }
                         //snp.addCoverageToSNPs(gene.getGeneReadList());
                     }
-                    //System.out.println(snp.getALTcov() + " alt : org  " + snp.getORGcov());
                 }
             }
 
@@ -186,6 +196,8 @@ public class Main {
 
 
         //System.out.println("[STATUS] A total of " + totcount + " SNPs were found,  of which  " + poscount + " Could be validated");
+
+
 
         for (FileHandler file : parser.fileList) {
             if (file instanceof CSVHandler && file.getDirection() == "Output") {
