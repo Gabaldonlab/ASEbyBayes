@@ -121,6 +121,9 @@ public class Main {
 
         for (FileHandler file : parser.fileList) {
             if (file.getType() == "Bam" && file.getDirection() == "Input") {
+
+                //make them implement Runnable   ... later
+
                 System.out.println("[STATUS] Loading BAM file " + file.getLocale());
                 try {
 
@@ -153,7 +156,7 @@ public class Main {
         for (Gene gene : geneList) {
 
             // this is not working yet, check SNP full coverage vs ALT cov.
-            gene.findORGCoverageOfSNPs();  //CHECK IF THIS WORKS RIGHT
+            gene.findORGCoverageOfSNPs();  //Validate IF THIS WORKS RIGHT
 
             //System.out.println(gene.getIdent() + "  :  " +   gene.getGeneReadList().size());
             for (SNP snp : gene.getSnpsOnGene()) {
@@ -180,20 +183,13 @@ public class Main {
                         //snp.addCoverageToSNPs(gene.getGeneReadList());
                     }
                 }
-
             }
-
             // asks for validationLimit
             gene.findSynonymity(validationLVL);
-
-
         }
 
         for (Gene gene : geneList) {
-
-
             gene.evaluateGeneExpression();
-
             for(SNP snp: gene.getSnpsOnGene()){
                 snips.add(snp);
             }

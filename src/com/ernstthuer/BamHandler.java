@@ -30,7 +30,8 @@ public class BamHandler extends FileHandler {
 
     /**
      * Tricky,  no mpileup function available.
-     * Samreader has to compensate
+     * Samreader has to compensate, read MD:Z score, supplement with CIGAR to get SNP information on read.
+     * Store read skeleton on gene to get full coverage information
      *
      * @param locale
      * @param type

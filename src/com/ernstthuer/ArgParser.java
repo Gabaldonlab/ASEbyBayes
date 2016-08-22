@@ -20,6 +20,7 @@ public class ArgParser {
     public static ArgumentParser parser = ArgumentParsers.newArgumentParser("Checksum").defaultHelp(true).description("ACEcalc");
     public static List<FileHandler> fileList = new ArrayList<>();
     private boolean maskFasta;
+    private boolean existingSNPinfo;
 
     public ArgParser(String[] args) {
 
@@ -27,6 +28,8 @@ public class ArgParser {
                 .help("input file in FASTA format").required(true).dest("inFasta");
         this.parser.addArgument("-g", "--gff")
                 .help("input file in GFF3 format").required(true).dest("inGFF");
+        this.parser.addArgument("-v", "--vcf")
+                .help("input a vcf file containing existing Allele specific SNP information").required(false).setDefault("NOVCF").dest("VCFIN");
         this.parser.addArgument("-o", "--outfile")
                 .help("output file in tsv format").required(false).setDefault("output.csv").dest("outFinal");
         this.parser.addArgument("-OF", "--outfasta")
@@ -47,11 +50,19 @@ public class ArgParser {
 
             //
             this.maskFasta = ns.getBoolean("mask");
+
+
         } catch (ArgumentParserException e) {
             parser.handleError(e);
             System.exit(1);
         }
 
+
+        if(ns.get("VCFIN")!= "NOVCF"){
+            existingSNPinfo = true;
+        }else{
+            existingSNPinfo = false;
+        }
 
         for (Object element : ns.getList("bamInput")) {
             try {
@@ -70,6 +81,12 @@ public class ArgParser {
         FastaHandler inFasta = new FastaHandler(ns.get("inFasta").toString(), "FASTA", "Input");
         FastaHandler outFasta = new FastaHandler(ns.get("mOut").toString(), "FASTA", "Output");
         CSVHandler finalOut = new CSVHandler(ns.get("outFinal").toString(), "VCF", "Output");
+
+        if(existingSNPinfo){
+            CSVHandler vcfInput = new CSVHandler(ns.get("VCFIN").toString(),"VCF","INPUT");
+            fileList.add(vcfInput);
+        }
+
 
         fileList.add(gffreader);
         fileList.add(inFasta);
