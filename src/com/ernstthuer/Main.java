@@ -32,7 +32,7 @@ public class Main {
     public static void main(String[] args) {
 
 
-        System.out.println("Running ASEbyBayes Version  0.2");
+        System.out.println("Running ASEbyBayes Version  0.22");
         populateCodonConversion();
 
         // open the input files in sequence,  fasta  gff then bam
