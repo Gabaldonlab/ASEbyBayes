@@ -94,6 +94,9 @@ public class ArgParser {
         fileList.add(finalOut);
     }
 
+    public boolean isExistingSNPinfo() {
+        return existingSNPinfo;
+    }
 
     public FileHandler returnType(String type, String direction){
         // type is self explanatory,

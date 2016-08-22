@@ -60,7 +60,7 @@ public class Main {
         // call the argument parser
         // GFF import   Fasta reference Input
 
-        // obligatory input
+        // Try block to open obligatory Input files,  GFF import   Fasta reference Input ,  casts as GFFHandler and FastaHandler objects
         try {
             GFFHandler gffHandler = (GFFHandler) parser.returnType("GFF", "Input");
 
@@ -82,65 +82,34 @@ public class Main {
         }
 
 
-        //parser.returnType("FASTA","Input");
 
-        /** Primed for removal
+        // Block to read information from the BAM files,   depends on whether a vcf input file was given ( SNPs are known) and simple quantification has to
+        // be carried out,  or no VCF is provided, and SNP calling is carried out.
+        if(parser.isExistingSNPinfo()){
+            // vcf was provided,  overrides SNP calling functionality
+            CSVHandler csvHandler = (CSVHandler) parser.returnType("CSV","INPUT");
+            csvHandler.readVCF(); // this primes the genes with full SNP lists
+        }
+        if(!parser.isExistingSNPinfo()) {
+            for (FileHandler file : parser.fileList) {
+                if (file.getType() == "Bam" && file.getDirection() == "Input") {
 
-        for (FileHandler file : parser.fileList) {
-            try {
-                if (file.getType() == "GFF" && file.getDirection() == "Input") {
-                    //if(file.getType() == "GFF" && file.getDirection() == "Input"){
-                    //System.out.println("[STATUS] Parsing GFF file");
+                    //make them implement Runnable   ... later
+                    System.out.println("[STATUS] Loading BAM file " + file.getLocale());
                     try {
-                        geneList = ((GFFHandler) file).getGeneList();
-                    } catch (ClassCastException e) {
+                        if (fasta != null) {
+                            BamHandler bhdlr = new BamHandler(file.getLocale(), "Bam", "Input");
+                            // to loosen this for threading should create copies of the genelists
+                            bhdlr.readBam(fasta, geneList);
+                        }
+
+                    } catch (Exception e) {
                         errorCaller(e);
+                        //fasta = null;
                     }
                 }
-            } catch (ClassCastException expected) {
-                errorCaller(expected);
+
             }
-        }
-
-        // individual loadings
-        for (FileHandler file : parser.fileList) {
-            if (file.getType() == "FASTA" && file.getDirection() == "Input") {
-                System.out.println("[STATUS] loading Fasta file");
-                try {
-                    fasta = (((FastaHandler) file).readFasta(geneList));
-                    //fasta2gene
-                    //System.out.println("Read fasta");
-                } catch (IOException e) {
-                    System.out.println(e.getCause());
-                    fasta = null;
-                }
-            }
-        }
-*/
-
-
-        for (FileHandler file : parser.fileList) {
-            if (file.getType() == "Bam" && file.getDirection() == "Input") {
-
-                //make them implement Runnable   ... later
-
-                System.out.println("[STATUS] Loading BAM file " + file.getLocale());
-                try {
-
-                    if (fasta != null) {
-                        BamHandler bhdlr = new BamHandler(file.getLocale(), "Bam", "Input");
-
-                        // to loosen this for threading i should create copies of the genelists
-                        bhdlr.readBam(fasta, geneList);
-                        //bhdlr.findSNPs();
-                    }
-
-                } catch (Exception e) {
-                    errorCaller(e);
-                    //fasta = null;
-                }
-            }
-
         }
 
 /**  for testing purposes
@@ -152,6 +121,10 @@ public class Main {
         }
 */
         // here comes the unification of the genes
+
+
+        // This Block gathers information on the SNPs,  validates them according to their expression and conservation over replicates
+        // ToDo improve threading output by combining n geneLists // SNPlists
 
         for (Gene gene : geneList) {
 
@@ -184,7 +157,6 @@ public class Main {
                     }
                 }
             }
-            // asks for validationLimit
             gene.findSynonymity(validationLVL);
         }
 
@@ -194,9 +166,6 @@ public class Main {
                 snips.add(snp);
             }
         }
-
-        //System.out.println("[STATUS] A total of " + totcount + " SNPs were found,  of which  " + poscount + " Could be validated");
-        // output processing
 
         try {
             CSVHandler csvHandler = (CSVHandler) parser.returnType("VCF", "Output");
@@ -215,32 +184,6 @@ public class Main {
         }
     }
 
-
-
-        /**  Primed for removal
-        for (FileHandler file : parser.fileList) {
-            if (file instanceof CSVHandler && file.getDirection() == "Output") {
-                //System.out.println("[STATUS] Writing vcf like output to file to " + file.getLocale());
-                try {
-                    ((CSVHandler) file).writeSNPToVCF(snips, 1);
-                } catch (Exception e) {
-                    errorCaller(e);
-                }
-            }
-        }
-         */
-/**
-        // optional silenced Fasta writeout
-        if(parser.isMaskFasta()){
-            for(FileHandler file : parser.fileList){
-                if(file.getType()=="FASTA" && file.getDirection() == "Output"){
-
-                    FastaSilencer fastaSilencer = new FastaSilencer(snips,fasta,file.getLocale());
-                }
-            }
-        }
-    }
- */
     public static void errorCaller(Exception e) {
         if (verbose) {
             System.out.println(e);
