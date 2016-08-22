@@ -85,32 +85,33 @@ public class Main {
 
         // Block to read information from the BAM files,   depends on whether a vcf input file was given ( SNPs are known) and simple quantification has to
         // be carried out,  or no VCF is provided, and SNP calling is carried out.
-        if(parser.isExistingSNPinfo()){
+        if (parser.isExistingSNPinfo()) {
             // vcf was provided,  overrides SNP calling functionality
-            CSVHandler csvHandler = (CSVHandler) parser.returnType("CSV","INPUT");
+            CSVHandler csvHandler = (CSVHandler) parser.returnType("CSV", "INPUT");
             csvHandler.readVCF(); // this primes the genes with full SNP lists
+
+
         }
-        if(!parser.isExistingSNPinfo()) {
-            for (FileHandler file : parser.fileList) {
-                if (file.getType() == "Bam" && file.getDirection() == "Input") {
+        for (FileHandler file : parser.fileList) {
+            if (file.getType() == "Bam" && file.getDirection() == "Input") {
 
-                    //make them implement Runnable   ... later
-                    System.out.println("[STATUS] Loading BAM file " + file.getLocale());
-                    try {
-                        if (fasta != null) {
-                            BamHandler bhdlr = new BamHandler(file.getLocale(), "Bam", "Input");
-                            // to loosen this for threading should create copies of the genelists
-                            bhdlr.readBam(fasta, geneList);
-                        }
-
-                    } catch (Exception e) {
-                        errorCaller(e);
-                        //fasta = null;
+                //make them implement Runnable   ... later
+                System.out.println("[STATUS] Loading BAM file " + file.getLocale());
+                try {
+                    if (fasta != null) {
+                        BamHandler bhdlr = new BamHandler(file.getLocale(), "Bam", "Input");
+                        // to loosen this for threading should create copies of the genelists
+                        bhdlr.readBam(fasta, geneList,parser.isExistingSNPinfo());
                     }
-                }
 
+                } catch (Exception e) {
+                    errorCaller(e);
+                    //fasta = null;
+                }
             }
+
         }
+
 
 /**  for testing purposes
         for (Gene gene : geneList) {

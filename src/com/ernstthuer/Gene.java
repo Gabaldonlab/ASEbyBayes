@@ -57,17 +57,27 @@ public class Gene {
         return snpsOnGene;
     }
 
-    public boolean addSNP(SNP snp) {
+    public boolean addSNP(SNP snp, boolean existingKnowledge) {
+
+        if(existingKnowledge){
+            if(snpsOnGene.contains(snp)){
+                int idx = snpsOnGene.indexOf(snp);
+                snpsOnGene.get(idx).increaseAltCoverage();
+                // all SNPs are validated
+                snpsOnGene.get(idx).setValidated(2);
+            }
+
+            return false;  // if SNPs are already known from an imported vcf file, no need to add new ones
+        }
 
         if (!snpsOnGene.contains(snp)) {
-
             if(snp.getPosition() > this.start && snp.getPosition() < this.stop) {
-
                 snpsOnGene.add(snp);
                 return true;
-
             }return false;
-        } else {
+        }
+
+        else {
             int idx = snpsOnGene.indexOf(snp);
             snpsOnGene.get(idx).increaseAltCoverage();
             if (snpsOnGene.get(idx).getALTcov() > 2) {
@@ -86,7 +96,6 @@ public class Gene {
             // only for SNPs with at least 2 observations
             if (snip.isValidated() > 0) {
                 for (SimpleRead splRd : geneReadList) {
-                    // System.out.println(lengthOfReads);
                     if (splRd.getStart() <= snip.getPosition() && (splRd.getStop()) >= snip.getPosition()) {
                         // overlap, check if the positions are absolut or on gene level
                         snip.increaseORGcov();

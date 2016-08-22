@@ -46,7 +46,7 @@ public class BamHandler extends FileHandler {
     }
 
 
-    public void readBam(HashMap fastaMap, ArrayList<Gene> geneList) {
+    public void readBam(HashMap fastaMap, ArrayList<Gene> geneList, boolean existingKnowledge) {
         this.geneList = geneList;
 
         /**
@@ -97,6 +97,7 @@ public class BamHandler extends FileHandler {
                         currentGene.addRead(splR);
 
 
+
                         int currentPosition = 0;
                         if (MZArray.length > 1) {
                             for (int i = 0; i < MZArray.length; i++) {
@@ -113,13 +114,14 @@ public class BamHandler extends FileHandler {
 
 
                                     if (refBase != altBase && !CIGAR.contains("D") && !CIGAR.contains("I")) {
-                                        currentGene.addSNP(snp);
+                                        currentGene.addSNP(snp,existingKnowledge);
                                         //System.out.println(" Created SNP on " + snp.getGene().getIdent());
                                         //System.out.println(" on position " + snp.getPosition() + "  " + snp.getALT());
                                     }
                                 }
                             }
                         }
+
                     }
 
                 } catch (NullPointerException e) {
@@ -157,7 +159,7 @@ public class BamHandler extends FileHandler {
 
                         System.out.println(" Created SNP on " + snp.getGene().getIdent() + currentGene.getIdent());
                         System.out.println("  on position " + snp.getPosition() + "  " + snp.getALT());
-                        currentGene.addSNP(snp);
+                        currentGene.addSNP(snp, false);
                     }
                 }
             }
