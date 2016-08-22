@@ -8,4 +8,17 @@ The process implemented by the software follows the assumption that the system i
 
 Reads are assumed to follow a negative binomial distribution. To model our primers we used the conjugate Beta distribution. With preset weak bimodial primers for noise detection and strong central informative primers for the assumption of equal allelic expression. Classification occurs via evaluation of posteriors, by defining credible regions following the above assumptions.
 
+Input:  [optional]
+GFF file in the format of Ensembl / CGD / UCSC
+Fasta reference of one of the parentals
+BAM files of mapped reads 
+[if known,  a vcf file containing the known SNPs,  SNPcalling will be deactivated]
 
+Output: [optional]
+VCF like output containing the SNPs with their most likely association in expression
+[silenced fasta,  all SNPs replaced by 'N'improves remapping accuracy be removing association bias of mapper]
+
+Commands:
+java -jar ASEbyBayes.jar -h 
+
+Example :
