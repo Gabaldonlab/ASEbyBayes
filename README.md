@@ -27,16 +27,7 @@ java -jar ASEbyBayes.jar -h
 
 
 ### <i class="icon-file"></i> **Pipeline**
-```flow
-st=>start: Start
-e=>end
-op=>operation: My Operation
-cond=>condition: Yes or No?
 
-st->op->cond
-cond(yes)->e
-cond(no)->op
-```
 
 ### <i class="icon-file"></i> **Example**
 
