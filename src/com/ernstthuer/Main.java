@@ -138,9 +138,11 @@ public class Main {
                         //bamList.add(bhdlr);
 
                         bhdlr.setGeneList(geneList);
+
                         Thread thread = new Thread(bhdlr);
                         thread.start();
                         threads.add(thread);
+                        bamList.add(bhdlr);
 
 
                         //bhdlr.readBam(fasta, parser.isExistingSNPinfo());
@@ -158,6 +160,11 @@ public class Main {
             }catch (InterruptedException e){
                 errorCaller(e);
             }
+        }
+
+        for(BamHandler bhdlr:bamList){
+            List<Gene> geneList = bhdlr.getGeneList();
+            listOfGeneLists.add(geneList);
         }
 
         for(List<Gene> geneList : listOfGeneLists) {
@@ -256,6 +263,24 @@ public class Main {
             System.out.println(sw);
         }
     }
+
+    public static void uniGeneLists(ArrayList<List<Gene>> listOfGeneLists){
+
+        for(List<Gene> localGeneList :listOfGeneLists); {
+            for(Gene gene : geneList){
+                int index = geneList.indexOf(gene);
+                
+
+            }
+
+
+
+        }
+
+
+    }
+
+
 
     public static void  populateCodonConversion(){
         codonConversion.put("TCT","Ser");

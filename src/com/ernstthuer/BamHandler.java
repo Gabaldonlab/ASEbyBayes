@@ -26,7 +26,7 @@ public class BamHandler extends FileHandler implements Runnable {
     private String type;
     // each BAM file contains a potential snplist, this should be merged after reading.  keep separate for threading.
     private ArrayList<SNP> snpArrayList = new ArrayList<>();
-    private ArrayList<Gene> geneList = new ArrayList<>();
+    private ArrayList<Gene> localGeneList = new ArrayList<>();
 
     // contain the reads   SAM format
 
@@ -54,12 +54,8 @@ public class BamHandler extends FileHandler implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Starting BAM read-in " + Thread.currentThread());
-        readBam(fastaMap,existingknowledge );
-        for(Gene gene : geneList){
-            System.out.println(gene.snpsOnGene.size());
+        this.localGeneList = readBam(fastaMap,existingknowledge );
         }
-
     }
 
 
@@ -75,7 +71,7 @@ public class BamHandler extends FileHandler implements Runnable {
 
     public void setGeneList(ArrayList<Gene> geneList) {
 
-        // create a deep copy to keep it independant
+        // create a deep copy to keep it independent
 
         ArrayList<Gene> copy = new ArrayList<Gene>(geneList.size());
 
@@ -87,15 +83,15 @@ public class BamHandler extends FileHandler implements Runnable {
             }
         }
 
-        this.geneList = copy;
+        this.localGeneList = copy;
     }
 
     public ArrayList<Gene> getGeneList() {
-        return geneList;
+        return localGeneList;
     }
 
 
-    public void readBam(HashMap fastaMap, boolean existingKnowledge) {
+    public ArrayList<Gene> readBam(HashMap fastaMap, boolean existingKnowledge) {
     //public void readBam(HashMap fastaMap, ArrayList<Gene> geneListExternal, boolean existingKnowledge) {
 
         /**
@@ -141,7 +137,7 @@ public class BamHandler extends FileHandler implements Runnable {
                 SimpleRead splR = new SimpleRead(start, stop);
 
                 try {
-                    currentGene = findGene(chromosome, start, geneList, currentGene);
+                    currentGene = findGene(chromosome, start, localGeneList, currentGene);
                     if (currentGene != null) {
                         currentGene.addRead(splR);
 
@@ -180,13 +176,16 @@ public class BamHandler extends FileHandler implements Runnable {
             //System.out.println("bad SNPs counted : " + count + " vs good SNPs counted :" + goodCount);
         } catch (Exception e) {
             System.out.println(e);
+        }finally {
+            return localGeneList;
         }
 
-        this.geneList = geneList;
+
+
 
     }
 
-
+/**
     public Gene findSNP(Gene currentGene, String chromosome, int start, String[] MZArray, String readSeq) {
 
 
@@ -225,6 +224,7 @@ public class BamHandler extends FileHandler implements Runnable {
         }
         return currentGene;
     }
+ */
 
 
     @Override
