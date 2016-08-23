@@ -8,6 +8,7 @@ import htsjdk.samtools.*;
 import htsjdk.samtools.util.*;
 import htsjdk.samtools.ValidationStringency;
 import htsjdk.samtools.SamFileValidator;
+import org.biojava.nbio.core.sequence.DNASequence;
 
 //import htsjdk.samtools.util.CloserUtil;
 
@@ -16,17 +17,22 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.*;
 
-public class BamHandler extends FileHandler {
+public class BamHandler extends FileHandler implements Runnable {
 
 
     // bam is only import, no direction,
-    public static int lengthOfReads = 0;
+    //public static int lengthOfReads = 0;
     private String locale;
     private String type;
     // each BAM file contains a potential snplist, this should be merged after reading.  keep separate for threading.
     private ArrayList<SNP> snpArrayList = new ArrayList<>();
     private ArrayList<Gene> geneList = new ArrayList<>();
+
     // contain the reads   SAM format
+
+
+    private boolean existingknowledge ;
+    private HashMap<String, DNASequence> fastaMap;
 
     /**
      * Tricky,  no mpileup function available.
@@ -46,8 +52,51 @@ public class BamHandler extends FileHandler {
     }
 
 
-    public void readBam(HashMap fastaMap, ArrayList<Gene> geneList, boolean existingKnowledge) {
-        this.geneList = geneList;
+    @Override
+    public void run() {
+        System.out.println("Starting BAM read-in " + Thread.currentThread());
+        readBam(fastaMap,existingknowledge );
+        for(Gene gene : geneList){
+            System.out.println(gene.snpsOnGene.size());
+        }
+
+    }
+
+
+    // helper methods to be called from main before threadin intiation,  creates copies of the fasta map and the boolean
+
+    public void findExistingknowledge(boolean existingKnowledge){
+        this.existingknowledge = existingKnowledge;
+    }
+
+    public void loadFastaMap(HashMap<String, DNASequence>  fastaMap ){
+        this.fastaMap = fastaMap;
+    }
+
+    public void setGeneList(ArrayList<Gene> geneList) {
+
+        // create a deep copy to keep it independant
+
+        ArrayList<Gene> copy = new ArrayList<Gene>(geneList.size());
+
+        for (Gene gene: geneList) {
+            try {
+                copy.add((Gene) gene.clone());
+            }catch (CloneNotSupportedException e){
+                System.out.println(e);
+            }
+        }
+
+        this.geneList = copy;
+    }
+
+    public ArrayList<Gene> getGeneList() {
+        return geneList;
+    }
+
+
+    public void readBam(HashMap fastaMap, boolean existingKnowledge) {
+    //public void readBam(HashMap fastaMap, ArrayList<Gene> geneListExternal, boolean existingKnowledge) {
 
         /**
          * reads a Bam file, stores SNPs.  check if there are gene names used as reference, or chromosome names.

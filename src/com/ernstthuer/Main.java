@@ -1,12 +1,15 @@
 package com.ernstthuer;
 
 import org.biojava.nbio.core.sequence.DNASequence;
+import org.omg.PortableServer.THREAD_POLICY_ID;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 
 public class Main {
@@ -68,12 +71,9 @@ public class Main {
             FastaHandler fastaHandler = (FastaHandler) parser.returnType("FASTA","Input");
             geneList = gffHandler.getGeneList();
             fasta = fastaHandler.readFasta(geneList);
-
             for(Gene gene:geneList){
                 System.out.println(gene.getIdent() + " " +gene.getStart() + "  " + gene.getStop());
             }
-
-
         }
         catch (ClassCastException e){
             errorCaller(e);
@@ -92,16 +92,23 @@ public class Main {
 
 
         }
+
+
+        /**
+
         for (FileHandler file : parser.fileList) {
             if (file.getType() == "Bam" && file.getDirection() == "Input") {
 
                 //make them implement Runnable   ... later
                 System.out.println("[STATUS] Loading BAM file " + file.getLocale());
+
+
                 try {
                     if (fasta != null) {
                         BamHandler bhdlr = new BamHandler(file.getLocale(), "Bam", "Input");
                         // to loosen this for threading should create copies of the genelists
                         bhdlr.readBam(fasta, geneList,parser.isExistingSNPinfo());
+
                     }
 
                 } catch (Exception e) {
@@ -110,7 +117,58 @@ public class Main {
                 }
             }
 
+
+         */
+
+        ArrayList<BamHandler> bamList = new ArrayList<>();
+        ArrayList<List<Gene>> listOfGeneLists = new ArrayList<>();
+
+        ArrayList<Thread> threads = new ArrayList<>();
+
+
+        for (FileHandler file : parser.fileList) {
+            if (file.getType() == "Bam" && file.getDirection() == "Input") {
+                //make them implement Runnable   ... later
+                System.out.println("[STATUS] Loading BAM file " + file.getLocale());
+
+                try {
+                    if (fasta != null) {
+                        BamHandler bhdlr = new BamHandler(file.getLocale(), "Bam", "Input");
+                        // to loosen this for threading should create copies of the genelists
+                        //bamList.add(bhdlr);
+
+                        bhdlr.setGeneList(geneList);
+                        Thread thread = new Thread(bhdlr);
+                        thread.start();
+                        threads.add(thread);
+
+
+                        //bhdlr.readBam(fasta, parser.isExistingSNPinfo());
+                    }
+                } catch (Exception e) {
+                    errorCaller(e);
+                    //fasta = null;
+                }
+            }
         }
+
+        for(Thread thread:threads){
+            try {
+                thread.join();
+            }catch (InterruptedException e){
+                errorCaller(e);
+            }
+        }
+
+        for(List<Gene> geneList : listOfGeneLists) {
+            System.out.println("found genes in geneLists " + geneList.size());
+            for(Gene gene:geneList){
+                System.out.println("Gene with " + gene.snpsOnGene.size());
+            }
+        }
+    }
+
+
 
 
 /**  for testing purposes
@@ -123,6 +181,8 @@ public class Main {
 */
         // here comes the unification of the genes
 
+
+        /** DISABLED FOR TESTING
 
         // This Block gathers information on the SNPs,  validates them according to their expression and conservation over replicates
         // ToDo improve threading output by combining n geneLists // SNPlists
@@ -184,6 +244,7 @@ public class Main {
             errorCaller(e);
         }
     }
+         */ //DISABLED FOR TESTING
 
     public static void errorCaller(Exception e) {
         if (verbose) {

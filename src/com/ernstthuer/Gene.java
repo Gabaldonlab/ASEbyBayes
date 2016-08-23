@@ -11,14 +11,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.ernstthuer.BamHandler.lengthOfReads;
+//import static com.ernstthuer.BamHandler.lengthOfReads;
 import static com.ernstthuer.Main.bimodalPrimersForNoise;
 import static com.ernstthuer.Main.strongCentralInformativePrimers;
 
 /**
  * Created by ethur on 7/26/16.
  */
-public class Gene {
+public class Gene implements Cloneable {
 
     ArrayList<SNP> snpsOnGene = new ArrayList<>();
     private DNASequence sequence = new DNASequence();
@@ -30,6 +30,11 @@ public class Gene {
     private HashMap<Integer, Codon> codonList = new HashMap<>();
     private ArrayList<SimpleRead> geneReadList = new ArrayList<>();
     private String ASE;
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 
     public Gene(String chromosome, int start, int stop, String ident) {
         this.chromosome = chromosome;

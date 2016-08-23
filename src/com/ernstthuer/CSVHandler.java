@@ -73,7 +73,7 @@ public class CSVHandler extends FileHandler {
                 for(Gene gene:geneList){
                     if(gene.getChromosome() == Chromosome &&  gene.getStart()< position && gene.getStop() > position && quality >= qualityThreshold ){
                         SNP snp = new SNP(gene,ORG,ALT,position);
-                        gene.addSNP(snp);
+                        /////  REIMPLEMENT THIS gene.addSNP(snp);
                     }
                 }
                 //CHROM POS ID REF ALT QUAL FILTER INFO FORMAT
