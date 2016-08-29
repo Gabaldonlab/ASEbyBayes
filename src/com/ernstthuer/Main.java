@@ -122,7 +122,6 @@ public class Main {
 
         ArrayList<BamHandler> bamList = new ArrayList<>();
         ArrayList<List<Gene>> listOfGeneLists = new ArrayList<>();
-
         ArrayList<Thread> threads = new ArrayList<>();
 
 
@@ -141,9 +140,7 @@ public class Main {
                         // deep clone this list
                         ArrayList<Gene> individualGeneList = new ArrayList<Gene>(geneList.size());
                         for(Gene gene:geneList) {
-
-
-                            // lets try this shallow way
+                            // cloning the genes.
                             Object clonedGene = gene.clone();
                             individualGeneList.add((Gene) clonedGene);
                         }
@@ -165,7 +162,6 @@ public class Main {
             }
         }
 
-
         // wait for thread completion
         for(Thread thread:threads){
             try {
@@ -175,18 +171,17 @@ public class Main {
             }
         }
 
-
         // unify te obtained gene lists
-
-
         for(BamHandler bhdlr:bamList){
-            List<Gene> geneList = bhdlr.getGeneList();
-            listOfGeneLists.add(geneList);
+            ArrayList<Gene> individualGeneList = bhdlr.getGeneList();
+            //listOfGeneLists.add(geneList);
+            unifyGeneLists(individualGeneList);
         }
 
         for(List<Gene> geneList : listOfGeneLists) {
             System.out.println("found genes in geneLists " + geneList.size());
             for(Gene gene:geneList){
+
                 System.out.println("Gene with " + gene.snpsOnGene.size());
             }
         }
@@ -281,15 +276,19 @@ public class Main {
         }
     }
 
-    public static void unifyGeneLists(ArrayList<List<Gene>> listOfGeneLists){
+    public static void unifyGeneLists(ArrayList<Gene> individualListOfGenes){
 
-        for(List<Gene> localGeneList :listOfGeneLists); {
-            for(Gene gene : geneList){
-                int index = geneList.indexOf(gene);
-                
+        for(Gene gene : geneList) {
+            // find gene in original genelist,
+            int index = individualListOfGenes.lastIndexOf(gene);
+            if(gene.getSnpsOnGene() == null){
+                gene.setSnpsOnGene(individualListOfGenes.get(index).getSnpsOnGene());
+            }else{
+                gene.addSnpInformation(individualListOfGenes.get(index).getSnpsOnGene());
+            }
             }
         }
-    }
+
 
 
 

@@ -31,6 +31,7 @@ public class SNP implements Comparable<SNP> {
     private boolean isSynonymous;
     private ArrayList<Integers> evaluationResults = new ArrayList<>();
 
+    private int foundInReplicates;
 
 
 
@@ -39,6 +40,7 @@ public class SNP implements Comparable<SNP> {
         this.ALT = ALT;
         this.position = position;
         this.validated = 0;
+        this.foundInReplicates = 1;
     }
 
     public SNP(Gene gene, char ORG, char ALT, int position) {
@@ -47,6 +49,7 @@ public class SNP implements Comparable<SNP> {
         this.ALT = ALT;
         this.position = position;
         this.validated = 0;
+        this.foundInReplicates = 1;
     }
 
     public SNP(char ORG, char ALT, int position) {
@@ -55,6 +58,7 @@ public class SNP implements Comparable<SNP> {
         this.ALT = ALT;
         this.position = position;
         this.validated = 0;
+        this.foundInReplicates = 1;
     }
 
 
@@ -134,6 +138,13 @@ public class SNP implements Comparable<SNP> {
     }
 */
 
+    public int getFoundInReplicates() {
+        return foundInReplicates;
+    }
+
+    public void setFoundInReplicates(int foundInReplicates) {
+        this.foundInReplicates = foundInReplicates;
+    }
 
     public boolean validateSNP(double alphaValue, double betaValue, int setMode) {
 

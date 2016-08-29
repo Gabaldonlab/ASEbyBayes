@@ -220,6 +220,25 @@ public class Gene implements Cloneable {
     }
 
 
+    public void setSnpsOnGene(ArrayList<SNP> snpsOnGene) {
+        this.snpsOnGene = snpsOnGene;
+    }
+
+    public void addSnpInformation (ArrayList<SNP> outsideSnpsOnGene){
+
+        for(SNP snp:outsideSnpsOnGene){
+            if(snpsOnGene.contains(snp)){
+                snpsOnGene.get(snpsOnGene.indexOf(snp)).setFoundInReplicates(snpsOnGene.get(snpsOnGene.indexOf(snp)).getFoundInReplicates() + 1);
+                snpsOnGene.get(snpsOnGene.indexOf(snp)).setALTcov(( snpsOnGene.get(snpsOnGene.indexOf(snp)).getALTcov() + snp.getALTcov() / 2));  // ToDo :  improve mean calculation
+                snpsOnGene.get(snpsOnGene.indexOf(snp)).setORGcov(( snpsOnGene.get(snpsOnGene.indexOf(snp)).getORGcov() + snp.getORGcov() / 2)); // ToDo :  improve mean calculation
+                // for the moment a simple mean will do  ToDo :  improve mean calculation
+            }
+            else{
+                snpsOnGene.add(snp);
+            }
+        }
+    }
+
     public void loadSequence(DNASequence fullGenome, boolean fullChrom) {
 
 
