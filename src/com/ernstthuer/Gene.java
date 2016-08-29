@@ -149,11 +149,11 @@ public class Gene implements Cloneable {
     }
 
     public void findSynonymity(int validationLVL) {
-        if (orientation == "forward") {
+        if (orientation.equals("forward")) {
             geneToCodon(this.sequence.getSequenceAsString());
 
         }
-        if (orientation == "reverse"){
+        if (orientation.equals("reverse")){
             geneToCodon(this.sequence.getInverse().getSequenceAsString());
         }
             for (SNP snp : snpsOnGene) {
