@@ -71,9 +71,9 @@ public class Main {
             FastaHandler fastaHandler = (FastaHandler) parser.returnType("FASTA","Input");
             geneList = gffHandler.getGeneList();
             fasta = fastaHandler.readFasta(geneList);
-            for(Gene gene:geneList){
-                System.out.println(gene.getIdent() + " " +gene.getStart() + "  " + gene.getStop());
-            }
+            //for(Gene gene:geneList){
+            //    System.out.println(gene.getIdent() + " " +gene.getStart() + "  " + gene.getStop());
+            //}
         }
         catch (ClassCastException e){
             errorCaller(e);
@@ -190,6 +190,7 @@ public class Main {
 
 
 
+        /*
 
         for (Gene gene : geneList) {
             System.out.println("Gene :" + gene.getIdent());
@@ -198,6 +199,7 @@ public class Main {
 
         }
 
+*/
         // here comes the unification of the genes
 
 
@@ -209,7 +211,12 @@ public class Main {
         for (Gene gene : geneList) {
 
             // this is not working yet, check SNP full coverage vs ALT cov.
-            gene.findORGCoverageOfSNPs();  //Validate IF THIS WORKS RIGHT
+            try {
+                gene.findORGCoverageOfSNPs();  //Validate IF THIS WORKS RIGHT
+            }catch (NullPointerException e){
+                errorCaller(e);
+                
+            }
 
             //System.out.println(gene.getIdent() + "  :  " +   gene.getGeneReadList().size());
             for (SNP snp : gene.getSnpsOnGene()) {

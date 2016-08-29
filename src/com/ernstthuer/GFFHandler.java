@@ -34,7 +34,7 @@ public class GFFHandler extends FileHandler {
         try {
             this.lineList = openGFF(locale);
         } catch (IOException e) {
-            System.out.println("GFF file not found");
+            System.out.println("[ERROR] GFF file not found");
             System.out.println(e);
         }
         //System.out.println("Total features " + lineList.length);
@@ -66,7 +66,7 @@ public class GFFHandler extends FileHandler {
     public ArrayList<Gene> geneList(String[] featureList) {
 
         ArrayList<Gene> outList = new ArrayList<>();
-        System.out.println("[Status] Parsing gff file for : " + this.feature + "s");
+        System.out.println("[STATUS] Parsing gff file for : " + this.feature + "s");
         for (int i = 0; i < featureList.length; i++) {
             String[] row = featureList[i].split("\t");
             if (row[2].equals(this.feature)) {
