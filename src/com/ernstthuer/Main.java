@@ -131,13 +131,24 @@ public class Main {
                 //make them implement Runnable   ... later
                 System.out.println("[STATUS] Loading BAM file " + file.getLocale());
 
+                //Cloner cloner=new Cloner();
                 try {
                     if (fasta != null) {
                         BamHandler bhdlr = new BamHandler(file.getLocale(), "Bam", "Input");
                         // to loosen this for threading should create copies of the genelists
                         //bamList.add(bhdlr);
 
-                        bhdlr.setGeneList(geneList);
+                        // deep clone this list
+                        ArrayList<Gene> individualGeneList = new ArrayList<Gene>(geneList.size());
+                        for(Gene gene:geneList) {
+
+
+                            // lets try this shallow way
+                            Object clonedGene = gene.clone();
+                            individualGeneList.add((Gene) clonedGene);
+                        }
+
+                        bhdlr.setGeneList(individualGeneList);
 
                         Thread thread = new Thread(bhdlr);
                         thread.start();
@@ -154,6 +165,8 @@ public class Main {
             }
         }
 
+
+        // wait for thread completion
         for(Thread thread:threads){
             try {
                 thread.join();
@@ -161,6 +174,10 @@ public class Main {
                 errorCaller(e);
             }
         }
+
+
+        // unify te obtained gene lists
+
 
         for(BamHandler bhdlr:bamList){
             List<Gene> geneList = bhdlr.getGeneList();
@@ -264,20 +281,14 @@ public class Main {
         }
     }
 
-    public static void uniGeneLists(ArrayList<List<Gene>> listOfGeneLists){
+    public static void unifyGeneLists(ArrayList<List<Gene>> listOfGeneLists){
 
         for(List<Gene> localGeneList :listOfGeneLists); {
             for(Gene gene : geneList){
                 int index = geneList.indexOf(gene);
                 
-
             }
-
-
-
         }
-
-
     }
 
 

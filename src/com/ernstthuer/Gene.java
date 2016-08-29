@@ -6,6 +6,7 @@ import org.biojava.nbio.core.sequence.compound.NucleotideCompound;
 
 import javax.sound.midi.Sequence;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +34,10 @@ public class Gene implements Cloneable {
 
     @Override
     protected Object clone() throws CloneNotSupportedException {
+
+        this.snpsOnGene = new ArrayList<SNP>();
         return super.clone();
+
     }
 
     public Gene(String chromosome, int start, int stop, String ident) {

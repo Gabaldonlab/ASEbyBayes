@@ -56,7 +56,7 @@ public class BamHandler extends FileHandler implements Runnable {
     public void run() {
         this.localGeneList = readBam(fastaMap,existingknowledge );
         }
-    }
+
 
 
     // helper methods to be called from main before threadin intiation,  creates copies of the fasta map and the boolean
