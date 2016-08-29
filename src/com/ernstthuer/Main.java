@@ -174,7 +174,6 @@ public class Main {
         // unify te obtained gene lists
         for(BamHandler bhdlr:bamList){
             ArrayList<Gene> individualGeneList = bhdlr.getGeneList();
-            //listOfGeneLists.add(geneList);
             unifyGeneLists(individualGeneList);
         }
 
@@ -215,13 +214,10 @@ public class Main {
                 gene.findORGCoverageOfSNPs();  //Validate IF THIS WORKS RIGHT
             }catch (NullPointerException e){
                 errorCaller(e);
-                
+
             }
 
-            //System.out.println(gene.getIdent() + "  :  " +   gene.getGeneReadList().size());
             for (SNP snp : gene.getSnpsOnGene()) {
-                //System.out.println("SNP found on gene : " + snp.getPosition()+ " with coverage " + snp.getALTcov()+ " and total " + snp.getORGcov());
-
                 if (snp.isValidated() == 1) {
                     // validate for noise  set mode to 0 for validation
                     if (snp.validateSNP(bimodalPrimersForNoise, bimodalPrimersForNoise, 0)) {
@@ -270,7 +266,7 @@ public class Main {
             errorCaller(e);
         }
     }
-         //*/ //DISABLED FOR TESTING
+         //*///DISABLED FOR TESTING
 
     public static void errorCaller(Exception e) {
         if (verbose) {

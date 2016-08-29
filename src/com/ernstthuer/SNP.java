@@ -122,21 +122,6 @@ public class SNP implements Comparable<SNP> {
         this.ORGcov++;
     }
 
-    /*
-    public int addCoverageToSNPs( List<SimpleRead> splRds) {
-        int totalCoverage = 0;
-        //int length = lengthOfReads;
-        for (SimpleRead splrd : splRds) {
-            int position = splrd.getStart();
-            int stop = splrd.getStop();
-            if(this.position > position && this.position < stop){
-                totalCoverage ++;
-            }
-        }
-        this.ORGcov = totalCoverage - this.ALTcov;
-        return totalCoverage;
-    }
-*/
 
     public int getFoundInReplicates() {
         return foundInReplicates;
@@ -148,9 +133,12 @@ public class SNP implements Comparable<SNP> {
 
     public boolean validateSNP(double alphaValue, double betaValue, int setMode) {
 
+
+        // get confidence interval for SNPs
+
         BayesClassify bcl = new BayesClassify(alphaValue, betaValue, this.getALTcov(), this.getORGcov());
         if(validated > 1) {
-            System.out.println(gene.getIdent() + " org: " + ORGcov + " alt: " + ALTcov + " alpha : " + alphaValue + " " + bcl.getBetaFunctionPosterior().logDensity(borderApproximation));
+            //System.out.println(gene.getIdent() + " org: " + ORGcov + " alt: " + ALTcov + " alpha : " + alphaValue + " " + bcl.getBetaFunctionPosterior().logDensity(borderApproximation));
         }
             //System.out.println("logdensity : " + bcl.getBetaFunctionPosterior().logDensity(borderApproximation));
         switch (setMode) {
@@ -193,7 +181,6 @@ public class SNP implements Comparable<SNP> {
         }
     }
 
-
     public void setExpression(String expression) {
         this.expression = expression;
     }
@@ -202,16 +189,6 @@ public class SNP implements Comparable<SNP> {
         return expression;
     }
 
-    /*
-                public boolean validateSNPforASE(){
-                    BayesClassify bcl = new BayesClassify(25,25,this.getALTcov(),this.getORGcov());
-                    if(bcl.getBetaFunctionPosterior().logDensity(borderApproximation) < logDensityThreshold){
-                        return false;
-                    }else {
-                        return true;
-                    }
-                }
-            */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
