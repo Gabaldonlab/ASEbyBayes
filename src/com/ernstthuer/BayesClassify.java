@@ -7,6 +7,7 @@ import org.apache.commons.math3.special.Beta;
 
 import static java.lang.Math.exp;
 import static java.lang.Math.sqrt;
+import static java.lang.Math.toRadians;
 
 /**
  * Created by ethuer on 2/08/16.
@@ -56,6 +57,46 @@ public class BayesClassify {
         System.out.println(posterior.logDensity(input));
 
     }
+
+    public boolean noiseTest(double sigmaMultiplier){
+        // sigma multiplier assumes gaussian distibution. ERF could replace that
+        // True if Truecalls are above threshold
+
+        // alpha beta implementation is important,   alpha should be > 1,  beta < 0.5    depending on replicates available
+
+        if((Math.sqrt(this.posterior.getNumericalVariance()) * sigmaMultiplier * this.CallsTotal) > this.TrueCalls){
+            return false;
+        }
+        else{
+            return true;
+        }
+
+    }
+
+
+    public boolean fullSNPTest(double sigmaMultiplier){
+        // sigma multiplier assumes gaussian distibution. ERF could replace that
+        // True if Truecalls are below Totalcalls
+
+        // alpha beta implementation is important,   alpha should be < 0.5 ,  beta > 1    depending on replicates available
+
+        if((Math.sqrt(this.posterior.getNumericalVariance()) * sigmaMultiplier * this.TrueCalls) + this.TrueCalls > this.CallsTotal){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+
+
+    public boolean equalAllelicTest(double logDensityThreshold){
+
+        double logdensity = this.posterior.logDensity(0.5);
+        if(logdensity > logDensityThreshold){
+            return true;
+        } else {return false;}
+    }
+
 
     //
     public BetaDistribution getBetaFunctionPosterior() {

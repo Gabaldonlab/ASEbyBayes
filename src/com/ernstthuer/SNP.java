@@ -133,6 +133,9 @@ public class SNP implements Comparable<SNP> {
 
     public boolean validateSNP(double alphaValue, double betaValue, int setMode) {
 
+        double sigmaCutoff = 2.5;
+        double logDensityThreshold = 1;
+
 
         // get confidence interval for SNPs
 
@@ -141,9 +144,21 @@ public class SNP implements Comparable<SNP> {
             //System.out.println(gene.getIdent() + " org: " + ORGcov + " alt: " + ALTcov + " alpha : " + alphaValue + " " + bcl.getBetaFunctionPosterior().logDensity(borderApproximation));
         }
             //System.out.println("logdensity : " + bcl.getBetaFunctionPosterior().logDensity(borderApproximation));
+
         switch (setMode) {
             case 0:
                 // lower bound validation
+                // alpha beta implementation is important,   alpha should be > 1,  beta < 0.5    depending on replicates available
+                return bcl.noiseTest(sigmaCutoff);
+            case 1:
+                // full SNP validation,  keep a seperate function from noise, although it could be regarded as the same problem
+                return bcl.fullSNPTest(sigmaCutoff);
+
+            case 2:
+                // Equal allele Expression
+                return bcl.equalAllelicTest(logDensityThreshold);
+
+                /**
                 if (bcl.getBetaFunctionPosterior().logDensity(borderApproximation) > logDensityThreshold) {
                     return false;
                 } else {
@@ -163,8 +178,7 @@ public class SNP implements Comparable<SNP> {
                 } else {
                     return true;
                 }
-
-
+                 */
         }
         return false;
     }

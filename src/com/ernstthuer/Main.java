@@ -223,8 +223,10 @@ public class Main {
                     if (snp.validateSNP(bimodalPrimersForNoise, bimodalPrimersForNoise, 0)) {
                         if (snp.getORGcov() > minCovThreshold) {
                             snp.raiseValidation();
+
+
                         } else {
-                            //snips.remove(snp);
+                            snips.remove(snp);
                         }
 
                     } else {
