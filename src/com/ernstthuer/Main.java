@@ -175,20 +175,17 @@ public class Main {
             unifyGeneLists(individualGeneList);
         }
 
+        /*
         for(List<Gene> geneList : listOfGeneLists) {
             System.out.println("found genes in geneLists " + geneList.size());
             for(Gene gene:geneList){
                 System.out.println("Gene with " + gene.snpsOnGene.size());
+
             }
         }
 
-
-
-
-
-
+*/
         /*
-
         for (Gene gene : geneList) {
             System.out.println("Gene :" + gene.getIdent());
             System.out.println("with " + gene.getGeneReadList().size() + " reads");
@@ -207,6 +204,8 @@ public class Main {
 
         for (Gene gene : geneList) {
 
+
+
             // this is not working yet, check SNP full coverage vs ALT cov.
             try {
 
@@ -217,6 +216,16 @@ public class Main {
                 errorCaller(e);
 
             }
+            /*for(Integer key : gene.getPositioncount().keySet()){
+                for(SNP snp:gene.getSnpsOnGene()) {
+
+                    if(snp.getPosition() == key) {
+                        System.out.println("SNP : cov " + gene.getPositioncount().get(key) + " SNP orgCov : " + snp.getORGcov() + " SNP. altCov " + snp.getALTcov() );
+                    }
+                }
+
+
+            }*/
 
 
 

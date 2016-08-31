@@ -4,10 +4,7 @@ import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
 import org.biojava.nbio.core.sequence.DNASequence;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by ethur on 7/26/16.
@@ -24,6 +21,9 @@ public class Gene implements Cloneable {
     private HashMap<Integer, Codon> codonList = new HashMap<>();
     private ArrayList<SimpleRead> geneReadList = new ArrayList<>();
     private String ASE;
+    private LinkedHashMap<Integer,Integer> positioncount = new LinkedHashMap<>();
+
+
 
     @Override
     protected Object clone() throws CloneNotSupportedException {
@@ -53,6 +53,20 @@ public class Gene implements Cloneable {
         }
 
         //System.out.println("Created gene " + ident);
+    }
+
+
+    public void addCoverage(int start, int stop){
+
+        for(int i = start; i < stop; i++){
+            int count = this.positioncount.containsKey(i) ? positioncount.get(i) : 0;
+            positioncount.put(i,count+1);
+        }
+
+    }
+
+    public LinkedHashMap<Integer, Integer> getPositioncount() {
+        return positioncount;
     }
 
     public ArrayList<SNP> getSnpsOnGene() {
@@ -91,11 +105,12 @@ public class Gene implements Cloneable {
 
 
 
+
     public void findORGCoverageOfSNPs() {
         // trigger this after the SNPs were loaded and the simplified reads are stored on the genes.
 
-        //geneReadList.sort();
-        //Collections.sort(geneReadList);
+        // geneReadList.sort();
+        // Collections.sort(geneReadList);
 
         for (SNP snip : snpsOnGene) {
             try {
@@ -108,7 +123,15 @@ public class Gene implements Cloneable {
                     int count = 0;
 
                     int index = snpsOnGene.indexOf(snip);
+
+                    if(positioncount.keySet().contains(snip.getPosition())) {
+                        snip.setORGcov(positioncount.get(snip.getPosition()));
+                    }
+
+                    /*
+
                     for (SimpleRead splRd : geneReadList) {
+
 
                         try {
                             if (splRd.getStart() <= snip.getPosition() && (splRd.getStop()) >= snip.getPosition()) {
@@ -123,9 +146,11 @@ public class Gene implements Cloneable {
                             }
                         } catch (Exception e) {
                             count ++;
-                            System.out.println("Failed to compare SNP to read " + snip.getPosition() + count );
+                            //System.out.println("Failed to compare SNP to read " + this.ident + "  " + snip.getPosition() + count );
                         }
                     }
+
+                    */
                     //System.out.println(snip.getPosition() + "  " + snip.getALTcov() + " ORG :" + snip.getORGcov() + " count : " +  count );
                 }
             }catch (Exception e){
@@ -144,7 +169,7 @@ public class Gene implements Cloneable {
 
     public void geneToCodon(String codingSequence){
         // Codon list for all positions, for each position
-        //HashMap<Integer, org.biojava.nbio.core.sequence.template.Sequence> CodonList = new HashMap<>();
+        // HashMap<Integer, org.biojava.nbio.core.sequence.template.Sequence> CodonList = new HashMap<>();
         // for each codon on sequence
 
         // make sure coding sequence is divisible by 3

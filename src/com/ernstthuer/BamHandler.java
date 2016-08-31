@@ -119,6 +119,7 @@ public class BamHandler extends FileHandler implements Runnable {
             while (iterator.hasNext()) {
 
 
+
                 // sort to the genes then parse for SNPs
 
                 SAMRecord read = iterator.next();
@@ -138,45 +139,56 @@ public class BamHandler extends FileHandler implements Runnable {
 
                 stop = (read.getStart() + read.getReadLength());
 
-                if (start >= 0 && stop >= 0 && !CIGAR.contains("^") && !CIGAR.contains("I")) {
-                    SimpleRead splR = new SimpleRead(start, stop);
+                try {
+                    currentGene = findGene(chromosome, start, localGeneList, currentGene);
+                    if (start >= currentGene.getStart() && stop <= currentGene.getStop() && !CIGAR.contains("^") && !CIGAR.contains("I")) {
+                        SimpleRead splR = new SimpleRead(start, stop);
+                        try {
+                            currentGene.addCoverage(start, stop);
+                        } catch (NullPointerException e) {
+                            System.out.println(" currentgene not well defined " + start + "  " + stop);
+                        }
 
-                    try {
-                        currentGene = findGene(chromosome, start, localGeneList, currentGene);
-                        if (currentGene != null) {
+                        try {
 
-
-                            int currentPosition = 0;
-                            if (MZArray.length > 1) {
-                                for (int i = 0; i < MZArray.length; i++) {
-                                    if (MZArray[i].matches("\\D")) {
-
-                                        int placeOnRead = currentPosition + Integer.parseInt(MZArray[i - 1]);
-                                        currentPosition = placeOnRead + 1;
-
-                                        char altBase = read.getSAMString().split("\t")[9].charAt(placeOnRead);
-                                        char refBase = MZArray[i].charAt(0);
-
-                                        int positionOnChrom = placeOnRead + read.getStart();
-                                        SNP snp = new SNP(currentGene, refBase, altBase, positionOnChrom);
+                            if (currentGene != null) {
 
 
-                                        if (refBase != altBase && !CIGAR.contains("D") && !CIGAR.contains("I")) {
-                                            currentGene.addSNP(snp, existingKnowledge);
-                                            //System.out.println(" Created SNP on " + snp.getGene().getIdent());
-                                            //System.out.println(" on position " + snp.getPosition() + "  " + snp.getALT());
+                                int currentPosition = 0;
+                                if (MZArray.length > 1) {
+                                    for (int i = 0; i < MZArray.length; i++) {
+                                        if (MZArray[i].matches("\\D")) {
+
+                                            int placeOnRead = currentPosition + Integer.parseInt(MZArray[i - 1]);
+                                            currentPosition = placeOnRead + 1;
+
+                                            char altBase = read.getSAMString().split("\t")[9].charAt(placeOnRead);
+                                            char refBase = MZArray[i].charAt(0);
+
+                                            int positionOnChrom = placeOnRead + read.getStart();
+                                            SNP snp = new SNP(currentGene, refBase, altBase, positionOnChrom);
+
+
+                                            if (refBase != altBase && !CIGAR.contains("D") && !CIGAR.contains("I")) {
+                                                currentGene.addSNP(snp, existingKnowledge);
+                                                //System.out.println(" Created SNP on " + snp.getGene().getIdent());
+                                                //System.out.println(" on position " + snp.getPosition() + "  " + snp.getALT());
+                                            }
                                         }
                                     }
                                 }
+
+
+                                currentGene.addRead(splR);
+
                             }
 
-                            currentGene.addRead(splR);
-
+                        } catch (NullPointerException e) {
+                            System.out.println(e);
                         }
-
-                    } catch (NullPointerException e) {
-                        System.out.println(e);
                     }
+                }catch (NullPointerException e){
+                    //System.out.println("gene not found ");
                 }
             }
             //System.out.println("bad SNPs counted : " + count + " vs good SNPs counted :" + goodCount);
