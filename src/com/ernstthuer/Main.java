@@ -1,15 +1,13 @@
 package com.ernstthuer;
 
 import org.biojava.nbio.core.sequence.DNASequence;
-import org.omg.PortableServer.THREAD_POLICY_ID;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
 
 public class Main {
@@ -180,10 +178,10 @@ public class Main {
         for(List<Gene> geneList : listOfGeneLists) {
             System.out.println("found genes in geneLists " + geneList.size());
             for(Gene gene:geneList){
-
                 System.out.println("Gene with " + gene.snpsOnGene.size());
             }
         }
+
 
 
 
@@ -211,16 +209,34 @@ public class Main {
 
             // this is not working yet, check SNP full coverage vs ALT cov.
             try {
+
+                //gene.getGeneReadList().stream( s -> System.out.println(gene.getStart() + "  :  " + gene.getStop() + "  ::: "+  ));
+
                 gene.findORGCoverageOfSNPs();  //Validate IF THIS WORKS RIGHT
-            }catch (NullPointerException e){
+            } catch (NullPointerException e) {
                 errorCaller(e);
 
             }
 
+
+
+        }
+        for(Gene gene:geneList){
+            try {
+                gene.evaluateSNPs();
+            }catch (ConcurrentModificationException e){
+                errorCaller(e);
+            }
+
+ /*
             for (SNP snp : gene.getSnpsOnGene()) {
                 if (snp.isValidated() == 1) {
+
+
+
+
                     // validate for noise  set mode to 0 for validation
-                    if (snp.validateSNP(bimodalPrimersForNoise, bimodalPrimersForNoise, 0)) {
+                   if (snp.validateSNP(bimodalPrimersForNoise, bimodalPrimersForNoise, 0)) {
                         if (snp.getORGcov() > minCovThreshold) {
                             snp.raiseValidation();
 
@@ -240,15 +256,18 @@ public class Main {
                         }
                         //snp.addCoverageToSNPs(gene.getGeneReadList());
                     }
-                }
-            }
+                }*/
+
             gene.findSynonymity(validationLVL);
         }
+
 
         for (Gene gene : geneList) {
             gene.evaluateGeneExpression();
             for(SNP snp: gene.getSnpsOnGene()){
-                snips.add(snp);
+                if(snp.isValidated()>=2) {
+                    snips.add(snp);
+                }
             }
         }
 
@@ -272,11 +291,11 @@ public class Main {
 
     public static void errorCaller(Exception e) {
         if (verbose) {
-            System.out.println(e);
+            //System.out.println(e);
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
-            sw.toString();
+            //sw.toString();
             System.out.println(sw);
         }
     }

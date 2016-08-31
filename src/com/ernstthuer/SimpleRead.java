@@ -26,6 +26,21 @@ public class SimpleRead {
         return stop;
     }
 
+
+    /*
+    @Override
+    public int compareTo(SimpleRead o) {
+        if(o.getStart() < this.start){
+            return 1;
+        }if(o.getStart() == this.start){
+            return 0;
+        }
+        else {
+            return -1;
+        }
+    }
+
+*/
     /*
     private String MZ;
     private String CIGAR = null;

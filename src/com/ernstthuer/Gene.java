@@ -2,19 +2,12 @@ package com.ernstthuer;
 
 import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
 import org.biojava.nbio.core.sequence.DNASequence;
-import org.biojava.nbio.core.sequence.compound.NucleotideCompound;
-
-import javax.sound.midi.Sequence;
 import java.io.PrintWriter;
-import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-
-//import static com.ernstthuer.BamHandler.lengthOfReads;
-import static com.ernstthuer.Main.bimodalPrimersForNoise;
-import static com.ernstthuer.Main.strongCentralInformativePrimers;
 
 /**
  * Created by ethur on 7/26/16.
@@ -100,17 +93,43 @@ public class Gene implements Cloneable {
 
     public void findORGCoverageOfSNPs() {
         // trigger this after the SNPs were loaded and the simplified reads are stored on the genes.
-        for (SNP snip : snpsOnGene) {
 
-            // only for SNPs with at least 2 observations
-            if (snip.isValidated() > 0) {
-                for (SimpleRead splRd : geneReadList) {
-                    if (splRd.getStart() <= snip.getPosition() && (splRd.getStop()) >= snip.getPosition()) {
-                        // overlap, check if the positions are absolut or on gene level
-                        snip.increaseORGcov();
-                        // System.out.println(" increased SNP coverage with read : " );
+        //geneReadList.sort();
+        //Collections.sort(geneReadList);
+
+        for (SNP snip : snpsOnGene) {
+            try {
+
+                // ToDO remove sout
+
+
+                // only for SNPs with at least 2 observations
+                if (snip.isValidated() > 0) {
+                    int count = 0;
+
+                    int index = snpsOnGene.indexOf(snip);
+                    for (SimpleRead splRd : geneReadList) {
+
+                        try {
+                            if (splRd.getStart() <= snip.getPosition() && (splRd.getStop()) >= snip.getPosition()) {
+                                // overlap, check if the positions are absolut or on gene level
+
+                                try {
+                                    snpsOnGene.get(index).increaseORGcov();
+                                } catch (Exception e) {
+                                    System.out.println("Failed on line 116 ");
+                                }
+                                // System.out.println(" increased SNP coverage with read : " );
+                            }
+                        } catch (Exception e) {
+                            count ++;
+                            System.out.println("Failed to compare SNP to read " + snip.getPosition() + count );
+                        }
                     }
+                    //System.out.println(snip.getPosition() + "  " + snip.getALTcov() + " ORG :" + snip.getORGcov() + " count : " +  count );
                 }
+            }catch (Exception e){
+                System.out.println("Failed on line 101");
             }
         }
     }
@@ -176,11 +195,10 @@ public class Gene implements Cloneable {
 
                         snp.setSynonymous(altCodon.equals(refCodon));
 
-                        System.out.println(refCodon.getSequence() + "  " +  altCodon.getSequence() + "  " + altCodon.equals(refCodon) );
+                        //System.out.println(refCodon.getSequence() + "  " +  altCodon.getSequence() + "  " + altCodon.equals(refCodon) );
 
 
                     }catch(NullPointerException e){
-                        System.out.println(e);
                         System.out.println(snp.getPosition() + "  " + snp.getGene().getIdent());
                     }
                     //String altCodon = getAltCodon(0, snp.getALT(), refCodon.getSequence());
@@ -252,7 +270,7 @@ public class Gene implements Cloneable {
                     this.sequence = new DNASequence(fullGenome.getSubSequence(this.start, this.stop).getSequenceAsString());
                 } catch (CompoundNotFoundException e) {
                     System.out.println("Caught error in sequence parsing ");
-                    System.out.println(e);
+                    //System.out.println(e);
                     StringWriter sw = new StringWriter();
                     PrintWriter pw = new PrintWriter(sw);
                     e.printStackTrace(pw);
@@ -277,7 +295,8 @@ public class Gene implements Cloneable {
 
     public void evaluateGeneExpression(){
 
-        for (SNP snp: snpsOnGene) {
+        // THis is for the whole gene
+      /*  for (SNP snp: snpsOnGene) {
 
             boolean FullSNPevidence = snp.validateSNP(bimodalPrimersForNoise, bimodalPrimersForNoise, 1);
             boolean CentralExpressionEvidence = snp.validateSNP(strongCentralInformativePrimers, strongCentralInformativePrimers, 2);
@@ -291,8 +310,41 @@ public class Gene implements Cloneable {
                 snp.setExpression("EQUALALLELICEXPRESSION");
             }
         }
+        */
+
     }
 
+    public void evaluateSNPs(){
+        for(SNP snp: snpsOnGene){
+            if(snp.isValidated() >= 1){
+                //snpsOnGene.remove(snp);
+            //}
+            //else{
+                if(!snp.validateSNP(10,-1,0)){
+                    //snpsOnGene.remove(snp);
+                    snp.disableValidation();
+                }else{
+                    snp.raiseValidation();
+                }
+
+                if(snp.validateSNP(-1,10,1)){
+                    snp.setExpression("FULLSNP");
+                }else{
+                    snp.raiseValidation();
+                }
+
+                if(snp.validateSNP(10,10,2)){
+                    snp.setExpression("EQUALALLELICEXPRESSION");
+
+                }else  {
+                    snp.raiseValidation();
+                }
+
+
+            }
+
+        }
+    }
 
 
     public void addRead(SimpleRead read) {
