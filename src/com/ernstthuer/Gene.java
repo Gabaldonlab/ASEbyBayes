@@ -193,12 +193,23 @@ public class Gene implements Cloneable {
     }
 
     public void findSynonymity(int validationLVL) {
-        if (orientation.equals("forward")) {
-            geneToCodon(this.sequence.getSequenceAsString());
 
-        }
-        if (orientation.equals("reverse")){
-            geneToCodon(this.sequence.getInverse().getSequenceAsString());
+        try {
+            if (orientation.equals("forward")) {
+                geneToCodon(this.sequence.getSequenceAsString());
+
+            }
+            if (orientation.equals("reverse")) {
+                geneToCodon(this.sequence.getInverse().getSequenceAsString());
+            }
+        }catch (NullPointerException e){
+            System.out.println("Did not find gene orientation");
+            try {
+                geneToCodon(this.sequence.getSequenceAsString());
+            }
+            catch (NullPointerException e2){
+                System.out.println("no valid gene sequence found");
+            }
         }
             for (SNP snp : snpsOnGene) {
                 if (snp.isValidated() >= validationLVL) {
@@ -274,7 +285,7 @@ public class Gene implements Cloneable {
                 snpsOnGene.get(snpsOnGene.indexOf(snp)).setFoundInReplicates(snpsOnGene.get(snpsOnGene.indexOf(snp)).getFoundInReplicates() + 1);
                 snpsOnGene.get(snpsOnGene.indexOf(snp)).setALTcov(( snpsOnGene.get(snpsOnGene.indexOf(snp)).getALTcov() + snp.getALTcov() / 2));  // ToDo :  improve mean calculation
                 snpsOnGene.get(snpsOnGene.indexOf(snp)).setORGcov(( snpsOnGene.get(snpsOnGene.indexOf(snp)).getORGcov() + snp.getORGcov() / 2)); // ToDo :  improve mean calculation
-                // for the moment a simple mean will do  ToDo :  improve mean calculation
+                // for the moment a simple mean will do  ToDo :  improve mean calculation  possible ratio evaluation.. save the ratio, extend the counts
             }
             else{
                 snpsOnGene.add(snp);

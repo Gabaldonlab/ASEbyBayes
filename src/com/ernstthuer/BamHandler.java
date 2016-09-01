@@ -193,7 +193,8 @@ public class BamHandler extends FileHandler implements Runnable {
             }
             //System.out.println("bad SNPs counted : " + count + " vs good SNPs counted :" + goodCount);
         } catch (Exception e) {
-            System.out.println(e);
+            //System.out.println(e);
+            System.out.println("[WARNING] Malformed read");
         }finally {
             return localGeneList;
         }

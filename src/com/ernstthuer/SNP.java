@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by ethur on 7/26/16.
  */
-public class SNP implements Comparable<SNP> {
+class SNP implements Comparable<SNP> {
 
     /**
      * Core of the analysis  the SNP class catches individual SNPs, evaluation has to be carried out here
@@ -43,7 +43,7 @@ public class SNP implements Comparable<SNP> {
         this.foundInReplicates = 1;
     }
 
-    public SNP(Gene gene, char ORG, char ALT, int position) {
+    SNP(Gene gene, char ORG, char ALT, int position) {
         this.gene = gene;
         this.ORG = ORG;
         this.ALT = ALT;
@@ -62,7 +62,7 @@ public class SNP implements Comparable<SNP> {
     }
 
 
-    public void setSynonymous(boolean synonymous) {
+    void setSynonymous(boolean synonymous) {
         isSynonymous = synonymous;
     }
 
@@ -70,69 +70,68 @@ public class SNP implements Comparable<SNP> {
         return isSynonymous;
     }
 
-    public int getORGcov() {
+    int getORGcov() {
         return ORGcov;
     }
 
-    public char getORG() {
+    char getORG() {
         return ORG;
     }
 
-    public char getALT() {
+     char getALT() {
         return ALT;
     }
 
-    public Gene getGene() {
+    Gene getGene() {
         return gene;
     }
 
-    public void setORGcov(int ORGcov) {
+    void setORGcov(int ORGcov) {
         this.ORGcov = ORGcov;
     }
 
-    public int getALTcov() {
+    int getALTcov() {
         return ALTcov;
     }
 
-    public void increaseAltCoverage() {
+    void increaseAltCoverage() {
         this.ALTcov++;
     }
 
-    public void setALTcov(int ALTcov) {
+    void setALTcov(int ALTcov) {
         this.ALTcov = ALTcov;
     }
 
-    public int isValidated() {
+    int isValidated() {
         return validated;
     }
 
-    public int getPosition() {
+    int getPosition() {
         return position;
     }
 
-    public void setValidated(int validated) {
+    void setValidated(int validated) {
         this.validated = validated;
     }
 
-    public void raiseValidation() {
+    void raiseValidation() {
         this.validated++;
     }
-    public void disableValidation(){ this.validated = -5;}
-
-    public void increaseORGcov() {
-        this.ORGcov++;
-    }
+    void disableValidation(){ this.validated = -5;}
 
 
-    public int getFoundInReplicates() {
+    int getFoundInReplicates() {
         return foundInReplicates;
     }
 
-    public void setFoundInReplicates(int foundInReplicates) {
+    void setFoundInReplicates(int foundInReplicates) {
         this.foundInReplicates = foundInReplicates;
     }
+    void incrementFOundInReplicates(){
+        this.foundInReplicates ++;
+    }
 
-    public boolean validateSNP(double alphaValue, double betaValue, int setMode) {
+    boolean validateSNP(double alphaValue, double betaValue, int setMode) {
 
         double sigmaCutoff = 2.5;
         double logDensityThreshold = 1;
@@ -141,9 +140,9 @@ public class SNP implements Comparable<SNP> {
         // get confidence interval for SNPs
 
         BayesClassify bcl = new BayesClassify(alphaValue, betaValue, this.getALTcov(), this.getORGcov());
-        if(validated > 1) {
+        //if(validated > 1) {
             //System.out.println(gene.getIdent() + " org: " + ORGcov + " alt: " + ALTcov + " alpha : " + alphaValue + " " + bcl.getBetaFunctionPosterior().logDensity(borderApproximation));
-        }
+        //}
             //System.out.println("logdensity : " + bcl.getBetaFunctionPosterior().logDensity(borderApproximation));
 
         switch (setMode) {
@@ -196,7 +195,7 @@ public class SNP implements Comparable<SNP> {
         }
     }
 
-    public void setExpression(String expression) {
+    void setExpression(String expression) {
         this.expression = expression;
     }
 

@@ -68,41 +68,44 @@ public class GFFHandler extends FileHandler {
         ArrayList<Gene> outList = new ArrayList<>();
         System.out.println("[STATUS] Parsing gff file for : " + this.feature + "s");
         for (int i = 0; i < featureList.length; i++) {
-            String[] row = featureList[i].split("\t");
-            if (row[2].equals(this.feature)) {
-                String description = descriptionParser(row[8]);
-                int start = parseInt(row[3]);  //start and stop position are read as String
-                int stop = parseInt(row[4]);
+            if (!featureList[i].startsWith("#")) {
+                String[] row = featureList[i].split("\t");
+                if (row[2].equals(this.feature)) {
+                    String description = descriptionParser(row[8]);
+                    int start = parseInt(row[3]);  //start and stop position are read as String
+                    int stop = parseInt(row[4]);
 
-                String orientation = "";
-                try {
+                    String orientation = "";
+                    try {
 
-                    if (start < stop) {
-                        orientation = "forward";
+                        if (start < stop) {
+                            orientation = "forward";
+                        }
+                        if (stop < start) {
+                            // gene is on the reverse
+                            orientation = "reverse";
+                            int intermed = start;
+                            start = stop;
+                            stop = intermed;
+                        }
+
+                        //Gene newGene = new Gene(row[0], start, stop, description );
+
+                        Gene gene = new Gene(row[0], start, stop, description);
+                        gene.setOrientation(orientation);
+
+                        outList.add(gene);
+
+                    } catch (Exception e) {
+                        System.out.println(e);
                     }
-                    if (stop < start) {
-                        // gene is on the reverse
-                        orientation = "reverse";
-                        int intermed = start;
-                        start = stop;
-                        stop = intermed;
-                    }
-
-                    //Gene newGene = new Gene(row[0], start, stop, description );
-
-                    Gene gene = new Gene(row[0], start, stop, description);
-                    gene.setOrientation(orientation);
-
-                    outList.add(gene);
-
-                } catch (Exception e) {
-                    System.out.println(e);
+                    //System.out.println(outList.size());//geneList.add(newGene);
                 }
-                //System.out.println(outList.size());//geneList.add(newGene);
             }
+            //System.out.println(outList.size());
         }
-        //System.out.println(outList.size());
-        return outList;
+            return outList;
+
     }
 
 
