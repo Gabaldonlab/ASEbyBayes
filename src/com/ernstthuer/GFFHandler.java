@@ -71,14 +71,16 @@ public class GFFHandler extends FileHandler {
             if (!featureList[i].startsWith("#")) {
                 String[] row = featureList[i].split("\t");
                 if (row[2].equals(this.feature)) {
+
+                    char orientation = row[6].charAt(0);
                     String description = descriptionParser(row[8]);
                     int start = parseInt(row[3]);  //start and stop position are read as String
                     int stop = parseInt(row[4]);
 
-                    String orientation = "";
                     try {
 
-                        if (start < stop) {
+                       /*orientation stored as + and -   always starts in lower half...
+                       if (orientation == '+') {
                             orientation = "forward";
                         }
                         if (stop < start) {
@@ -87,7 +89,7 @@ public class GFFHandler extends FileHandler {
                             int intermed = start;
                             start = stop;
                             stop = intermed;
-                        }
+                        }*/
 
                         //Gene newGene = new Gene(row[0], start, stop, description );
 

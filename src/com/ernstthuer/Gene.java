@@ -17,7 +17,7 @@ public class Gene implements Cloneable {
     private int start;
     private int stop;
     private String ident;
-    private String orientation = "forward";
+    private char orientation = '+';
     private HashMap<Integer, Codon> codonList = new HashMap<>();
     private ArrayList<SimpleRead> geneReadList = new ArrayList<>();
     private String ASE;
@@ -39,6 +39,7 @@ public class Gene implements Cloneable {
         this.stop = stop;
         this.ident = ident;
 
+        /*
         if(start < stop){
             orientation = "forward";
         }
@@ -51,6 +52,7 @@ public class Gene implements Cloneable {
             this.start = stop;
             this.stop = intermed;
         }
+        */
 
         //System.out.println("Created gene " + ident);
     }
@@ -159,11 +161,11 @@ public class Gene implements Cloneable {
         }
     }
 
-    public String getOrientation() {
+    public char getOrientation() {
         return orientation;
     }
 
-    public void setOrientation(String orientation) {
+    public void setOrientation(char orientation) {
         this.orientation = orientation;
     }
 
@@ -195,11 +197,11 @@ public class Gene implements Cloneable {
     public void findSynonymity(int validationLVL) {
 
         try {
-            if (orientation.equals("forward")) {
+            if (orientation == '+') {
                 geneToCodon(this.sequence.getSequenceAsString());
 
             }
-            if (orientation.equals("reverse")) {
+            if (orientation == '-') {
                 geneToCodon(this.sequence.getInverse().getSequenceAsString());
             }
         }catch (NullPointerException e){
@@ -282,9 +284,25 @@ public class Gene implements Cloneable {
 
         for(SNP snp:outsideSnpsOnGene){
             if(snpsOnGene.contains(snp)){
-                snpsOnGene.get(snpsOnGene.indexOf(snp)).setFoundInReplicates(snpsOnGene.get(snpsOnGene.indexOf(snp)).getFoundInReplicates() + 1);
-                snpsOnGene.get(snpsOnGene.indexOf(snp)).setALTcov(( snpsOnGene.get(snpsOnGene.indexOf(snp)).getALTcov() + snp.getALTcov() / 2));  // ToDo :  improve mean calculation
-                snpsOnGene.get(snpsOnGene.indexOf(snp)).setORGcov(( snpsOnGene.get(snpsOnGene.indexOf(snp)).getORGcov() + snp.getORGcov() / 2)); // ToDo :  improve mean calculation
+
+                int idx = snpsOnGene.indexOf(snp);
+                int currentORG = snpsOnGene.get(idx).getORGcov();
+                int currentALT= snpsOnGene.get(idx).getALTcov();
+
+                int newORG = snpsOnGene.get(idx).getORGcov();
+                int newALT= snpsOnGene.get(idx).getALTcov();
+
+                double ratio = (double) newALT / (double) newORG;
+                double newRatio = (double) newALT / (double) newORG;
+
+                double avgRatio = ( ratio + newRatio )/ 2;
+                double avgORG = (currentORG + newORG )/ 2;
+                double avgALT = avgORG * avgRatio;
+
+
+                //snpsOnGene.get(snpsOnGene.indexOf(snp)).setFoundInReplicates(snpsOnGene.get(snpsOnGene.indexOf(snp)).getFoundInReplicates() + 1);
+                //snpsOnGene.get(snpsOnGene.indexOf(snp)).setALTcov(( snpsOnGene.get(snpsOnGene.indexOf(snp)).getALTcov() + snp.getALTcov() / 2));  // ToDo :  improve mean calculation
+                //snpsOnGene.get(snpsOnGene.indexOf(snp)).setORGcov(( snpsOnGene.get(snpsOnGene.indexOf(snp)).getORGcov() + snp.getORGcov() / 2)); // ToDo :  improve mean calculation
                 // for the moment a simple mean will do  ToDo :  improve mean calculation  possible ratio evaluation.. save the ratio, extend the counts
             }
             else{

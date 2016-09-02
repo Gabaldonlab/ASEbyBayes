@@ -229,7 +229,11 @@ class SNP implements Comparable<SNP> {
 
         // chrom position ident ref alt qual filter info
         return this.gene.getChromosome() + "\t" + this.position + "\t" + this.gene.getIdent()
-                + "\t" + this.ORG + "\t" + this.ALT + "\t" + this.getALTcov() + "\t" + this.getORGcov() + "\t" + "TestInfo" + "\t" + this.expression + "\t" + this.isSynonymous + "\t" + this.isValidated();
+                + "\t" + this.ORG + "\t" + this.ALT + "\t" +
+                this.getALTcov() + "\t" + this.getORGcov() +
+                "\t" + "TestInfo" + "\t" + this.expression +
+                "\t" + this.isSynonymous + "\t" +
+                this.isValidated() + "\t" + this.foundInReplicates ;
     }
 
     @Override
