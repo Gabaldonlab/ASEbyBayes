@@ -22,14 +22,14 @@ public class HypothesisTest {
     private Random randomGenerator = new Random();
 
 
-    public Hypothesis hypothesis = new Hypothesis(25,25,"TestHyp");
+    public Hypothesis hypothesis = new Hypothesis(1,49,"TestHyp");
 
     @Before
     public void createData(){
 
         for(int i = 0; i< length; i++){
             SNP snp = new SNP(testgene,'A',i);
-            snp.setALTcov(900 + randomGenerator.nextInt(200));
+            snp.setALTcov(43 + randomGenerator.nextInt(20));
             snp.setORGcov(900 + randomGenerator.nextInt(200));
             snpList.add(snp);
             testgene.addSNP(snp,false);

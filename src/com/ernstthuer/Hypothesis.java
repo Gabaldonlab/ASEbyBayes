@@ -81,22 +81,14 @@ public class Hypothesis {
                 double mean = bcl.getMean();
                 double sigma = bcl.getSigma();
                 double logdensity = bcl.getPosterior().logDensity((alpha/(alpha+beta)));
+                double ratio = (double) snp.getALTcov() / ((double)snp.getORGcov()+(double)snp.getALTcov());
 
+                System.out.println(" ratio :" + ratio);
+                if(ratio > (mean) && logdensity < 1){
+                            System.out.println("Hypothesis confirmed ");
+                        }
                 System.out.println("Mean : "+mean + "  Sigma :" + sigma +" logDensity : "+ logdensity );
-
             }
-
-
-
         }
-
-
-
-
-
     }
-
-
-
-
 }
