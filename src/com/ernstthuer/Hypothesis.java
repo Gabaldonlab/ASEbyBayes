@@ -96,6 +96,7 @@ public class Hypothesis {
     public void calculateHypothisForSNPsOnGenes(ArrayList<Gene> geneList){
 
         for(Gene gene:geneList){
+
             System.out.println(gene.getIdent());
             for(SNP snp: gene.getSnpsOnGene()){
                 int coverage = snp.getALTcov() + snp.getORGcov();
@@ -108,7 +109,7 @@ public class Hypothesis {
                 double ratio = (double) snp.getALTcov() / ((double)snp.getORGcov()+(double)snp.getALTcov());
 
 
-
+                snp.addHypothesisEval(this.name,logdensity);
 
                 if(logdensity > -1.3) {
                     //System.out.println(" ratio :" + ratio + "  ALTcov = " + snp.getALTcov());

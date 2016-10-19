@@ -51,22 +51,29 @@ public class HypothesisTest {
     @Test
     public void NoiseCaptureTest() throws Exception {
         System.out.println(hypothesis.getGeneList().size());
-        hypothesis.calculateHypothisForSNPsOnGenes(hypothesis.getGeneList());
+
     }
 
-
+*/
 
     @Test
     public void EqualAllelicExpressionTest() throws Exception{
         System.out.println("Second test");
-        hypothesisEAX.calculateHypothisForSNPsOnGenes(hypothesisEAX.getGeneList());
+
     }
 
-*/
+
     @Test
     public void FullSNPCaptureTest() throws Exception {
         System.out.println("Third test");
+        hypothesis.calculateHypothisForSNPsOnGenes(hypothesis.getGeneList());
+        hypothesisEAX.calculateHypothisForSNPsOnGenes(hypothesisEAX.getGeneList());
         hypothesisFullSNP.calculateHypothisForSNPsOnGenes(hypothesisFullSNP.getGeneList());
+
+        for(SNP snp: testgene.getSnpsOnGene()){
+            System.out.println("SNP classify " + snp.getHypothesisEval());
+        }
+
 
     }
 

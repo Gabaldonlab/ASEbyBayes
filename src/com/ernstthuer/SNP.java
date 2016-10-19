@@ -4,7 +4,7 @@ import org.apache.logging.log4j.core.util.Integers;
 import org.biojava.nbio.core.sequence.DNASequence;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 /**
  * Created by ethur on 7/26/16.
@@ -24,11 +24,13 @@ class SNP implements Comparable<SNP> {
     private int ORGcov = 0;
     private int ALTcov = 1;
     private int validated;
-    private double logDensityThreshold = 1;
+    private double logDensityThreshold = 0;
     private double borderApproximation = 0.01;
     private int ratioExpression;
     private String expression = " ";
     private boolean isSynonymous;
+    private HashMap<String, Double> hypothesisEval = new HashMap<>();
+
     private ArrayList<Integers> evaluationResults = new ArrayList<>();
 
     private int foundInReplicates;
@@ -202,6 +204,31 @@ class SNP implements Comparable<SNP> {
     public String getExpression() {
         return expression;
     }
+
+    public HashMap<String, Double> getHypothesisEval() {
+        return hypothesisEval;
+    }
+
+    public void setHypothesisEval(HashMap<String, Double> hypothesisEval) {
+        this.hypothesisEval = hypothesisEval;
+    }
+
+    public void addHypothesisEval(String test, Double results) {
+        if(this.hypothesisEval.containsKey(test)){
+
+            double valueSoFar =  this.hypothesisEval.get(test);
+            if(results > logDensityThreshold) {
+                double newValue = valueSoFar + 1;
+                this.hypothesisEval.replace(test,newValue);
+            }
+        }else {
+            if(results > logDensityThreshold) {
+                this.hypothesisEval.put(test, 1.0);
+            }
+        }
+        //this.hypothesisEval = hypothesisEval;
+    }
+
 
     @Override
     public boolean equals(Object o) {
