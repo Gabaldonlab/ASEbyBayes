@@ -23,6 +23,7 @@ public class Hypothesis {
      * 25:0  25:25 and 0:25 ,  most likely candidates of SNPs will call the hypothesis
      *
      *
+     * needs a linear function to incorporate the observed coverage into the alpha and beta values
      *
      *
      *
@@ -92,13 +93,14 @@ public class Hypothesis {
         return geneList;
     }
 
-    public void accessSNPs(ArrayList<Gene> geneList){
+    public void calculateHypothisForSNPsOnGenes(ArrayList<Gene> geneList){
 
         for(Gene gene:geneList){
             System.out.println(gene.getIdent());
             for(SNP snp: gene.getSnpsOnGene()){
                 int coverage = snp.getALTcov() + snp.getORGcov();
-                BayesClassify bcl = new BayesClassify( alphaBetaCorrection(coverage, alpha), alphaBetaCorrection(coverage, beta), snp.getALTcov(), snp.getORGcov());
+                int callsTotal = snp.getALTcov() + snp.getORGcov();
+                BayesClassify bcl = new BayesClassify( alphaBetaCorrection(coverage, alpha), alphaBetaCorrection(coverage, beta), snp.getALTcov(), callsTotal);
 
                 double mean = bcl.getMean();
                 double sigma = bcl.getSigma();
@@ -106,12 +108,11 @@ public class Hypothesis {
                 double ratio = (double) snp.getALTcov() / ((double)snp.getORGcov()+(double)snp.getALTcov());
 
 
+
+
                 if(logdensity > -1.3) {
-                    System.out.println(" ratio :" + ratio + "  ALTcov = " + snp.getALTcov());
-                    if (ratio > (mean) && logdensity > -1.3) {
-                        System.out.println("Hypothesis confirmed " + snp.getALTcov());
-                    }
-                    System.out.println("Mean : " + mean + "  Sigma :" + sigma + " logDensity : " + logdensity);
+                    //System.out.println(" ratio :" + ratio + "  ALTcov = " + snp.getALTcov());
+                    System.out.println("Mean : " + mean + "  Sigma :" + sigma + " logDensity : " + logdensity + "  Altcov " + snp.getALTcov());
                 }
             }
         }
