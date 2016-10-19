@@ -93,6 +93,27 @@ public class Hypothesis {
         return geneList;
     }
 
+
+    public void evaluateGenesForExpression(ArrayList<Gene> geneList){
+
+        ArrayList<Double> observationsFromSNPs = new ArrayList<>();
+        Double totalObserv =  0.0;
+
+        for(Gene gene : geneList) {
+            for (SNP snp : gene.getSnpsOnGene()) {
+
+                if(snp.getHypothesisEval().containsKey(this.name)){
+                    observationsFromSNPs.add(snp.getHypothesisEval().get(this.name));
+                    totalObserv = ( totalObserv + snp.getHypothesisEval().get(this.name));
+                }
+            }
+            gene.addToHypothesisEval(this.name,totalObserv);
+        }
+        // there should be 2x the amount of EAX snps,  since the range is 2x as high
+    }
+
+
+
     public void calculateHypothisForSNPsOnGenes(ArrayList<Gene> geneList){
 
         for(Gene gene:geneList){
@@ -103,19 +124,15 @@ public class Hypothesis {
                 int callsTotal = snp.getALTcov() + snp.getORGcov();
                 BayesClassify bcl = new BayesClassify( alphaBetaCorrection(coverage, alpha), alphaBetaCorrection(coverage, beta), snp.getALTcov(), callsTotal);
 
-                double mean = bcl.getMean();
-                double sigma = bcl.getSigma();
+                //double mean = bcl.getMean();
+                //double sigma = bcl.getSigma();
                 double logdensity = bcl.getPosterior().logDensity((alpha/(alpha+beta)));
-                double ratio = (double) snp.getALTcov() / ((double)snp.getORGcov()+(double)snp.getALTcov());
+                //double ratio = (double) snp.getALTcov() / ((double)snp.getORGcov()+(double)snp.getALTcov());
 
 
                 snp.addHypothesisEval(this.name,logdensity);
-
-                if(logdensity > -1.3) {
-                    //System.out.println(" ratio :" + ratio + "  ALTcov = " + snp.getALTcov());
-                    System.out.println("Mean : " + mean + "  Sigma :" + sigma + " logDensity : " + logdensity + "  Altcov " + snp.getALTcov());
-                }
             }
         }
+        evaluateGenesForExpression(geneList);
     }
 }

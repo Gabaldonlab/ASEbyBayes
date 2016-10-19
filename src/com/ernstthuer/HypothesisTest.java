@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 /**
@@ -48,23 +49,12 @@ public class HypothesisTest {
 
 
 /*
-    @Test
-    public void NoiseCaptureTest() throws Exception {
-        System.out.println(hypothesis.getGeneList().size());
 
-    }
 
-*/
-
-    @Test
-    public void EqualAllelicExpressionTest() throws Exception{
-        System.out.println("Second test");
-
-    }
 
 
     @Test
-    public void FullSNPCaptureTest() throws Exception {
+    public void EvaluateMultipleTestInteractions() throws Exception {
         System.out.println("Third test");
         hypothesis.calculateHypothisForSNPsOnGenes(hypothesis.getGeneList());
         hypothesisEAX.calculateHypothisForSNPsOnGenes(hypothesisEAX.getGeneList());
@@ -73,11 +63,32 @@ public class HypothesisTest {
         for(SNP snp: testgene.getSnpsOnGene()){
             System.out.println("SNP classify " + snp.getHypothesisEval());
         }
+    }
+*/
+
+
+    @Test
+    public void classifyGenes() throws Exception{
+        System.out.println("Third test");
+        hypothesis.calculateHypothisForSNPsOnGenes(hypothesis.getGeneList());
+
+
+        hypothesisEAX.calculateHypothisForSNPsOnGenes(hypothesisEAX.getGeneList());
+        hypothesisFullSNP.calculateHypothisForSNPsOnGenes(hypothesisFullSNP.getGeneList());
+
+        //for(SNP snp: testgene.getSnpsOnGene()){
+        //    System.out.println("SNP classify " + snp.getHypothesisEval());
+        //}
+
+        System.out.println(testgene.getHypothesisEval().size());
+        Iterator it = testgene.getHypothesisEval().entrySet().iterator();
+        while(it.hasNext()){
+            System.out.println(it.next());
+        }
+
 
 
     }
-
-
 
 
 }

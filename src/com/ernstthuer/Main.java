@@ -19,6 +19,13 @@ public class Main {
     static boolean verbose = true;
     static HashMap<String,String> codonConversion = new HashMap<>();
 
+
+    // Core Hypothesis with preset alpha beta values
+    public static Hypothesis hypothesisZero = new Hypothesis(0.1,10,"NullExpHyp");
+    public static Hypothesis hypothesisEAX = new Hypothesis(5,5,"EqualAllelicExpression");
+    public static Hypothesis hypothesisFullSNP = new Hypothesis(10,0.1,"FullSNPHyp");
+
+
     // bimodial primers for noise correction
     static double bimodalPrimersForNoise = 0.5;
 
@@ -230,6 +237,10 @@ public class Main {
 
 
         }
+
+
+
+
         for(Gene gene:geneList){
             try {
                 gene.evaluateSNPs();

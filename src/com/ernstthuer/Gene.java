@@ -22,7 +22,7 @@ public class Gene implements Cloneable {
     private ArrayList<SimpleRead> geneReadList = new ArrayList<>();
     private String ASE;
     private LinkedHashMap<Integer,Integer> positioncount = new LinkedHashMap<>();
-
+    private HashMap<String, Double> hypothesisEval = new HashMap<>();
 
 
     @Override
@@ -400,6 +400,14 @@ public class Gene implements Cloneable {
         }
     }
 
+
+    public HashMap<String, Double> getHypothesisEval() {
+        return hypothesisEval;
+    }
+
+    public void addToHypothesisEval(String name, Double eval) {
+        this.hypothesisEval.put(name,eval);
+    }
 
     public void addRead(SimpleRead read) {
         this.geneReadList.add(read);
