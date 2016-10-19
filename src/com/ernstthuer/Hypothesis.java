@@ -65,6 +65,28 @@ public class Hypothesis {
     // evaluate geneList over their SNPs
     //
 
+    public double alphaBetaCorrection(int TotalCoverage, double alphaBeta){
+
+        double mincoverage = 0.001;
+
+        /**
+         * a static alpha/ beta set value cannot classify the observed changes in coverage
+         * implement a linear function for classification
+         *
+         * a linear function should be sufficiently complex
+         *
+         * y = kx+d
+         *
+         * d = minimum of 0.01
+         * k = multiplier for presets in expectations
+         *
+         *
+         */
+        double newAlphaorBeta = mincoverage + ((alphaBeta* 0.1) *TotalCoverage);
+       //double newBeta = mincoverage + ((beta*0.1) *TotalCoverage);
+        return newAlphaorBeta  ;
+    }
+
 
     public ArrayList<Gene> getGeneList() {
         return geneList;
@@ -75,19 +97,22 @@ public class Hypothesis {
         for(Gene gene:geneList){
             System.out.println(gene.getIdent());
             for(SNP snp: gene.getSnpsOnGene()){
-                System.out.println(snp.getPosition());
-                BayesClassify bcl = new BayesClassify(alpha, beta, snp.getALTcov(), snp.getORGcov());
+                int coverage = snp.getALTcov() + snp.getORGcov();
+                BayesClassify bcl = new BayesClassify( alphaBetaCorrection(coverage, alpha), alphaBetaCorrection(coverage, beta), snp.getALTcov(), snp.getORGcov());
 
                 double mean = bcl.getMean();
                 double sigma = bcl.getSigma();
                 double logdensity = bcl.getPosterior().logDensity((alpha/(alpha+beta)));
                 double ratio = (double) snp.getALTcov() / ((double)snp.getORGcov()+(double)snp.getALTcov());
 
-                System.out.println(" ratio :" + ratio);
-                if(ratio > (mean) && logdensity < 1){
-                            System.out.println("Hypothesis confirmed ");
-                        }
-                System.out.println("Mean : "+mean + "  Sigma :" + sigma +" logDensity : "+ logdensity );
+
+                if(logdensity > -1.3) {
+                    System.out.println(" ratio :" + ratio + "  ALTcov = " + snp.getALTcov());
+                    if (ratio > (mean) && logdensity > -1.3) {
+                        System.out.println("Hypothesis confirmed " + snp.getALTcov());
+                    }
+                    System.out.println("Mean : " + mean + "  Sigma :" + sigma + " logDensity : " + logdensity);
+                }
             }
         }
     }
