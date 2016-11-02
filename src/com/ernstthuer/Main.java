@@ -83,7 +83,9 @@ public class Main {
         catch (ClassCastException e){
             errorCaller(e);
         }catch (IOException IOex){
+            System.out.println("File not Found exception at GFF reader input");
             errorCaller(IOex);
+
         }
 
 
@@ -131,7 +133,7 @@ public class Main {
 
 
         for (FileHandler file : parser.fileList) {
-            if (file.getType() == "Bam" && file.getDirection() == "Input") {
+            if (file.getType().equals("Bam") && file.getDirection().equals("Input")) {
                 //make them implement Runnable   ... later
                 System.out.println("[STATUS] Loading BAM file " + file.getLocale());
 
@@ -241,6 +243,9 @@ public class Main {
 
 
 
+
+
+        // ToDO Hypothesis wise classification
         for(Gene gene:geneList){
             try {
                 gene.evaluateSNPs();
@@ -309,7 +314,7 @@ public class Main {
     }
          //*///DISABLED FOR TESTING
 
-    public static void errorCaller(Exception e) {
+    private static void errorCaller(Exception e) {
         if (verbose) {
             //System.out.println(e);
             StringWriter sw = new StringWriter();
@@ -320,7 +325,7 @@ public class Main {
         }
     }
 
-    public static void unifyGeneLists(ArrayList<Gene> individualListOfGenes){
+    private static void unifyGeneLists(ArrayList<Gene> individualListOfGenes){
 
         for(Gene gene : geneList) {
             // find gene in original genelist,
@@ -336,7 +341,7 @@ public class Main {
 
 
 
-    public static void  populateCodonConversion(){
+    private static void  populateCodonConversion(){
         codonConversion.put("TCT","Ser");
         codonConversion.put("TAT","Tyr");
         codonConversion.put("TGT","Cys");
