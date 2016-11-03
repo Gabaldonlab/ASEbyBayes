@@ -18,7 +18,7 @@ public class Main {
     static HashMap<String, DNASequence> fasta = new HashMap<>();
     static boolean verbose = true;
     static HashMap<String,String> codonConversion = new HashMap<>();
-
+    static int numThreads = 10;
 
     // Core Hypothesis with preset alpha beta values
     public static Hypothesis hypothesisZero = new Hypothesis(0.1,10,"NullExpHyp");
@@ -176,9 +176,9 @@ public class Main {
                 }*/
             }
         }
-        BamThreader bamThreader = new BamThreader(listOfBamFilesFromParserForBamThreader,geneList);
+        BamThreader bamThreader = new BamThreader(listOfBamFilesFromParserForBamThreader,geneList,numThreads);
 
-
+        geneList = bamThreader.getOutputGeneArrayList();
 
 
         // wait for thread completion

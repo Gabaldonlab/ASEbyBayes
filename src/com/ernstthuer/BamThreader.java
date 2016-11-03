@@ -7,9 +7,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-/**
- * Created by ethur on 11/3/16.
- */
 public class BamThreader {
     /**
      *
@@ -20,23 +17,29 @@ public class BamThreader {
 
     private ArrayList<BamHandler> bamfiles = new ArrayList<>();
     private ArrayList<Gene> geneArrayList;
+    private ArrayList<Gene> outputGeneArrayList;
     private ArrayList<ArrayList<Gene>> listOfGenesFromThreads = new ArrayList<>();
+    private int poolSize ;
 
-    public BamThreader(ArrayList<BamHandler> bamfiles, ArrayList<Gene> geneArrayList) {
+    public BamThreader(ArrayList<BamHandler> bamfiles, ArrayList<Gene> geneArrayList, int poolSize) {
         this.bamfiles = bamfiles;
         this.geneArrayList = geneArrayList;
         this.listOfGenesFromThreads = cloneGeneLists();
+        this.poolSize = poolSize;
 
         try {
             loadBamDataViaThreading();
         }catch (InterruptedException e){
             System.out.println("[ERROR] Thread loading interrupted");
             System.out.print(e);
-
         }catch (ExecutionException exec){
             System.out.println("[ERROR] Execution of Threading disrupted ");
             System.out.print(exec);
         }
+
+        outputGeneArrayList = unifyGeneLists();
+
+
     }
 
     public ArrayList<ArrayList<Gene>> cloneGeneLists () {
@@ -60,8 +63,7 @@ public class BamThreader {
 
     public void loadBamDataViaThreading() throws ExecutionException, InterruptedException {
         int count = 0;
-
-        int poolSize = 10;
+        //int poolSize = 10;
         ExecutorService service = Executors.newFixedThreadPool(poolSize);
         List<Future<Runnable>> futures = new ArrayList<>();
 
@@ -85,16 +87,16 @@ public class BamThreader {
 
         service.shutdownNow();
 
-
     }
 
 
     public ArrayList<Gene> unifyGeneLists () {
-
-
         return null;
     }
 
+    public ArrayList<Gene> getOutputGeneArrayList() {
+        return outputGeneArrayList;
+    }
 
     /** ToDo implement Threading
 
