@@ -132,12 +132,20 @@ public class Main {
         ArrayList<Thread> threads = new ArrayList<>();
 
 
+        ArrayList<BamHandler> listOfBamFilesFromParserForBamThreader = new ArrayList<>();
+
         for (FileHandler file : parser.fileList) {
             if (file.getType().equals("Bam") && file.getDirection().equals("Input")) {
                 //make them implement Runnable   ... later
                 System.out.println("[STATUS] Loading BAM file " + file.getLocale());
 
+                listOfBamFilesFromParserForBamThreader.add(new BamHandler(file.getLocale(), "Bam", "Input"));
+
+
+
+
                 //Cloner cloner=new Cloner();
+                /*
                 try {
                     if (fasta != null) {
                         BamHandler bhdlr = new BamHandler(file.getLocale(), "Bam", "Input");
@@ -165,13 +173,21 @@ public class Main {
                 } catch (Exception e) {
                     errorCaller(e);
                     //fasta = null;
-                }
+                }*/
             }
         }
+        BamThreader bamThreader = new BamThreader(listOfBamFilesFromParserForBamThreader,geneList);
+
+
+
 
         // wait for thread completion
+
+        /**  ToDo move everything related to the threads to the BamThreader ...
+
         for(Thread thread:threads){
             try {
+                System.out.println(thread.getName() + " thread joined ");
                 thread.join();
             }catch (InterruptedException e){
                 errorCaller(e);
@@ -183,6 +199,8 @@ public class Main {
             ArrayList<Gene> individualGeneList = bhdlr.getGeneList();
             unifyGeneLists(individualGeneList);
         }
+
+         /*
 
         /*
         for(List<Gene> geneList : listOfGeneLists) {
