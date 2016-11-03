@@ -1,7 +1,11 @@
 package com.ernstthuer;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * Created by ethur on 11/3/16.
@@ -22,8 +26,17 @@ public class BamThreader {
         this.bamfiles = bamfiles;
         this.geneArrayList = geneArrayList;
         this.listOfGenesFromThreads = cloneGeneLists();
-        loadBamDataviaThreading();
 
+        try {
+            loadBamDataViaThreading();
+        }catch (InterruptedException e){
+            System.out.println("[ERROR] Thread loading interrupted");
+            System.out.print(e);
+
+        }catch (ExecutionException exec){
+            System.out.println("[ERROR] Execution of Threading disrupted ");
+            System.out.print(exec);
+        }
     }
 
     public ArrayList<ArrayList<Gene>> cloneGeneLists () {
@@ -45,21 +58,32 @@ public class BamThreader {
     }
 
 
-    public void loadBamDataviaThreading(){
+    public void loadBamDataViaThreading() throws ExecutionException, InterruptedException {
         int count = 0;
+
+        int poolSize = 10;
+        ExecutorService service = Executors.newFixedThreadPool(poolSize);
+        List<Future<Runnable>> futures = new ArrayList<>();
+
         for(BamHandler bhdlr:bamfiles){
             ArrayList<Gene> temporaryGeneList = listOfGenesFromThreads.get(count);
             bhdlr.setGeneList(temporaryGeneList);
-            bhdlr.run();
+            Future f = service.submit(bhdlr);
+            futures.add(f);
 
-            //Thread thread = new Thread(bhdlr); // using runnable instead
-            //thread.start();
-            //threads.add(thread);
-
-            bhdlr.getGeneList();
             System.out.println("Bam Loading complete on file " + bhdlr.getLocale());
             count += 1 ;
         }
+
+        count = 0;
+        for (Future<Runnable> f : futures)
+        {
+            BamHandler bhdlr = (BamHandler) f.get();
+            this.listOfGenesFromThreads.set(count, bhdlr.getGeneList());
+            count +=1;
+        }
+
+        service.shutdownNow();
 
 
     }
