@@ -83,7 +83,7 @@ public class Main {
         catch (ClassCastException e){
             errorCaller(e);
         }catch (IOException IOex){
-            System.out.println("File not Found exception at GFF reader input");
+            System.out.println("[ERROR] File not Found exception at GFF reader input");
             errorCaller(IOex);
 
         }
@@ -127,9 +127,9 @@ public class Main {
 
          */
 
-        ArrayList<BamHandler> bamList = new ArrayList<>();
-        ArrayList<List<Gene>> listOfGeneLists = new ArrayList<>();
-        ArrayList<Thread> threads = new ArrayList<>();
+        //ArrayList<BamHandler> bamList = new ArrayList<>();
+        //ArrayList<List<Gene>> listOfGeneLists = new ArrayList<>();
+        //ArrayList<Thread> threads = new ArrayList<>();
 
 
         ArrayList<BamHandler> listOfBamFilesFromParserForBamThreader = new ArrayList<>();

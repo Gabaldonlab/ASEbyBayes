@@ -8,6 +8,7 @@ import htsjdk.samtools.*;
 import htsjdk.samtools.util.*;
 import htsjdk.samtools.ValidationStringency;
 import htsjdk.samtools.SamFileValidator;
+import jdk.nashorn.internal.codegen.CompilerConstants;
 import org.biojava.nbio.core.sequence.DNASequence;
 import sun.print.CUPSPrinter;
 
@@ -17,9 +18,10 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.*;
+import java.util.concurrent.Callable;
 
-public class BamHandler extends FileHandler implements Runnable {
-
+public class BamHandler extends FileHandler implements Callable {
+//    public class BamHandler extends FileHandler implements Runnable {
 
     // bam is only import, no direction,
     //public static int lengthOfReads = 0;
@@ -53,11 +55,18 @@ public class BamHandler extends FileHandler implements Runnable {
     }
 
 
+    /*
     @Override
     public void run() {
         this.localGeneList = readBam(fastaMap,existingknowledge );
         }
 
+*/
+    @Override
+    public ArrayList<Gene> call(){
+
+        return readBam(fastaMap,existingknowledge );
+    }
 
 
     // helper methods to be called from main before threadin intiation,  creates copies of the fasta map and the boolean

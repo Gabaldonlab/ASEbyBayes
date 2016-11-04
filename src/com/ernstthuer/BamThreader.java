@@ -10,7 +10,7 @@ import java.util.concurrent.Future;
 public class BamThreader {
     /**
      *
-     *  Threading to a seperate Class,
+     *  Threading to a separate Class,
      * should facilitate easier JUnit testing
      *
      */
@@ -65,28 +65,45 @@ public class BamThreader {
         int count = 0;
         //int poolSize = 10;
         ExecutorService service = Executors.newFixedThreadPool(poolSize);
-        List<Future<Runnable>> futures = new ArrayList<>();
+        List<Future<ArrayList<Gene>>> futures = new ArrayList<>();
 
         for(BamHandler bhdlr:bamfiles){
             ArrayList<Gene> temporaryGeneList = listOfGenesFromThreads.get(count);
             bhdlr.setGeneList(temporaryGeneList);
-            Future f = service.submit(bhdlr);
+            System.out.println("initial size of Gene list = " + temporaryGeneList.size());
+            Future<ArrayList<Gene>> f = service.submit(bhdlr);
             futures.add(f);
+
+
 
             System.out.println("Bam Loading complete on file " + bhdlr.getLocale());
             count += 1 ;
         }
 
         count = 0;
-        for (Future<Runnable> f : futures)
+        for (Future<ArrayList<Gene>> f : futures)
         {
+            System.out.println("Resulting gene List of size : " + f.get().size());
+            /*
             BamHandler bhdlr = (BamHandler) f.get();
-            ArrayList<Gene> geneListFromBamHandler = bhdlr.getGeneList();
-            for(Gene gene: geneListFromBamHandler){
-                gene.findORGCoverageOfSNPs();
+            System.out.println(bhdlr.getLocale());
+            try {
+                try{
+                    System.out.println(f.toString());
+
+                }catch (NullPointerException npl){
+                    System.out.println(npl);
+                }
+                ArrayList<Gene> geneListFromBamHandler = bhdlr.getGeneList();
+                for (Gene gene : geneListFromBamHandler) {
+                    gene.findORGCoverageOfSNPs();
+                }
+                this.listOfGenesFromThreads.set(count, geneListFromBamHandler);
+                count += 1;
+            }catch (NullPointerException nullpoint){
+                System.out.println(nullpoint);
             }
-            this.listOfGenesFromThreads.set(count, geneListFromBamHandler);
-            count +=1;
+            */
         }
 
         service.shutdownNow();
