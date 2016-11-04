@@ -230,6 +230,18 @@ class SNP implements Comparable<SNP> {
     }
 
 
+
+    public void combineSNPInformation(SNP snpOnOtherReplicate ){
+
+        foundInReplicates +=1;
+        this.setALTcov( (this.getALTcov() + snpOnOtherReplicate.getALTcov())/2   );
+        this.setORGcov( (this.getORGcov() + snpOnOtherReplicate.getORGcov())/2   );
+
+
+    }
+
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

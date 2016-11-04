@@ -91,6 +91,38 @@ public class BamThreader {
 
 
     public ArrayList<Gene> unifyGeneLists () {
+
+        ArrayList<Gene> outputGeneArrayList = new ArrayList<>();
+
+        for(ArrayList<Gene> geneListSubset : listOfGenesFromThreads){
+
+            for(Gene gene : geneListSubset){
+
+                if(outputGeneArrayList.contains(gene)){
+
+                    int indexOf = outputGeneArrayList.indexOf(gene);
+                    Gene orgGene = outputGeneArrayList.get(indexOf);
+
+                    orgGene.unifySNPLists(gene.getSnpsOnGene());
+
+                }
+
+
+                if(! outputGeneArrayList.contains(gene)){
+                    outputGeneArrayList.add(gene);
+                }
+
+
+
+
+            }
+
+
+
+        }
+
+
+
         return null;
     }
 

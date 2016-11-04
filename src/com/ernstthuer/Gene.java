@@ -413,6 +413,35 @@ public class Gene implements Cloneable {
         this.geneReadList.add(read);
     }
 
+
+    public ArrayList<SNP> unifySNPLists(ArrayList<SNP> otherSNPList ){
+
+        ArrayList<SNP> snpArrayList = new ArrayList<>();
+
+        for(SNP snp : snpsOnGene){
+            snpArrayList.add(snp);
+        }
+
+        for(SNP snp : otherSNPList){
+
+            if(! snpArrayList.contains(snp)){
+                snpArrayList.add(snp);
+            }else{
+
+                int indexOfSNP = snpArrayList.indexOf(snp);
+                SNP orgSNP = snpArrayList.get(indexOfSNP);
+                orgSNP.combineSNPInformation(snp);
+            }
+
+        }
+
+
+        return snpArrayList;
+
+    }
+
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
