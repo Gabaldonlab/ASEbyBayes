@@ -229,6 +229,9 @@ public class Main {
         // This Block gathers information on the SNPs,  validates them according to their expression and conservation over replicates
         // ToDo improve threading output by combining n geneLists // SNPlists
 
+
+        /**
+
         for (Gene gene : geneList) {
 
 
@@ -252,11 +255,11 @@ public class Main {
                 }
 
 
-            }*/
+            }
 
 
 
-        }
+        }*/
 
 
 

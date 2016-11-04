@@ -81,7 +81,11 @@ public class BamThreader {
         for (Future<Runnable> f : futures)
         {
             BamHandler bhdlr = (BamHandler) f.get();
-            this.listOfGenesFromThreads.set(count, bhdlr.getGeneList());
+            ArrayList<Gene> geneListFromBamHandler = bhdlr.getGeneList();
+            for(Gene gene: geneListFromBamHandler){
+                gene.findORGCoverageOfSNPs();
+            }
+            this.listOfGenesFromThreads.set(count, geneListFromBamHandler);
             count +=1;
         }
 
@@ -96,7 +100,10 @@ public class BamThreader {
 
         for(ArrayList<Gene> geneListSubset : listOfGenesFromThreads){
 
+
+
             for(Gene gene : geneListSubset){
+
 
                 if(outputGeneArrayList.contains(gene)){
 
@@ -111,19 +118,9 @@ public class BamThreader {
                 if(! outputGeneArrayList.contains(gene)){
                     outputGeneArrayList.add(gene);
                 }
-
-
-
-
             }
-
-
-
         }
-
-
-
-        return null;
+        return outputGeneArrayList;
     }
 
     public ArrayList<Gene> getOutputGeneArrayList() {
