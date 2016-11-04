@@ -83,10 +83,10 @@ public class BamThreader {
         count = 0;
         for (Future<ArrayList<Gene>> f : futures)
         {
-            System.out.println("Resulting gene List of size : " + f.get().size());
-            /*
-            BamHandler bhdlr = (BamHandler) f.get();
-            System.out.println(bhdlr.getLocale());
+            //System.out.println("Resulting gene List of size : " + f.get().size());
+
+            //BamHandler bhdlr = (BamHandler) f.get();
+            //System.out.println(f.get().size());
             try {
                 try{
                     System.out.println(f.toString());
@@ -94,16 +94,17 @@ public class BamThreader {
                 }catch (NullPointerException npl){
                     System.out.println(npl);
                 }
-                ArrayList<Gene> geneListFromBamHandler = bhdlr.getGeneList();
+                ArrayList<Gene> geneListFromBamHandler = f.get();
                 for (Gene gene : geneListFromBamHandler) {
                     gene.findORGCoverageOfSNPs();
                 }
                 this.listOfGenesFromThreads.set(count, geneListFromBamHandler);
+
                 count += 1;
             }catch (NullPointerException nullpoint){
                 System.out.println(nullpoint);
             }
-            */
+
         }
 
         service.shutdownNow();
