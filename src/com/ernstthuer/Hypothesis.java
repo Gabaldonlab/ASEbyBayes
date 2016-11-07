@@ -46,8 +46,6 @@ public class Hypothesis {
         this.geneList = geneList;
         this.affectedGenes = new ArrayList<>();
 
-
-
     }
 
     public Hypothesis(double alpha, double beta, String name) {
@@ -115,6 +113,9 @@ public class Hypothesis {
 
 
     public void calculateHypothisForSNPsOnGenes(ArrayList<Gene> geneList){
+
+        //ArrayList<Gene> affectedGenes;
+        //ArrayList<SNP> affectedSNPs;
 
         for(Gene gene:geneList){
 
