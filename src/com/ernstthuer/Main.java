@@ -181,6 +181,8 @@ public class Main {
 
         geneList = bamThreader.getOutputGeneArrayList();
 
+        HypothesisTester hypothesisTester = new HypothesisTester(geneList);
+
 
         // wait for thread completion
 

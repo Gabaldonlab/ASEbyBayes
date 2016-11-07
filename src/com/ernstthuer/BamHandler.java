@@ -125,9 +125,15 @@ public class BamHandler extends FileHandler implements Callable {
             // a default gene
             Gene currentGene = null;
 
+            int count = 0;
+
             while (iterator.hasNext()) {
 
+                count +=1 ;
 
+                if(count % 100000 == 0){
+                    System.out.println("[STATUS] "  + count + " reads parsed " );
+                }
 
                 // sort to the genes then parse for SNPs
 

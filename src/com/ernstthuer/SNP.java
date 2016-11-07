@@ -122,6 +122,7 @@ class SNP implements Comparable<SNP> {
     void disableValidation(){ this.validated = -5;}
 
 
+
     int getFoundInReplicates() {
         return foundInReplicates;
     }
