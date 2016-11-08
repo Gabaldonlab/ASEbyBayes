@@ -46,6 +46,11 @@ public class Hypothesis {
         this.geneList = geneList;
         this.affectedGenes = new ArrayList<>();
 
+
+        // immediately run the calculation
+        calculateHypothisForSNPsOnGenes(geneList);
+
+
     }
 
     public Hypothesis(double alpha, double beta, String name) {
@@ -119,7 +124,7 @@ public class Hypothesis {
 
         for(Gene gene:geneList){
 
-            System.out.println(gene.getIdent());
+            //System.out.println(gene.getIdent());
             for(SNP snp: gene.getSnpsOnGene()){
                 int coverage = snp.getALTcov() + snp.getORGcov();
                 int callsTotal = snp.getALTcov() + snp.getORGcov();

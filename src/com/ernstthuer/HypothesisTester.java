@@ -64,5 +64,7 @@ public class HypothesisTester {
         return fullSNPhypothesis ;
     }
 
-
+    public ArrayList<Gene> getGeneList() {
+        return geneList;
+    }
 }

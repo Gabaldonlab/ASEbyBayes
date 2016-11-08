@@ -1,13 +1,13 @@
 package com.ernstthuer;
 
 import org.biojava.nbio.core.sequence.DNASequence;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.HashMap;
-import java.util.List;
 
 
 public class Main {
@@ -183,6 +183,11 @@ public class Main {
 
         HypothesisTester hypothesisTester = new HypothesisTester(geneList);
 
+        ArrayList<Gene> otherGeneList = hypothesisTester.getGeneList();
+
+
+
+
 
         // wait for thread completion
 
@@ -270,9 +275,26 @@ public class Main {
 
 
         // ToDO Hypothesis wise classification
+        int count = 0;
         for(Gene gene:geneList){
             try {
-                gene.evaluateSNPs();
+
+
+                //gene.evaluateSNPs();
+
+                for(SNP snp : gene.getSnpsOnGene()) {
+
+
+                    if (snp.getORGcov() + snp.getALTcov() > 10  && ! snp.getHypothesisEval().containsKey("NoiseHyp")) {
+                        count += 1;
+
+
+                        System.out.println(count + " " + snp.getFoundInReplicates() + "  " + snp.getHypothesisEval() + " " + snp.getALTcov() + "  " + snp.getORGcov());
+                    }
+
+                }
+
+
             }catch (ConcurrentModificationException e){
                 errorCaller(e);
             }
