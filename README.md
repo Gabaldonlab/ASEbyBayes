@@ -26,8 +26,23 @@ Reads are assumed to follow a negative binomial distribution. To model our prime
 java -jar ASEbyBayes.jar -h 
 
 
+### <i class="icon-file"></i> **Output**
+
+The output produced by ASEbyBayes consists of two lists.  The first list contains genes and their evaluation for allele specific expression according. 
+The second list contains a .vcf like investigation of SNPs that were considered in the analysis.
+
+
 ### <i class="icon-file"></i> **Pipeline**
 
 
+
+
+
 ### <i class="icon-file"></i> **Example**
+
+
+
+
+
+
 

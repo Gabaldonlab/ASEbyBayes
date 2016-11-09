@@ -38,6 +38,9 @@ public class HypothesisTester {
         this.testableHypothese.add(createASEHypothesis (this.geneList));
         this.testableHypothese.add(createFullSNPHypothesis (this.geneList));
 
+
+
+
     }
 
 
@@ -67,4 +70,48 @@ public class HypothesisTester {
     public ArrayList<Gene> getGeneList() {
         return geneList;
     }
+
+
+    public void geneWiseCOmparison(ArrayList<Gene> geneList){
+
+        for (Gene gene :geneList){
+
+            double ASEexpression = 0;
+            double FullSNPs = 0;
+            double NoHypothesisAssembled = 0;
+            double total = 0;
+
+
+            for(SNP snp : gene.getSnpsOnGene()){
+                total +=1;
+
+                if(snp.getHypothesisEval().containsKey("EqualAllelicExpression")){
+
+                    ASEexpression +=1;
+
+                }
+
+                if(snp.getHypothesisEval().containsKey("FullSNPExpression")){
+
+                    FullSNPs +=1;
+
+                }
+
+
+                if(snp.getHypothesisEval().isEmpty()){
+
+                    NoHypothesisAssembled +=1;
+                }
+
+                System.out.println("Gene : " + gene.getIdent() +" with " + gene.getSnpsOnGene().size() + " : " + total + " total snps contains " + FullSNPs +" full " + ASEexpression +" half " + NoHypothesisAssembled +" unknown SNPs"   );
+            }
+
+
+
+        }
+
+
+    }
+
+
 }
