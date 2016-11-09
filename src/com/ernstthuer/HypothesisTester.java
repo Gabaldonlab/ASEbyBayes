@@ -72,7 +72,7 @@ public class HypothesisTester {
     }
 
 
-    public void geneWiseCOmparison(ArrayList<Gene> geneList){
+    public void geneWiseComparison(ArrayList<Gene> geneList){
 
         for (Gene gene :geneList){
 
@@ -83,6 +83,10 @@ public class HypothesisTester {
 
 
             for(SNP snp : gene.getSnpsOnGene()){
+
+                if(! snp.getHypothesisEval().containsKey("NoiseHyp"))
+
+
                 total +=1;
 
                 if(snp.getHypothesisEval().containsKey("EqualAllelicExpression")){
@@ -103,15 +107,10 @@ public class HypothesisTester {
                     NoHypothesisAssembled +=1;
                 }
 
-                System.out.println("Gene : " + gene.getIdent() +" with " + gene.getSnpsOnGene().size() + " : " + total + " total snps contains " + FullSNPs +" full " + ASEexpression +" half " + NoHypothesisAssembled +" unknown SNPs"   );
+
             }
-
-
+            System.out.println("Gene : " + gene.getIdent() +" with " + gene.getSnpsOnGene().size() + " : " + total + " total snps contains " + FullSNPs +" full " + ASEexpression +" half " + NoHypothesisAssembled +" unknown SNPs"   );
 
         }
-
-
     }
-
-
 }

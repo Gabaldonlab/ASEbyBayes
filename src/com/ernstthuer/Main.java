@@ -186,6 +186,7 @@ public class Main {
         ArrayList<Gene> otherGeneList = hypothesisTester.getGeneList();
 
 
+        hypothesisTester.geneWiseComparison(geneList);
 
 
 
@@ -289,7 +290,7 @@ public class Main {
                         count += 1;
 
 
-                        System.out.println(count + " " + snp.getFoundInReplicates() + "  " + snp.getHypothesisEval() + " " + snp.getALTcov() + "  " + snp.getORGcov());
+                        //System.out.println(count + " " + snp.getFoundInReplicates() + "  " + snp.getHypothesisEval() + " " + snp.getALTcov() + "  " + snp.getORGcov());
                     }
 
                 }
