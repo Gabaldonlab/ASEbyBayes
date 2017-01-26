@@ -39,7 +39,7 @@ public class GFFHandler extends FileHandler {
         }
         //System.out.println("Total features " + lineList.length);
         geneList = geneList(this.lineList);
-        System.out.println("[STATUS] " + geneList.size() + "  " + this.feature + "s found ");
+        System.out.println("[STATUS] " + geneList.size() + "  " + this.feature + "s found " );// + geneList.get(0).getStart() + "  TEMP  " + geneList.get(0).getStop());
     }
 
     public String[] openGFF(String locale) throws IOException {
@@ -139,6 +139,7 @@ public class GFFHandler extends FileHandler {
                 }
             }
         }
+        System.out.println("[STATUS] Annotation file found type :" + type);
 
         switch (type) {
             case "CGD":
@@ -151,9 +152,9 @@ public class GFFHandler extends FileHandler {
                 }
                 break;
 
-            case "ESEMBL":
+            case "ENSEMBL":
                 for (String element : desc) {
-                    if (element.contains("_id")) {
+                    if (element.contains("gene_id")) {
                         featureID = element.split("\"")[1];
                         return featureID;
                     }

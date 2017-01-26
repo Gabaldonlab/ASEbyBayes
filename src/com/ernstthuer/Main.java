@@ -75,8 +75,10 @@ public class Main {
             System.out.println("[STATUS] loading Fasta file");
             FastaHandler fastaHandler = (FastaHandler) parser.returnType("FASTA","Input");
             geneList = gffHandler.getGeneList();
+            //System.out.println(geneList.get(0).getSequence().getLength());
             //System.out.println(" 78[Main] initial size of GeneList "  + geneList.size());
             fasta = fastaHandler.readFasta(geneList);
+            //System.out.println(geneList.get(0).getSequence().getLength());
             //for(Gene gene:geneList){
             //    System.out.println(gene.getIdent() + " " +gene.getStart() + "  " + gene.getStop());
             //}
@@ -88,6 +90,9 @@ public class Main {
             errorCaller(IOex);
 
         }
+
+
+
 
 
 

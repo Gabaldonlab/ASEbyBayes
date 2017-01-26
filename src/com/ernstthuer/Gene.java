@@ -39,6 +39,7 @@ public class Gene implements Cloneable {
         this.stop = stop;
         this.ident = ident;
 
+
         /*
         if(start < stop){
             orientation = "forward";
