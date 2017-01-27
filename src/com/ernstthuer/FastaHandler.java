@@ -65,16 +65,15 @@ public class FastaHandler extends FileHandler {
                 if (fastaMap.containsKey(gene.getChromosome())) {
                     //it's on the chromosome
                     //System.out.println(" Found chromosome " +gene.getChromosome());
-
                     gene.loadSequence(fastaMap.get(gene.getChromosome()), true);
                     //System.out.println("populating genes");
 
                 } else {
-                    System.out.println("not " + gene.getChromosome());
+                    //System.out.println("not " + gene.getChromosome());
 
-                    //genes were used directly
-                    ////gene.loadSequence(fastaMap.get(gene.getChromosome()),false);
-                    //gene.loadSequence(fastaMap.v);
+                    // full chromosome,  pass to gene for processing
+                    gene.loadSequence(fastaMap.get(gene.getChromosome()),false);
+
                 }
             }
         /*    for (Map.Entry<String, DNASequence> entry : fastaMap.entrySet()) {

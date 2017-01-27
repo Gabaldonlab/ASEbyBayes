@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="htsjdk-2.8.1-18-g4231660-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../samtools/htsjdk/build/libs/htsjdk-2.8.1-18-g4231660-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

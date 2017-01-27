@@ -10,6 +10,9 @@ import htsjdk.samtools.ValidationStringency;
 import htsjdk.samtools.SamFileValidator;
 import jdk.nashorn.internal.codegen.CompilerConstants;
 import org.biojava.nbio.core.sequence.DNASequence;
+import org.broadinstitute.hellbender.engine.AlignmentContext;
+import org.broadinstitute.hellbender.engine.FeatureContext;
+import org.broadinstitute.hellbender.engine.ReferenceContext;
 import sun.print.CUPSPrinter;
 
 //import htsjdk.samtools.util.CloserUtil;
@@ -34,19 +37,16 @@ public class BamHandler extends FileHandler implements Callable {
     // contain the reads   SAM format
 
 
+
+
     private boolean existingknowledge ;
     private HashMap<String, DNASequence> fastaMap;
 
-    /**
-     * Tricky,  no mpileup function available.
-     * Samreader has to compensate, read MD:Z score, supplement with CIGAR to get SNP information on read.
-     * Store read skeleton on gene to get full coverage information
-     *
-     * @param locale
-     * @param type
-     * @param direction
-     */
-
+/*
+    public void testWalker(AlignmentContext alignmentContext, ReferenceContext referenceContext, FeatureContext featureContext ){
+        bamWalker.apply(alignmentContext,referenceContext,featureContext );
+        System.out.println(bamWalker.hasReads());
+    }*/
 
     public BamHandler(String locale, String type, String direction) {
         super(locale, type, direction);
@@ -65,7 +65,9 @@ public class BamHandler extends FileHandler implements Callable {
     @Override
     public ArrayList<Gene> call(){
 
-        return readBam(fastaMap,existingknowledge );
+        //return readBam(fastaMap,existingknowledge );
+        return readBamLocus(fastaMap,existingknowledge);
+
     }
 
 
@@ -101,6 +103,72 @@ public class BamHandler extends FileHandler implements Callable {
     }
 
 
+
+    //  Read locus by locus for each gene in the available geneList
+    public ArrayList<Gene> readBamLocus(HashMap fastaMap, boolean existingKnowledge){
+        ArrayList<Gene> geneArrayList = new ArrayList<>();
+
+
+
+        try {
+            final SamFileValidator validator = new SamFileValidator(new PrintWriter(System.out), 8000);
+            validator.setIgnoreWarnings(true);
+            validator.setVerbose(true, 1000);
+            validator.setErrorsToIgnore(Collections.singletonList(SAMValidationError.Type.MISSING_READ_GROUP));
+            SamReaderFactory factory = SamReaderFactory.makeDefault().validationStringency(ValidationStringency.STRICT);
+            SamReader fileBam = factory.open(new File(this.locale));
+            //SAMRecordIterator iterator = fileBam.iterator();
+            SamLocusIterator locusIterator = new SamLocusIterator(fileBam);
+
+
+            Gene currentGene = null;
+
+            int count = 0;
+
+            while (locusIterator.hasNext()) {
+
+                count += 1;
+                //System.out.println(locusIterator.next().toString().toString());
+
+                Iterator iter = locusIterator.next().getRecordAndPositions().iterator();
+
+
+
+                while (iter.hasNext()){
+                    SamLocusIterator.RecordAndOffset rec = (SamLocusIterator.RecordAndOffset) iter.next();
+                    System.out.println(rec.getRecord().getSAMString().charAt(0));
+                }
+
+
+
+                        
+                //System.out.println(" NExt " +);
+
+                if (count % 100000 == 0) {
+                    System.out.println("[STATUS] " + count + " reads parsed ");
+                }
+
+
+
+
+
+            }
+
+
+
+        }catch (Exception e) {
+            //System.out.println(e);
+            System.out.println("[WARNING] Malformed read");
+        }
+
+
+        return geneArrayList;
+    }
+
+
+
+
+
     public ArrayList<Gene> readBam(HashMap fastaMap, boolean existingKnowledge) {
     //public void readBam(HashMap fastaMap, ArrayList<Gene> geneListExternal, boolean existingKnowledge) {
 
@@ -119,6 +187,7 @@ public class BamHandler extends FileHandler implements Callable {
             SamReaderFactory factory = SamReaderFactory.makeDefault().validationStringency(ValidationStringency.STRICT);
             SamReader fileBam = factory.open(new File(this.locale));
             SAMRecordIterator iterator = fileBam.iterator();
+
 
 
             //System.out.println(iterator.toList().size());
@@ -156,6 +225,7 @@ public class BamHandler extends FileHandler implements Callable {
 
                 try {
                     currentGene = findGene(chromosome, start, localGeneList, currentGene);
+
                     if (start >= currentGene.getStart() && stop <= currentGene.getStop() && !CIGAR.contains("^") && !CIGAR.contains("I")) {
                         SimpleRead splR = new SimpleRead(start, stop);
                         try {

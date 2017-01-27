@@ -26,6 +26,7 @@ public class Main {
     public static Hypothesis hypothesisFullSNP = new Hypothesis(10,0.1,"FullSNPHyp");
 
 
+
     // bimodial primers for noise correction
     static double bimodalPrimersForNoise = 0.5;
 
@@ -78,7 +79,7 @@ public class Main {
             //System.out.println(geneList.get(0).getSequence().getLength());
             //System.out.println(" 78[Main] initial size of GeneList "  + geneList.size());
             fasta = fastaHandler.readFasta(geneList);
-            //System.out.println(geneList.get(0).getSequence().getLength());
+            System.out.println(geneList.get(0).getSequence().getLength());
             //for(Gene gene:geneList){
             //    System.out.println(gene.getIdent() + " " +gene.getStart() + "  " + gene.getStop());
             //}

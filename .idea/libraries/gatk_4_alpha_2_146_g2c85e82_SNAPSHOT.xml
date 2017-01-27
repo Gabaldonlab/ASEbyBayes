@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="gatk-4.alpha.2-146-g2c85e82-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../GATK/gatk/build/libs/gatk-4.alpha.2-146-g2c85e82-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
