@@ -79,7 +79,12 @@ public class Main {
             //System.out.println(geneList.get(0).getSequence().getLength());
             //System.out.println(" 78[Main] initial size of GeneList "  + geneList.size());
             fasta = fastaHandler.readFasta(geneList);
-            System.out.println(geneList.get(0).getSequence().getLength());
+            try {
+                int test = geneList.get(0).getSequence().getLength();
+            }catch (IndexOutOfBoundsException e){
+                System.out.println("[ERROR] no features found in GFF file,   try specify  -F gene ");
+                System.exit(1);
+            }
             //for(Gene gene:geneList){
             //    System.out.println(gene.getIdent() + " " +gene.getStart() + "  " + gene.getStop());
             //}

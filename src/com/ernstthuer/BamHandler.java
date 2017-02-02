@@ -5,6 +5,7 @@ package com.ernstthuer;
  */
 
 import htsjdk.samtools.*;
+import htsjdk.samtools.reference.ReferenceSequence;
 import htsjdk.samtools.util.*;
 import htsjdk.samtools.ValidationStringency;
 import htsjdk.samtools.SamFileValidator;
@@ -111,6 +112,8 @@ public class BamHandler extends FileHandler implements Callable {
 
 
         try {
+
+            int MINIMUM_MAPPING_QUALITY = 0;
             final SamFileValidator validator = new SamFileValidator(new PrintWriter(System.out), 8000);
             validator.setIgnoreWarnings(true);
             validator.setVerbose(true, 1000);
@@ -118,27 +121,113 @@ public class BamHandler extends FileHandler implements Callable {
             SamReaderFactory factory = SamReaderFactory.makeDefault().validationStringency(ValidationStringency.STRICT);
             SamReader fileBam = factory.open(new File(this.locale));
             //SAMRecordIterator iterator = fileBam.iterator();
-            SamLocusIterator locusIterator = new SamLocusIterator(fileBam);
+            SamLocusIterator locusIterator = new SamLocusIterator(fileBam);  // intervals to gene positions
 
+
+            while (locusIterator.hasNext()){
+                SamLocusIterator.LocusInfo  locusIt = locusIterator.next();
+                for (final SamLocusIterator.RecordAndOffset rec : locusIt.getRecordAndPositions()) {
+
+                    System.out.println(rec.getRecord());
+                    System.out.println(rec.getReadBase());
+
+                }
+            }
+
+            //locusIterator.setMappingQualityScoreCutoff(MINIMUM_MAPPING_QUALITY);
+
+
+      /*      while (locusIterator.hasNext()){
+
+                SamLocusIterator.RecordAndOffset rec = locusIterator.next();
+*/
+
+/*
+
+            for (SamLocusIterator.LocusInfo info : locusIterator) {
+
+                final String chrom = info.getSequenceName();
+                final int pos = info.getPosition();
+                int posi = 0;
+                int nega = 0;
+
+                final SAMRecord record;
+                final int offset = info
+
+
+
+*/
+
+
+
+
+
+
+
+
+
+            //while (locusIterator.hasNext()) {
+                //final SamLocusIterator.LocusInfo info = locusIterator.next();
+                //final ReferenceSequence ref = refWalker.get(info.getSequenceIndex());
+//                try {
+//                    System.out.println(info.getRecordAndPositions());
+//                }catch(Exception e){
+//
+//                }
+
+
+
+
+  /*
+            while (locusIterator.hasNext()) {
+                    count += 1;
+                    //System.out.println(locusIterator.next().toString().toString());
+                    //Iterator iter = locusIterator.next().getRecordAndPositions().iterator();
+
+                    locusIterator.next();
+                }
+
+*/
+
+
+
+/*            for(Iterator<SamLocusIterator.LocusInfo> iter = locusIterator.iterator(); iter.hasNext();){
+                SamLocusIterator.LocusInfo  locusInfo=iter.next();
+                System.out.println(locusInfo.getRecordAndPositions().size());
+
+
+                for (final SamLocusIterator.RecordAndOffset rec : iter.next().getRecordAndPositions()) {
+
+                    final SAMRecord samrec = rec.getRecord();
+
+                    final byte base = rec.getReadBase();
+
+                    final byte baseAsRead = samrec.getReadNegativeStrandFlag() ? SequenceUtil.complement(base) : base;
+                    System.out.println("Base " + baseAsRead);
+
+                }
+
+
+            }*/
+            locusIterator.close();
 
             Gene currentGene = null;
 
+
+
             int count = 0;
 
-            while (locusIterator.hasNext()) {
-
-                count += 1;
-                //System.out.println(locusIterator.next().toString().toString());
-
-                Iterator iter = locusIterator.next().getRecordAndPositions().iterator();
 
 
 
+
+          /*
                 while (iter.hasNext()){
-                    SamLocusIterator.RecordAndOffset rec = (SamLocusIterator.RecordAndOffset) iter.next();
-                    System.out.println(rec.getRecord().getSAMString().charAt(0));
+                    //SamLocusIterator.RecordAndOffset rec = (SamLocusIterator.RecordAndOffset) iter.next();
+                    SamLocusIterator.LocusInfo rec = (SamLocusIterator.LocusInfo) iter.next();
+                    System.out.println(rec.toString() + " hello");
                 }
-
+*/
 
 
                         
@@ -152,7 +241,7 @@ public class BamHandler extends FileHandler implements Callable {
 
 
 
-            }
+
 
 
 
@@ -164,6 +253,7 @@ public class BamHandler extends FileHandler implements Callable {
 
         return geneArrayList;
     }
+
 
 
 
@@ -362,5 +452,6 @@ public class BamHandler extends FileHandler implements Callable {
         }
         return null;
     }
+
 
 }
