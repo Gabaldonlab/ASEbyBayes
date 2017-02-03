@@ -125,6 +125,8 @@ class BamHandler extends FileHandler implements Callable {
             Gene currentGene = null;
 
 
+            char[] decodeArray =  {'A','C','G','T'};
+
             while (locusIterator.hasNext()) {
 
                 SamLocusIterator.LocusInfo locusIt = locusIterator.next();
@@ -158,16 +160,16 @@ class BamHandler extends FileHandler implements Callable {
                             //System.out.println("pref " + refBase + "  " + base);
 
                             switch (base) {
-                                case 67:
+                                case 65:
                                     threshold[0] += 1;
                                     break;
-                                case 84:
+                                case 67:
                                     threshold[1] += 1;
                                     break;
-                                case 65:
+                                case 71:
                                     threshold[2] += 1;
                                     break;
-                                case 71:
+                                case 84:
                                     threshold[3] += 1;
                                     break;
                             }
@@ -180,15 +182,15 @@ class BamHandler extends FileHandler implements Callable {
                         if(threshold[i] > MINTHRESH) {
                             // NEW SNP here
                             System.out.println("new SNP +" + location + " coverage of " + threshold[i]+ " total " + locusIt.getRecordAndPositions().size());
+                            char RefNuc =  decodeRef(refBase);
+                            char AltNuc =  decodeRef(decodeArray[i]);
 
+                            SNP snp = new SNP(currentGene,RefNuc,AltNuc,location);
+                            currentGene.addSNP(snp,false);
                         }
-
-
                     }
-
                         //System.out.println(base); // unicode , needs translating
                         // 67 is C   84 = T    65 = A    71 = G
-
                 }
             }
 
@@ -441,10 +443,17 @@ class BamHandler extends FileHandler implements Callable {
             default:
                 return 0;
         }
+    }
 
-        //return Byte.valueOf();
 
-
+    private char decodeRef(int decimalCode){
+        switch (decimalCode){
+            case 65 : return 'A' ;
+            case 67 : return 'C' ;
+            case 71 : return 'G' ;
+            case 84 : return 'T' ;
+            default:return 0;
+        }
     }
 
 }
