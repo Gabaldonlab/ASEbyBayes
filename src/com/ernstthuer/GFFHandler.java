@@ -39,7 +39,7 @@ public class GFFHandler extends FileHandler {
         }
         //System.out.println("Total features " + lineList.length);
         geneList = geneList(this.lineList);
-        System.out.println("[STATUS] " + geneList.size() + "  " + this.feature + "s found " );// + geneList.get(0).getStart() + "  TEMP  " + geneList.get(0).getStop());
+        System.out.println("[STATUS] " + geneList.size() + "  " + this.feature + "s found ");// + geneList.get(0).getStart() + "  TEMP  " + geneList.get(0).getStop());
     }
 
     public String[] openGFF(String locale) throws IOException {
@@ -106,7 +106,7 @@ public class GFFHandler extends FileHandler {
             }
             //System.out.println(outList.size());
         }
-            return outList;
+        return outList;
 
     }
 

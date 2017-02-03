@@ -17,14 +17,13 @@ public class Main {
     static ArrayList<SNP> snips = new ArrayList<>();
     static HashMap<String, DNASequence> fasta = new HashMap<>();
     static boolean verbose = true;
-    static HashMap<String,String> codonConversion = new HashMap<>();
+    static HashMap<String, String> codonConversion = new HashMap<>();
     static int numThreads = 10;
 
     // Core Hypothesis with preset alpha beta values
-    public static Hypothesis hypothesisZero = new Hypothesis(0.1,10,"NullExpHyp");
-    public static Hypothesis hypothesisEAX = new Hypothesis(5,5,"EqualAllelicExpression");
-    public static Hypothesis hypothesisFullSNP = new Hypothesis(10,0.1,"FullSNPHyp");
-
+    public static Hypothesis hypothesisZero = new Hypothesis(0.1, 10, "NullExpHyp");
+    public static Hypothesis hypothesisEAX = new Hypothesis(5, 5, "EqualAllelicExpression");
+    public static Hypothesis hypothesisFullSNP = new Hypothesis(10, 0.1, "FullSNPHyp");
 
 
     // bimodial primers for noise correction
@@ -74,32 +73,27 @@ public class Main {
             GFFHandler gffHandler = (GFFHandler) parser.returnType("GFF", "Input");
 
             System.out.println("[STATUS] loading Fasta file");
-            FastaHandler fastaHandler = (FastaHandler) parser.returnType("FASTA","Input");
+            FastaHandler fastaHandler = (FastaHandler) parser.returnType("FASTA", "Input");
             geneList = gffHandler.getGeneList();
             //System.out.println(geneList.get(0).getSequence().getLength());
             //System.out.println(" 78[Main] initial size of GeneList "  + geneList.size());
             fasta = fastaHandler.readFasta(geneList);
             try {
                 int test = geneList.get(0).getSequence().getLength();
-            }catch (IndexOutOfBoundsException e){
+            } catch (IndexOutOfBoundsException e) {
                 System.out.println("[ERROR] no features found in GFF file,   try specify  -F gene ");
                 System.exit(1);
             }
             //for(Gene gene:geneList){
             //    System.out.println(gene.getIdent() + " " +gene.getStart() + "  " + gene.getStop());
             //}
-        }
-        catch (ClassCastException e){
+        } catch (ClassCastException e) {
             errorCaller(e);
-        }catch (IOException IOex){
+        } catch (IOException IOex) {
             System.out.println("[ERROR] File not Found exception at GFF reader input");
             errorCaller(IOex);
 
         }
-
-
-
-
 
 
         // Block to read information from the BAM files,   depends on whether a vcf input file was given ( SNPs are known) and simple quantification has to
@@ -115,26 +109,26 @@ public class Main {
 
         /**
 
-        for (FileHandler file : parser.fileList) {
-            if (file.getType() == "Bam" && file.getDirection() == "Input") {
+         for (FileHandler file : parser.fileList) {
+         if (file.getType() == "Bam" && file.getDirection() == "Input") {
 
-                //make them implement Runnable   ... later
-                System.out.println("[STATUS] Loading BAM file " + file.getLocale());
+         //make them implement Runnable   ... later
+         System.out.println("[STATUS] Loading BAM file " + file.getLocale());
 
 
-                try {
-                    if (fasta != null) {
-                        BamHandler bhdlr = new BamHandler(file.getLocale(), "Bam", "Input");
-                        // to loosen this for threading should create copies of the genelists
-                        bhdlr.readBam(fasta, geneList,parser.isExistingSNPinfo());
+         try {
+         if (fasta != null) {
+         BamHandler bhdlr = new BamHandler(file.getLocale(), "Bam", "Input");
+         // to loosen this for threading should create copies of the genelists
+         bhdlr.readBam(fasta, geneList,parser.isExistingSNPinfo());
 
-                    }
+         }
 
-                } catch (Exception e) {
-                    errorCaller(e);
-                    //fasta = null;
-                }
-            }
+         } catch (Exception e) {
+         errorCaller(e);
+         //fasta = null;
+         }
+         }
 
 
          */
@@ -151,9 +145,7 @@ public class Main {
                 //make them implement Runnable   ... later
                 System.out.println("[STATUS] Loading BAM file " + file.getLocale());
 
-                listOfBamFilesFromParserForBamThreader.add(new BamHandler(file.getLocale(), "Bam", "Input",fasta));
-
-
+                listOfBamFilesFromParserForBamThreader.add(new BamHandler(file.getLocale(), "Bam", "Input", fasta));
 
 
                 //Cloner cloner=new Cloner();
@@ -188,7 +180,7 @@ public class Main {
                 }*/
             }
         }
-        BamThreader bamThreader = new BamThreader(listOfBamFilesFromParserForBamThreader,geneList,numThreads);
+        BamThreader bamThreader = new BamThreader(listOfBamFilesFromParserForBamThreader, geneList, numThreads);
 
         geneList = bamThreader.getOutputGeneArrayList();
 
@@ -200,38 +192,37 @@ public class Main {
         hypothesisTester.geneWiseComparison(geneList);
 
 
-
         // wait for thread completion
 
         /**  ToDo move everything related to the threads to the BamThreader ...
 
-        for(Thread thread:threads){
-            try {
-                System.out.println(thread.getName() + " thread joined ");
-                thread.join();
-            }catch (InterruptedException e){
-                errorCaller(e);
-            }
-        }
+         for(Thread thread:threads){
+         try {
+         System.out.println(thread.getName() + " thread joined ");
+         thread.join();
+         }catch (InterruptedException e){
+         errorCaller(e);
+         }
+         }
 
-        // unify te obtained gene lists
-        for(BamHandler bhdlr:bamList){
-            ArrayList<Gene> individualGeneList = bhdlr.getGeneList();
-            unifyGeneLists(individualGeneList);
-        }
+         // unify te obtained gene lists
+         for(BamHandler bhdlr:bamList){
+         ArrayList<Gene> individualGeneList = bhdlr.getGeneList();
+         unifyGeneLists(individualGeneList);
+         }
 
          /*
 
-        /*
-        for(List<Gene> geneList : listOfGeneLists) {
-            System.out.println("found genes in geneLists " + geneList.size());
-            for(Gene gene:geneList){
-                System.out.println("Gene with " + gene.snpsOnGene.size());
+         /*
+         for(List<Gene> geneList : listOfGeneLists) {
+         System.out.println("found genes in geneLists " + geneList.size());
+         for(Gene gene:geneList){
+         System.out.println("Gene with " + gene.snpsOnGene.size());
 
-            }
-        }
+         }
+         }
 
-*/
+         */
         /*
         for (Gene gene : geneList) {
             System.out.println("Gene :" + gene.getIdent());
@@ -244,60 +235,54 @@ public class Main {
         // here comes the unification of the genes
 
 
-
-
         // This Block gathers information on the SNPs,  validates them according to their expression and conservation over replicates
         // ToDo improve threading output by combining n geneLists // SNPlists
 
 
         /**
 
-        for (Gene gene : geneList) {
+         for (Gene gene : geneList) {
 
 
 
-            // this is not working yet, check SNP full coverage vs ALT cov.
-            try {
+         // this is not working yet, check SNP full coverage vs ALT cov.
+         try {
 
-                //gene.getGeneReadList().stream( s -> System.out.println(gene.getStart() + "  :  " + gene.getStop() + "  ::: "+  ));
+         //gene.getGeneReadList().stream( s -> System.out.println(gene.getStart() + "  :  " + gene.getStop() + "  ::: "+  ));
 
-                gene.findORGCoverageOfSNPs();  //Validate IF THIS WORKS RIGHT
-            } catch (NullPointerException e) {
-                errorCaller(e);
+         gene.findORGCoverageOfSNPs();  //Validate IF THIS WORKS RIGHT
+         } catch (NullPointerException e) {
+         errorCaller(e);
 
-            }
-            /*for(Integer key : gene.getPositioncount().keySet()){
-                for(SNP snp:gene.getSnpsOnGene()) {
+         }
+         /*for(Integer key : gene.getPositioncount().keySet()){
+         for(SNP snp:gene.getSnpsOnGene()) {
 
-                    if(snp.getPosition() == key) {
-                        System.out.println("SNP : cov " + gene.getPositioncount().get(key) + " SNP orgCov : " + snp.getORGcov() + " SNP. altCov " + snp.getALTcov() );
-                    }
-                }
-
-
-            }
+         if(snp.getPosition() == key) {
+         System.out.println("SNP : cov " + gene.getPositioncount().get(key) + " SNP orgCov : " + snp.getORGcov() + " SNP. altCov " + snp.getALTcov() );
+         }
+         }
 
 
-
-        }*/
+         }
 
 
 
-
+         }*/
 
 
         // ToDO Hypothesis wise classification
         int count = 0;
-        for(Gene gene:geneList){
+        for (Gene gene : geneList) {
             try {
 
 
                 //gene.evaluateSNPs();
 
-                for(SNP snp : gene.getSnpsOnGene()) {
+                for (SNP snp : gene.getSnpsOnGene()) {
 
 
-                    if (snp.getORGcov() + snp.getALTcov() > 10  && ! snp.getHypothesisEval().containsKey("NoiseHyp")) {
+                    if (snp.getORGcov() + snp.getALTcov() > 10 && !snp.getHypothesisEval().containsKey("NoiseHyp")) {
                         count += 1;
 
 
@@ -307,7 +292,7 @@ public class Main {
                 }
 
 
-            }catch (ConcurrentModificationException e){
+            } catch (ConcurrentModificationException e) {
                 errorCaller(e);
             }
 
@@ -347,8 +332,8 @@ public class Main {
 
         for (Gene gene : geneList) {
             gene.evaluateGeneExpression();
-            for(SNP snp: gene.getSnpsOnGene()){
-                if(snp.isValidated()>=2) {
+            for (SNP snp : gene.getSnpsOnGene()) {
+                if (snp.isValidated() >= 2) {
                     snips.add(snp);
                 }
             }
@@ -356,17 +341,16 @@ public class Main {
 
         try {
             CSVHandler csvHandler = (CSVHandler) parser.returnType("VCF", "Output");
-            FastaHandler fastaHandler = (FastaHandler) parser.returnType("FASTA","Output");
+            FastaHandler fastaHandler = (FastaHandler) parser.returnType("FASTA", "Output");
 
             int minThresh = 2;
 
-            csvHandler.writeSNPToVCF(snips,minThresh);
+            csvHandler.writeSNPToVCF(snips, minThresh);
 
             // reimplemented the output into a fastasilencer class
             System.out.println("[STATUS] Writing Silenced fasta sequence of SNPs to file : " + fastaHandler.getLocale());
-            FastaSilencer fastaSilencer = new FastaSilencer(snips,fasta,fastaHandler.getLocale());
-        }
-        catch (ClassCastException e){
+            FastaSilencer fastaSilencer = new FastaSilencer(snips, fasta, fastaHandler.getLocale());
+        } catch (ClassCastException e) {
             errorCaller(e);
         }
 
@@ -374,7 +358,7 @@ public class Main {
 
 
     }
-         //*///DISABLED FOR TESTING
+    //*///DISABLED FOR TESTING
 
     private static void errorCaller(Exception e) {
         if (verbose) {
@@ -387,87 +371,85 @@ public class Main {
         }
     }
 
-    private static void unifyGeneLists(ArrayList<Gene> individualListOfGenes){
+    private static void unifyGeneLists(ArrayList<Gene> individualListOfGenes) {
 
-        for(Gene gene : geneList) {
+        for (Gene gene : geneList) {
             // find gene in original genelist,
             int index = individualListOfGenes.lastIndexOf(gene);
-            if(gene.getSnpsOnGene() == null){
+            if (gene.getSnpsOnGene() == null) {
                 gene.setSnpsOnGene(individualListOfGenes.get(index).getSnpsOnGene());
-            }else{
+            } else {
                 gene.addSnpInformation(individualListOfGenes.get(index).getSnpsOnGene());
             }
-            }
         }
+    }
 
 
-
-
-    private static void  populateCodonConversion(){
-        codonConversion.put("TCT","Ser");
-        codonConversion.put("TAT","Tyr");
-        codonConversion.put("TGT","Cys");
-        codonConversion.put("TTT","Phe");
-        codonConversion.put("TTC","Phe");
-        codonConversion.put("TCC","Ser");
-        codonConversion.put("TAC","Tyr");
-        codonConversion.put("TGC","Cys");
-        codonConversion.put("TTA","Leu");
-        codonConversion.put("TCA","Ser");
-        codonConversion.put("TAA","TER");
-        codonConversion.put("TGA","TER");
-        codonConversion.put("TTG","Leu");
-        codonConversion.put("TCG","Ser");
-        codonConversion.put("TAG","TER");
-        codonConversion.put("TGG","Trp");
-        codonConversion.put("CTT","Leu");
-        codonConversion.put("CCT","Pro");
-        codonConversion.put("CAT","His");
-        codonConversion.put("CGT","Arg");
-        codonConversion.put("CTC","Leu");
-        codonConversion.put("CCC","Pro");
-        codonConversion.put("CAC","His");
-        codonConversion.put("CGC","Arg");
-        codonConversion.put("CTA","Leu");
-        codonConversion.put("CCA","Pro");
-        codonConversion.put("CAA","Gln");
-        codonConversion.put("CGA","Arg");
-        codonConversion.put("CTG","Leu");
-        codonConversion.put("CCG","Pro");
-        codonConversion.put("CAG","Gln");
-        codonConversion.put("CGG","Arg");
-        codonConversion.put("ATT","Ile");
-        codonConversion.put("ACT","Thr");
-        codonConversion.put("AAT","Asn");
-        codonConversion.put("AGT","Ser");
-        codonConversion.put("ATC","Ile");
-        codonConversion.put("ACC","Thr");
-        codonConversion.put("AAC","Asn");
-        codonConversion.put("AGC","Ser");
-        codonConversion.put("ATA","Ile");
-        codonConversion.put("ACA","Thr");
-        codonConversion.put("AAA","Lys");
-        codonConversion.put("AGA","Arg");
-        codonConversion.put("ATG","Met");
-        codonConversion.put("ACG","Thr");
-        codonConversion.put("AAG","Lys");
-        codonConversion.put("AGG","Arg");
-        codonConversion.put("GTT","Val");
-        codonConversion.put("GCT","Ala");
-        codonConversion.put("GAT","Asp");
-        codonConversion.put("GGT","Gly");
-        codonConversion.put("GTC","Val");
-        codonConversion.put("GCC","Ala");
-        codonConversion.put("GAC","Asp");
-        codonConversion.put("GGC","Gly");
-        codonConversion.put("GTA","Val");
-        codonConversion.put("GCA","Ala");
-        codonConversion.put("GAA","Glu");
-        codonConversion.put("GGA","Gly");
-        codonConversion.put("GTG","Val");
-        codonConversion.put("GCG","Ala");
-        codonConversion.put("GAG","Glu");
-        codonConversion.put("GGG","Gly");
+    private static void populateCodonConversion() {
+        codonConversion.put("TCT", "Ser");
+        codonConversion.put("TAT", "Tyr");
+        codonConversion.put("TGT", "Cys");
+        codonConversion.put("TTT", "Phe");
+        codonConversion.put("TTC", "Phe");
+        codonConversion.put("TCC", "Ser");
+        codonConversion.put("TAC", "Tyr");
+        codonConversion.put("TGC", "Cys");
+        codonConversion.put("TTA", "Leu");
+        codonConversion.put("TCA", "Ser");
+        codonConversion.put("TAA", "TER");
+        codonConversion.put("TGA", "TER");
+        codonConversion.put("TTG", "Leu");
+        codonConversion.put("TCG", "Ser");
+        codonConversion.put("TAG", "TER");
+        codonConversion.put("TGG", "Trp");
+        codonConversion.put("CTT", "Leu");
+        codonConversion.put("CCT", "Pro");
+        codonConversion.put("CAT", "His");
+        codonConversion.put("CGT", "Arg");
+        codonConversion.put("CTC", "Leu");
+        codonConversion.put("CCC", "Pro");
+        codonConversion.put("CAC", "His");
+        codonConversion.put("CGC", "Arg");
+        codonConversion.put("CTA", "Leu");
+        codonConversion.put("CCA", "Pro");
+        codonConversion.put("CAA", "Gln");
+        codonConversion.put("CGA", "Arg");
+        codonConversion.put("CTG", "Leu");
+        codonConversion.put("CCG", "Pro");
+        codonConversion.put("CAG", "Gln");
+        codonConversion.put("CGG", "Arg");
+        codonConversion.put("ATT", "Ile");
+        codonConversion.put("ACT", "Thr");
+        codonConversion.put("AAT", "Asn");
+        codonConversion.put("AGT", "Ser");
+        codonConversion.put("ATC", "Ile");
+        codonConversion.put("ACC", "Thr");
+        codonConversion.put("AAC", "Asn");
+        codonConversion.put("AGC", "Ser");
+        codonConversion.put("ATA", "Ile");
+        codonConversion.put("ACA", "Thr");
+        codonConversion.put("AAA", "Lys");
+        codonConversion.put("AGA", "Arg");
+        codonConversion.put("ATG", "Met");
+        codonConversion.put("ACG", "Thr");
+        codonConversion.put("AAG", "Lys");
+        codonConversion.put("AGG", "Arg");
+        codonConversion.put("GTT", "Val");
+        codonConversion.put("GCT", "Ala");
+        codonConversion.put("GAT", "Asp");
+        codonConversion.put("GGT", "Gly");
+        codonConversion.put("GTC", "Val");
+        codonConversion.put("GCC", "Ala");
+        codonConversion.put("GAC", "Asp");
+        codonConversion.put("GGC", "Gly");
+        codonConversion.put("GTA", "Val");
+        codonConversion.put("GCA", "Ala");
+        codonConversion.put("GAA", "Glu");
+        codonConversion.put("GGA", "Gly");
+        codonConversion.put("GTG", "Val");
+        codonConversion.put("GCG", "Ala");
+        codonConversion.put("GAG", "Glu");
+        codonConversion.put("GGG", "Gly");
 
     }
 

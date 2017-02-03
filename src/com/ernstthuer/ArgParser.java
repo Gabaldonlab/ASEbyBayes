@@ -58,9 +58,9 @@ public class ArgParser {
         }
 
 
-        if(ns.get("VCFIN")!= "NOVCF"){
+        if (ns.get("VCFIN") != "NOVCF") {
             existingSNPinfo = true;
-        }else{
+        } else {
             existingSNPinfo = false;
         }
 
@@ -82,8 +82,8 @@ public class ArgParser {
         FastaHandler outFasta = new FastaHandler(ns.get("mOut").toString(), "FASTA", "Output");
         CSVHandler finalOut = new CSVHandler(ns.get("outFinal").toString(), "VCF", "Output");
 
-        if(existingSNPinfo){
-            CSVHandler vcfInput = new CSVHandler(ns.get("VCFIN").toString(),"VCF","INPUT");
+        if (existingSNPinfo) {
+            CSVHandler vcfInput = new CSVHandler(ns.get("VCFIN").toString(), "VCF", "INPUT");
             fileList.add(vcfInput);
         }
 
@@ -98,12 +98,12 @@ public class ArgParser {
         return existingSNPinfo;
     }
 
-    public FileHandler returnType(String type, String direction){
+    public FileHandler returnType(String type, String direction) {
         // type is self explanatory,
         // direction is whether input or output file  fasta and vcf could be either
 
-        for(FileHandler fileHandler:fileList){
-            if (fileHandler.getType() == type && fileHandler.getDirection() == direction){
+        for (FileHandler fileHandler : fileList) {
+            if (fileHandler.getType() == type && fileHandler.getDirection() == direction) {
                 return fileHandler;
             }
 

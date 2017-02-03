@@ -2,9 +2,13 @@ package com.ernstthuer;
 
 import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
 import org.biojava.nbio.core.sequence.DNASequence;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * Created by ethur on 7/26/16.
@@ -21,10 +25,8 @@ public class Gene implements Cloneable {
     private HashMap<Integer, Codon> codonList = new HashMap<>();
     private ArrayList<SimpleRead> geneReadList = new ArrayList<>();
     private String ASE;
-    private LinkedHashMap<Integer,Integer> positioncount = new LinkedHashMap<>();
+    private LinkedHashMap<Integer, Integer> positioncount = new LinkedHashMap<>();
     private HashMap<String, Double> hypothesisEval = new HashMap<>();
-
-
 
 
     @Override
@@ -61,11 +63,11 @@ public class Gene implements Cloneable {
     }
 
 
-    public void addCoverage(int start, int stop){
+    public void addCoverage(int start, int stop) {
 
-        for(int i = start; i < stop; i++){
+        for (int i = start; i < stop; i++) {
             int count = this.positioncount.containsKey(i) ? positioncount.get(i) : 0;
-            positioncount.put(i,count+1);
+            positioncount.put(i, count + 1);
         }
 
     }
@@ -80,8 +82,8 @@ public class Gene implements Cloneable {
 
     public boolean addSNP(SNP snp, boolean existingKnowledge) {
 
-        if(existingKnowledge){
-            if(snpsOnGene.contains(snp)){
+        if (existingKnowledge) {
+            if (snpsOnGene.contains(snp)) {
                 int idx = snpsOnGene.indexOf(snp);
                 snpsOnGene.get(idx).increaseAltCoverage();
                 // all SNPs are validated
@@ -92,13 +94,12 @@ public class Gene implements Cloneable {
         }
 
         if (!snpsOnGene.contains(snp)) {
-            if(snp.getPosition() > this.start && snp.getPosition() < this.stop) {
+            if (snp.getPosition() > this.start && snp.getPosition() < this.stop) {
                 snpsOnGene.add(snp);
                 return true;
-            }return false;
-        }
-
-        else {
+            }
+            return false;
+        } else {
             int idx = snpsOnGene.indexOf(snp);
             snpsOnGene.get(idx).increaseAltCoverage();
             if (snpsOnGene.get(idx).getALTcov() > 2) {
@@ -107,8 +108,6 @@ public class Gene implements Cloneable {
             return false;
         }
     }
-
-
 
 
     public void findORGCoverageOfSNPs() {
@@ -129,7 +128,7 @@ public class Gene implements Cloneable {
 
                     int index = snpsOnGene.indexOf(snip);
 
-                    if(positioncount.keySet().contains(snip.getPosition())) {
+                    if (positioncount.keySet().contains(snip.getPosition())) {
                         snip.setORGcov(positioncount.get(snip.getPosition()));
                     }
 
@@ -158,7 +157,7 @@ public class Gene implements Cloneable {
                     */
                     //System.out.println(snip.getPosition() + "  " + snip.getALTcov() + " ORG :" + snip.getORGcov() + " count : " +  count );
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.out.println("Failed on line 101");
             }
         }
@@ -172,7 +171,7 @@ public class Gene implements Cloneable {
         this.orientation = orientation;
     }
 
-    public void geneToCodon(String codingSequence){
+    public void geneToCodon(String codingSequence) {
         // Codon list for all positions, for each position
         // HashMap<Integer, org.biojava.nbio.core.sequence.template.Sequence> CodonList = new HashMap<>();
         // for each codon on sequence
@@ -181,19 +180,18 @@ public class Gene implements Cloneable {
         int overshot = codingSequence.length() % 3;
 
 
-
-        for(int i = 0; i < codingSequence.length() - overshot ; i = i+3) {
+        for (int i = 0; i < codingSequence.length() - overshot; i = i + 3) {
             //org.biojava.nbio.core.sequence.template.Sequence codon = sequence.getSubSequence(i,i+2).getViewedSequence();
-            Codon codon = new Codon(codingSequence.substring(i,i+3));
-            for(int j=i;j<(i+3);j++) {
+            Codon codon = new Codon(codingSequence.substring(i, i + 3));
+            for (int j = i; j < (i + 3); j++) {
                 codonList.put(j, codon);
             }
         }
-        }
+    }
 
-    public String getAltCodon(int pos, char altChar, String orgCodon){
+    public String getAltCodon(int pos, char altChar, String orgCodon) {
         StringBuilder newCodon = new StringBuilder(orgCodon);
-        newCodon.setCharAt(pos,altChar);
+        newCodon.setCharAt(pos, altChar);
         return newCodon.toString();
     }
 
@@ -207,54 +205,53 @@ public class Gene implements Cloneable {
             if (orientation == '-') {
                 geneToCodon(this.sequence.getInverse().getSequenceAsString());
             }
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             System.out.println("Did not find gene orientation");
             try {
                 geneToCodon(this.sequence.getSequenceAsString());
-            }
-            catch (NullPointerException e2){
+            } catch (NullPointerException e2) {
                 System.out.println("no valid gene sequence found");
             }
         }
-            for (SNP snp : snpsOnGene) {
-                if (snp.isValidated() >= validationLVL) {
+        for (SNP snp : snpsOnGene) {
+            if (snp.isValidated() >= validationLVL) {
 
-                    // find SNP on codon
-                    int relativePosition = snp.getPosition() - start;
-                    int remain = relativePosition % 3;
-
-
-                    Codon refCodon = codonList.get(relativePosition);
+                // find SNP on codon
+                int relativePosition = snp.getPosition() - start;
+                int remain = relativePosition % 3;
 
 
-                    try {
-
-                        StringBuilder altSeq = new StringBuilder(refCodon.getSequence());
-                        altSeq.setCharAt(remain, snp.getALT());
-
-                        Codon altCodon = new Codon(altSeq.toString());
-
-                        snp.setSynonymous(altCodon.equals(refCodon));
-
-                        //System.out.println(refCodon.getSequence() + "  " +  altCodon.getSequence() + "  " + altCodon.equals(refCodon) );
+                Codon refCodon = codonList.get(relativePosition);
 
 
-                    }catch(NullPointerException e){
-                        System.out.println(snp.getPosition() + "  " + snp.getGene().getIdent());
-                    }
-                    //String altCodon = getAltCodon(0, snp.getALT(), refCodon.getSequence());
-                    //altCodon = snp.getALT() + altCodon.substring(1,2);
-                    //StringBuilder newCodon = new StringBuilder(altCodon);
-                    //newCodon.setCharAt(remain, snp.getALT());
+                try {
 
+                    StringBuilder altSeq = new StringBuilder(refCodon.getSequence());
+                    altSeq.setCharAt(remain, snp.getALT());
+
+                    Codon altCodon = new Codon(altSeq.toString());
+
+                    snp.setSynonymous(altCodon.equals(refCodon));
+
+                    //System.out.println(refCodon.getSequence() + "  " +  altCodon.getSequence() + "  " + altCodon.equals(refCodon) );
+
+
+                } catch (NullPointerException e) {
+                    System.out.println(snp.getPosition() + "  " + snp.getGene().getIdent());
                 }
+                //String altCodon = getAltCodon(0, snp.getALT(), refCodon.getSequence());
+                //altCodon = snp.getALT() + altCodon.substring(1,2);
+                //StringBuilder newCodon = new StringBuilder(altCodon);
+                //newCodon.setCharAt(remain, snp.getALT());
+
             }
+        }
 
     }
 
-    public void evaluateGeneWiseExpression(){
+    public void evaluateGeneWiseExpression() {
 
-        
+
     }
 
 
@@ -284,23 +281,23 @@ public class Gene implements Cloneable {
         this.snpsOnGene = snpsOnGene;
     }
 
-    public void addSnpInformation (ArrayList<SNP> outsideSnpsOnGene){
+    public void addSnpInformation(ArrayList<SNP> outsideSnpsOnGene) {
 
-        for(SNP snp:outsideSnpsOnGene){
-            if(snpsOnGene.contains(snp)){
+        for (SNP snp : outsideSnpsOnGene) {
+            if (snpsOnGene.contains(snp)) {
 
                 int idx = snpsOnGene.indexOf(snp);
                 int currentORG = snpsOnGene.get(idx).getORGcov();
-                int currentALT= snpsOnGene.get(idx).getALTcov();
+                int currentALT = snpsOnGene.get(idx).getALTcov();
 
                 int newORG = snpsOnGene.get(idx).getORGcov();
-                int newALT= snpsOnGene.get(idx).getALTcov();
+                int newALT = snpsOnGene.get(idx).getALTcov();
 
                 double ratio = (double) newALT / (double) newORG;
                 double newRatio = (double) newALT / (double) newORG;
 
-                double avgRatio = ( ratio + newRatio )/ 2;
-                double avgORG = (currentORG + newORG )/ 2;
+                double avgRatio = (ratio + newRatio) / 2;
+                double avgORG = (currentORG + newORG) / 2;
                 double avgALT = avgORG * avgRatio;
 
 
@@ -308,8 +305,7 @@ public class Gene implements Cloneable {
                 //snpsOnGene.get(snpsOnGene.indexOf(snp)).setALTcov(( snpsOnGene.get(snpsOnGene.indexOf(snp)).getALTcov() + snp.getALTcov() / 2));  // ToDo :  improve mean calculation
                 //snpsOnGene.get(snpsOnGene.indexOf(snp)).setORGcov(( snpsOnGene.get(snpsOnGene.indexOf(snp)).getORGcov() + snp.getORGcov() / 2)); // ToDo :  improve mean calculation
                 // for the moment a simple mean will do  ToDo :  improve mean calculation  possible ratio evaluation.. save the ratio, extend the counts
-            }
-            else{
+            } else {
                 snpsOnGene.add(snp);
             }
         }
@@ -350,8 +346,7 @@ public class Gene implements Cloneable {
     }
 
 
-
-    public void evaluateGeneExpression(){
+    public void evaluateGeneExpression() {
 
         // THis is for the whole gene
       /*  for (SNP snp: snpsOnGene) {
@@ -372,29 +367,29 @@ public class Gene implements Cloneable {
 
     }
 
-    public void evaluateSNPs(){
-        for(SNP snp: snpsOnGene){
-            if(snp.isValidated() >= 1){
+    public void evaluateSNPs() {
+        for (SNP snp : snpsOnGene) {
+            if (snp.isValidated() >= 1) {
                 //snpsOnGene.remove(snp);
-            //}
-            //else{
-                if(!snp.validateSNP(10,-1,0)){
+                //}
+                //else{
+                if (!snp.validateSNP(10, -1, 0)) {
                     //snpsOnGene.remove(snp);
                     snp.disableValidation();
-                }else{
+                } else {
                     snp.raiseValidation();
                 }
 
-                if(snp.validateSNP(-1,10,1)){
+                if (snp.validateSNP(-1, 10, 1)) {
                     snp.setExpression("FULLSNP");
-                }else{
+                } else {
                     snp.raiseValidation();
                 }
 
-                if(snp.validateSNP(10,10,2)){
+                if (snp.validateSNP(10, 10, 2)) {
                     snp.setExpression("EQUALALLELICEXPRESSION");
 
-                }else  {
+                } else {
                     snp.raiseValidation();
                 }
 
@@ -410,7 +405,7 @@ public class Gene implements Cloneable {
     }
 
     public void addToHypothesisEval(String name, Double eval) {
-        this.hypothesisEval.put(name,eval);
+        this.hypothesisEval.put(name, eval);
     }
 
     public void addRead(SimpleRead read) {
@@ -418,19 +413,19 @@ public class Gene implements Cloneable {
     }
 
 
-    public ArrayList<SNP> unifySNPLists(ArrayList<SNP> otherSNPList ){
+    public ArrayList<SNP> unifySNPLists(ArrayList<SNP> otherSNPList) {
 
         ArrayList<SNP> snpArrayList = new ArrayList<>();
 
-        for(SNP snp : snpsOnGene){
+        for (SNP snp : snpsOnGene) {
             snpArrayList.add(snp);
         }
 
-        for(SNP snp : otherSNPList){
+        for (SNP snp : otherSNPList) {
 
-            if(! snpArrayList.contains(snp)){
+            if (!snpArrayList.contains(snp)) {
                 snpArrayList.add(snp);
-            }else{
+            } else {
 
                 int indexOfSNP = snpArrayList.indexOf(snp);
                 SNP orgSNP = snpArrayList.get(indexOfSNP);
@@ -443,9 +438,6 @@ public class Gene implements Cloneable {
         return snpArrayList;
 
     }
-
-
-
 
 
     @Override
@@ -472,8 +464,6 @@ public class Gene implements Cloneable {
     public List<SimpleRead> getGeneReadList() {
         return geneReadList;
     }
-
-
 
 
 }

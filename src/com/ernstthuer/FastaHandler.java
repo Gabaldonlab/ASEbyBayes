@@ -1,14 +1,12 @@
 package com.ernstthuer;
 
 import org.biojava.nbio.core.sequence.DNASequence;
-import org.slf4j.LoggerFactory;
 import org.biojava.nbio.core.sequence.io.FastaReaderHelper;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.HashMap;
 
 /**
  * Created by ethur on 7/26/16.
@@ -46,10 +44,10 @@ public class FastaHandler extends FileHandler {
 
 
 /** for testing purpose
-        for (Gene gene : geneList) {
-            System.out.println("inside Fasta parser : " + gene.getIdent() + "  " + gene.getStart());
-        }
-*/
+ for (Gene gene : geneList) {
+ System.out.println("inside Fasta parser : " + gene.getIdent() + "  " + gene.getStart());
+ }
+ */
         //fastaMap = FastaReaderHelper.readFastaDNASequence(file)
 
         try {
@@ -68,7 +66,7 @@ public class FastaHandler extends FileHandler {
                     //System.out.println("not " + gene.getChromosome());
 
                     // full chromosome,  pass to gene for processing
-                    gene.loadSequence(fastaMap.get(gene.getChromosome()),false);
+                    gene.loadSequence(fastaMap.get(gene.getChromosome()), false);
 
                 }
             }

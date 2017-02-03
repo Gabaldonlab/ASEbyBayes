@@ -8,7 +8,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static com.ernstthuer.Main.geneList;
@@ -48,7 +47,7 @@ public class CSVHandler extends FileHandler {
         super(locale, type, direction, feature);
     }
 
-    public ArrayList<SNP> readVCF(){
+    public ArrayList<SNP> readVCF() {
 
         ArrayList<SNP> snpArrayList = new ArrayList<>();
 
@@ -58,7 +57,7 @@ public class CSVHandler extends FileHandler {
 
             String sCurrentLine;
             while ((sCurrentLine = br.readLine()) != null) {
-                String [] aCurrentLine = sCurrentLine.split("\t");
+                String[] aCurrentLine = sCurrentLine.split("\t");
 
                 String Chromosome = aCurrentLine[0];
                 int position = Integer.parseInt(aCurrentLine[1]);
@@ -70,9 +69,9 @@ public class CSVHandler extends FileHandler {
 
 
                 // taking access from the main to ArrayList geneList;
-                for(Gene gene:geneList){
-                    if(gene.getChromosome() == Chromosome &&  gene.getStart()< position && gene.getStop() > position && quality >= qualityThreshold ){
-                        SNP snp = new SNP(gene,ORG,ALT,position);
+                for (Gene gene : geneList) {
+                    if (gene.getChromosome() == Chromosome && gene.getStart() < position && gene.getStop() > position && quality >= qualityThreshold) {
+                        SNP snp = new SNP(gene, ORG, ALT, position);
                         /////  REIMPLEMENT THIS gene.addSNP(snp);
                     }
                 }
@@ -81,7 +80,6 @@ public class CSVHandler extends FileHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
 
         return snpArrayList;

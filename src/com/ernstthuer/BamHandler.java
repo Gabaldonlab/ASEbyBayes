@@ -16,7 +16,7 @@ import java.io.PrintWriter;
 import java.util.*;
 import java.util.concurrent.Callable;
 
-class BamHandler extends FileHandler implements Callable {
+class BamHandler extends FileHandler implements Callable  {
 //    public class BamHandler extends FileHandler implements Runnable {
 
     // bam is only import, no direction,
@@ -66,6 +66,7 @@ class BamHandler extends FileHandler implements Callable {
     public ArrayList<Gene> call() {
 
         //return readBam(fastaMap,existingknowledge );
+        System.out.println(readBamLocus(fastaMap, existingknowledge));
         return readBamLocus(fastaMap, existingknowledge);
 
     }
@@ -115,7 +116,8 @@ class BamHandler extends FileHandler implements Callable {
          * build on the HTSJDK  locuswalker
          */
 
-        ArrayList<Gene> geneArrayList = new ArrayList<>();
+        //ArrayList<Gene> geneArrayList = new ArrayList<>();
+        ArrayList<Gene> geneArrayList = localGeneList;
 
 
         try {
@@ -187,7 +189,9 @@ class BamHandler extends FileHandler implements Callable {
 
                             SNP snp = new SNP(currentGene,RefNuc,AltNuc,location);
                             currentGene.addSNP(snp,false);
-                            snpArrayList.add(snp);
+                            //snpArrayList.add(snp);
+
+                            //System.out.println(currentGene.getIdent() + "  " + currentGene.getSnpsOnGene().size());
 
                         }
                     }
@@ -214,14 +218,18 @@ class BamHandler extends FileHandler implements Callable {
         return geneArrayList;
     }
 
+    /**
+     * reads a Bam file, stores SNPs.  check if there are gene names used as reference, or chromosome names.
+     * associate SNPs to genes.  SNP by gene will be the main SNP storage.  SNPs are temporarily stored in the BAMreader, to ease thread ability
+     */
 
+
+
+/**
     public ArrayList<Gene> readBam(HashMap fastaMap, boolean existingKnowledge) {
         //public void readBam(HashMap fastaMap, ArrayList<Gene> geneListExternal, boolean existingKnowledge) {
 
-        /**
-         * reads a Bam file, stores SNPs.  check if there are gene names used as reference, or chromosome names.
-         * associate SNPs to genes.  SNP by gene will be the main SNP storage.  SNPs are temporarily stored in the BAMreader, to ease thread ability
-         */
+
         //HashMap<String,Read> ReadMap = new HashMap<>();
         try {
             final SamFileValidator validator = new SamFileValidator(new PrintWriter(System.out), 8000);
@@ -232,7 +240,6 @@ class BamHandler extends FileHandler implements Callable {
             SamReader fileBam = factory.open(new File(this.locale));
             SAMRecordIterator iterator = fileBam.iterator();
 
-
             //System.out.println(iterator.toList().size());
             // a default gene
             Gene currentGene = null;
@@ -241,16 +248,8 @@ class BamHandler extends FileHandler implements Callable {
 
             while (iterator.hasNext()) {
 
-        /*        count += 1;
-
-                if (count % 100000 == 0) {
-                    System.out.println("[STATUS] " + count + " reads parsed ");
-                }*/
-
-                // sort to the genes then parse for SNPs
 
                 SAMRecord read = iterator.next();
-
 
                 // associate to gene and store barebone there
                 int start = -1;
@@ -299,8 +298,6 @@ class BamHandler extends FileHandler implements Callable {
 
                                             if (refBase != altBase && !CIGAR.contains("D") && !CIGAR.contains("I")) {
                                                 currentGene.addSNP(snp, existingKnowledge);
-                                                //System.out.println(" Created SNP on " + snp.getGene().getIdent());
-                                                //System.out.println(" on position " + snp.getPosition() + "  " + snp.getALT());
                                             }
                                         }
                                     }
@@ -326,9 +323,11 @@ class BamHandler extends FileHandler implements Callable {
         } finally {
             return localGeneList;
         }
+ }
+ */
 
 
-    }
+
 
     /**
      * public Gene findSNP(Gene currentGene, String chromosome, int start, String[] MZArray, String readSeq) {
