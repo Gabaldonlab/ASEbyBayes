@@ -151,7 +151,7 @@ public class Main {
                 //make them implement Runnable   ... later
                 System.out.println("[STATUS] Loading BAM file " + file.getLocale());
 
-                listOfBamFilesFromParserForBamThreader.add(new BamHandler(file.getLocale(), "Bam", "Input"));
+                listOfBamFilesFromParserForBamThreader.add(new BamHandler(file.getLocale(), "Bam", "Input",fasta));
 
 
 

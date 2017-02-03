@@ -31,10 +31,9 @@ class BamHandler extends FileHandler implements Callable {
     // contain the reads   SAM format
 
 
-
-
-    private boolean existingknowledge ;
+    private boolean existingknowledge;
     private HashMap<String, DNASequence> fastaMap;
+    private HashMap<String, DNASequence> fasta;
 
 /*
     public void testWalker(AlignmentContext alignmentContext, ReferenceContext referenceContext, FeatureContext featureContext ){
@@ -48,6 +47,13 @@ class BamHandler extends FileHandler implements Callable {
         this.locale = locale;
     }
 
+    BamHandler(String locale, String type, String direction, HashMap<String, DNASequence> fasta) {
+        super(locale, type, direction);
+        this.type = type;
+        this.locale = locale;
+        this.fasta = fasta;
+    }
+
 
     /*
     @Override
@@ -57,21 +63,21 @@ class BamHandler extends FileHandler implements Callable {
 
 */
     @Override
-    public ArrayList<Gene> call(){
+    public ArrayList<Gene> call() {
 
         //return readBam(fastaMap,existingknowledge );
-        return readBamLocus(fastaMap,existingknowledge);
+        return readBamLocus(fastaMap, existingknowledge);
 
     }
 
 
     // helper methods to be called from main before threadin intiation,  creates copies of the fasta map and the boolean
 
-    public void findExistingknowledge(boolean existingKnowledge){
+    public void findExistingknowledge(boolean existingKnowledge) {
         this.existingknowledge = existingKnowledge;
     }
 
-    public void loadFastaMap(HashMap<String, DNASequence>  fastaMap ){
+    public void loadFastaMap(HashMap<String, DNASequence> fastaMap) {
         this.fastaMap = fastaMap;
     }
 
@@ -81,10 +87,10 @@ class BamHandler extends FileHandler implements Callable {
 
         ArrayList<Gene> copy = new ArrayList<Gene>(geneList.size());
 
-        for (Gene gene: geneList) {
+        for (Gene gene : geneList) {
             try {
                 copy.add((Gene) gene.clone());
-            }catch (CloneNotSupportedException e){
+            } catch (CloneNotSupportedException e) {
                 System.out.println(e);
             }
         }
@@ -98,11 +104,10 @@ class BamHandler extends FileHandler implements Callable {
 
 // 67 is C   84 = T    65 = A    71 = G
 
-//  ToDo  feed gene list into the bam evaluator to check only genes
+    //  ToDo  feed gene list into the bam evaluator to check only genes
     //  Read locus by locus for each gene in the available geneList
-    ArrayList<Gene> readBamLocus(HashMap fastaMap, boolean existingKnowledge){
+    ArrayList<Gene> readBamLocus(HashMap fastaMap, boolean existingKnowledge) {
         ArrayList<Gene> geneArrayList = new ArrayList<>();
-
 
 
         try {
@@ -120,10 +125,6 @@ class BamHandler extends FileHandler implements Callable {
             Gene currentGene = null;
 
 
-
-
-
-
             while (locusIterator.hasNext()) {
 
                 SamLocusIterator.LocusInfo locusIt = locusIterator.next();
@@ -139,16 +140,55 @@ class BamHandler extends FileHandler implements Callable {
                     //System.out.println(currentGene.getIdent());
                     DNASequence currentsequence = currentGene.getSequence();
 
-                    byte refBase = getRefbase(chromosome,location);
 
-                    //System.out.println(currentsequence.toString());
+                    byte refBase = getRefbase(chromosome, location);
+
+
+                    // store thresholds as array,
+                    int[] threshold = new int[4];
+
+                    int MINTHRESH = 3;  // get this from main
+                    boolean addSNP = false;
 
                     for (final SamLocusIterator.RecordAndOffset rec : locusIt.getRecordAndPositions()) {
                         //System.out.println(rec.getOffset());
                         byte base = rec.getReadBase();
+
+                        if (refBase != base) {
+                            //System.out.println("pref " + refBase + "  " + base);
+
+                            switch (base) {
+                                case 67:
+                                    threshold[0] += 1;
+                                    break;
+                                case 84:
+                                    threshold[1] += 1;
+                                    break;
+                                case 65:
+                                    threshold[2] += 1;
+                                    break;
+                                case 71:
+                                    threshold[3] += 1;
+                                    break;
+                            }
+                        }
+                    }
+
+
+                    for (int i = 0; i<threshold.length;i++){
+
+                        if(threshold[i] > MINTHRESH) {
+                            // NEW SNP here
+                            System.out.println("new SNP +" + location + " coverage of " + threshold[i]+ " total " + locusIt.getRecordAndPositions().size());
+
+                        }
+
+
+                    }
+
                         //System.out.println(base); // unicode , needs translating
                         // 67 is C   84 = T    65 = A    71 = G
-                    }
+
                 }
             }
 
@@ -161,7 +201,7 @@ class BamHandler extends FileHandler implements Callable {
 
             locusIterator.close();
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             //System.out.println(e);
             System.out.println("[WARNING] Malformed read");
         }
@@ -171,18 +211,12 @@ class BamHandler extends FileHandler implements Callable {
     }
 
 
-
-
-
-
     public ArrayList<Gene> readBam(HashMap fastaMap, boolean existingKnowledge) {
-    //public void readBam(HashMap fastaMap, ArrayList<Gene> geneListExternal, boolean existingKnowledge) {
+        //public void readBam(HashMap fastaMap, ArrayList<Gene> geneListExternal, boolean existingKnowledge) {
 
         /**
          * reads a Bam file, stores SNPs.  check if there are gene names used as reference, or chromosome names.
          * associate SNPs to genes.  SNP by gene will be the main SNP storage.  SNPs are temporarily stored in the BAMreader, to ease thread ability
-         *
-         *
          */
         //HashMap<String,Read> ReadMap = new HashMap<>();
         try {
@@ -195,7 +229,6 @@ class BamHandler extends FileHandler implements Callable {
             SAMRecordIterator iterator = fileBam.iterator();
 
 
-
             //System.out.println(iterator.toList().size());
             // a default gene
             Gene currentGene = null;
@@ -204,10 +237,10 @@ class BamHandler extends FileHandler implements Callable {
 
             while (iterator.hasNext()) {
 
-                count +=1 ;
+                count += 1;
 
-                if(count % 100000 == 0){
-                    System.out.println("[STATUS] "  + count + " reads parsed " );
+                if (count % 100000 == 0) {
+                    System.out.println("[STATUS] " + count + " reads parsed ");
                 }
 
                 // sort to the genes then parse for SNPs
@@ -278,7 +311,7 @@ class BamHandler extends FileHandler implements Callable {
                             System.out.println(e);
                         }
                     }
-                }catch (NullPointerException e){
+                } catch (NullPointerException e) {
                     //System.out.println("gene not found ");
                 }
             }
@@ -286,55 +319,53 @@ class BamHandler extends FileHandler implements Callable {
         } catch (Exception e) {
             //System.out.println(e);
             System.out.println("[WARNING] Malformed read");
-        }finally {
+        } finally {
             return localGeneList;
         }
 
 
-
-
     }
 
-/**
-    public Gene findSNP(Gene currentGene, String chromosome, int start, String[] MZArray, String readSeq) {
-
-
-        try {
-            // if reads are sorted a memory of the last gene will speed things up significantly
-            currentGene = findGene(chromosome, start, geneList, currentGene);
-
-            for (int i = 0; i < MZArray.length; i++) {
-                if (MZArray[i].matches("\\D")) {
-                    int positionOnRead = Integer.parseInt(MZArray[i - 1]);
-                    char altBase = MZArray[i].charAt(0);
-
-                    // equals position on gene, if genes were used as a reference , then their start is 0
-                    int positionOnChrom = positionOnRead + start - currentGene.getStart();
-                    if (positionOnChrom < currentGene.getStop() && positionOnChrom > currentGene.getStart()) {
-                        char refBase = currentGene.getSequence().getCompoundAt(positionOnChrom + 1).toString().charAt(0);
-                        System.out.println(altBase + "  " + refBase);
-                        SNP snp = new SNP(currentGene, refBase, altBase, positionOnChrom);
-
-                        System.out.println(" Created SNP on " + snp.getGene().getIdent() + currentGene.getIdent());
-                        System.out.println("  on position " + snp.getPosition() + "  " + snp.getALT());
-                        currentGene.addSNP(snp, false);
-                    }
-                }
-            }
-            return currentGene;
-        } catch (Exception e) {
-            System.out.println("Caught badly formatted MZ string");
-            System.out.println(currentGene.getStart() + "  " + currentGene.getSequence().getLength() + " " + currentGene.getStop());
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-            sw.toString();
-            System.out.println(sw);
-            //System.out.println(e);
-        }
-        return currentGene;
-    }
- */
+    /**
+     * public Gene findSNP(Gene currentGene, String chromosome, int start, String[] MZArray, String readSeq) {
+     * <p>
+     * <p>
+     * try {
+     * // if reads are sorted a memory of the last gene will speed things up significantly
+     * currentGene = findGene(chromosome, start, geneList, currentGene);
+     * <p>
+     * for (int i = 0; i < MZArray.length; i++) {
+     * if (MZArray[i].matches("\\D")) {
+     * int positionOnRead = Integer.parseInt(MZArray[i - 1]);
+     * char altBase = MZArray[i].charAt(0);
+     * <p>
+     * // equals position on gene, if genes were used as a reference , then their start is 0
+     * int positionOnChrom = positionOnRead + start - currentGene.getStart();
+     * if (positionOnChrom < currentGene.getStop() && positionOnChrom > currentGene.getStart()) {
+     * char refBase = currentGene.getSequence().getCompoundAt(positionOnChrom + 1).toString().charAt(0);
+     * System.out.println(altBase + "  " + refBase);
+     * SNP snp = new SNP(currentGene, refBase, altBase, positionOnChrom);
+     * <p>
+     * System.out.println(" Created SNP on " + snp.getGene().getIdent() + currentGene.getIdent());
+     * System.out.println("  on position " + snp.getPosition() + "  " + snp.getALT());
+     * currentGene.addSNP(snp, false);
+     * }
+     * }
+     * }
+     * return currentGene;
+     * } catch (Exception e) {
+     * System.out.println("Caught badly formatted MZ string");
+     * System.out.println(currentGene.getStart() + "  " + currentGene.getSequence().getLength() + " " + currentGene.getStop());
+     * StringWriter sw = new StringWriter();
+     * PrintWriter pw = new PrintWriter(sw);
+     * e.printStackTrace(pw);
+     * sw.toString();
+     * System.out.println(sw);
+     * //System.out.println(e);
+     * }
+     * return currentGene;
+     * }
+     */
 
 
     @Override
@@ -394,12 +425,24 @@ class BamHandler extends FileHandler implements Callable {
     }
 
 
-    private byte getRefbase(String chromosome, int location){
+    private byte getRefbase(String chromosome, int location) {
+        //System.out.println("fastas in file "+ this.fasta.keySet().size() +   " location = " + location);
+        String nucl = fasta.get(chromosome).getCompoundAt(location).toString();
+        // 67 is C   84 = T    65 = A    71 = G
+        switch (nucl) {
+            case "A":
+                return 65;
+            case "C":
+                return 67;
+            case "G":
+                return 71;
+            case "T":
+                return 84;
+            default:
+                return 0;
+        }
 
-        DNASequence refseq = this.fastaMap.get(chromosome);
-        NucleotideCompound nucl = refseq.getCompoundAt(location);
-
-        return Byte.valueOf(nucl.toString());
+        //return Byte.valueOf();
 
 
     }
