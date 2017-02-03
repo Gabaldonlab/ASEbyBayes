@@ -1,30 +1,22 @@
 package com.ernstthuer;
 
 /**
- * Created by ethur on 7/26/16.
+ * Bamhandler implementation,   is handled by BamThreader,   goes through the mapped files with a variation of the Samtools  htsjdk LocusWalker
  */
 
 import htsjdk.samtools.*;
-import htsjdk.samtools.reference.ReferenceSequence;
 import htsjdk.samtools.util.*;
 import htsjdk.samtools.ValidationStringency;
 import htsjdk.samtools.SamFileValidator;
-import jdk.nashorn.internal.codegen.CompilerConstants;
 import org.biojava.nbio.core.sequence.DNASequence;
-import org.broadinstitute.hellbender.engine.AlignmentContext;
-import org.broadinstitute.hellbender.engine.FeatureContext;
-import org.broadinstitute.hellbender.engine.ReferenceContext;
-import sun.print.CUPSPrinter;
-
-//import htsjdk.samtools.util.CloserUtil;
+import org.biojava.nbio.core.sequence.compound.NucleotideCompound;
 
 import java.io.File;
 import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.*;
 import java.util.concurrent.Callable;
 
-public class BamHandler extends FileHandler implements Callable {
+class BamHandler extends FileHandler implements Callable {
 //    public class BamHandler extends FileHandler implements Runnable {
 
     // bam is only import, no direction,
@@ -34,6 +26,7 @@ public class BamHandler extends FileHandler implements Callable {
     // each BAM file contains a potential snplist, this should be merged after reading.  keep separate for threading.
     private ArrayList<SNP> snpArrayList = new ArrayList<>();
     private ArrayList<Gene> localGeneList = new ArrayList<>();
+    //private HashMap<String, DNASequence> fasta = new HashMap<>();
 
     // contain the reads   SAM format
 
@@ -49,7 +42,7 @@ public class BamHandler extends FileHandler implements Callable {
         System.out.println(bamWalker.hasReads());
     }*/
 
-    public BamHandler(String locale, String type, String direction) {
+    BamHandler(String locale, String type, String direction) {
         super(locale, type, direction);
         this.type = type;
         this.locale = locale;
@@ -82,7 +75,7 @@ public class BamHandler extends FileHandler implements Callable {
         this.fastaMap = fastaMap;
     }
 
-    public void setGeneList(ArrayList<Gene> geneList) {
+    void setGeneList(ArrayList<Gene> geneList) {
 
         // create a deep copy to keep it independent
 
@@ -103,17 +96,18 @@ public class BamHandler extends FileHandler implements Callable {
         return localGeneList;
     }
 
+// 67 is C   84 = T    65 = A    71 = G
 
-
+//  ToDo  feed gene list into the bam evaluator to check only genes
     //  Read locus by locus for each gene in the available geneList
-    public ArrayList<Gene> readBamLocus(HashMap fastaMap, boolean existingKnowledge){
+    ArrayList<Gene> readBamLocus(HashMap fastaMap, boolean existingKnowledge){
         ArrayList<Gene> geneArrayList = new ArrayList<>();
 
 
 
         try {
 
-            int MINIMUM_MAPPING_QUALITY = 0;
+            //int MINIMUM_MAPPING_QUALITY = 0;
             final SamFileValidator validator = new SamFileValidator(new PrintWriter(System.out), 8000);
             validator.setIgnoreWarnings(true);
             validator.setVerbose(true, 1000);
@@ -123,127 +117,49 @@ public class BamHandler extends FileHandler implements Callable {
             //SAMRecordIterator iterator = fileBam.iterator();
             SamLocusIterator locusIterator = new SamLocusIterator(fileBam);  // intervals to gene positions
 
-
-            while (locusIterator.hasNext()){
-                SamLocusIterator.LocusInfo  locusIt = locusIterator.next();
-                for (final SamLocusIterator.RecordAndOffset rec : locusIt.getRecordAndPositions()) {
-
-                    System.out.println(rec.getRecord());
-                    System.out.println(rec.getReadBase());
-
-                }
-            }
-
-            //locusIterator.setMappingQualityScoreCutoff(MINIMUM_MAPPING_QUALITY);
-
-
-      /*      while (locusIterator.hasNext()){
-
-                SamLocusIterator.RecordAndOffset rec = locusIterator.next();
-*/
-
-/*
-
-            for (SamLocusIterator.LocusInfo info : locusIterator) {
-
-                final String chrom = info.getSequenceName();
-                final int pos = info.getPosition();
-                int posi = 0;
-                int nega = 0;
-
-                final SAMRecord record;
-                final int offset = info
-
-
-
-*/
-
-
-
-
-
-
-
-
-
-            //while (locusIterator.hasNext()) {
-                //final SamLocusIterator.LocusInfo info = locusIterator.next();
-                //final ReferenceSequence ref = refWalker.get(info.getSequenceIndex());
-//                try {
-//                    System.out.println(info.getRecordAndPositions());
-//                }catch(Exception e){
-//
-//                }
-
-
-
-
-  /*
-            while (locusIterator.hasNext()) {
-                    count += 1;
-                    //System.out.println(locusIterator.next().toString().toString());
-                    //Iterator iter = locusIterator.next().getRecordAndPositions().iterator();
-
-                    locusIterator.next();
-                }
-
-*/
-
-
-
-/*            for(Iterator<SamLocusIterator.LocusInfo> iter = locusIterator.iterator(); iter.hasNext();){
-                SamLocusIterator.LocusInfo  locusInfo=iter.next();
-                System.out.println(locusInfo.getRecordAndPositions().size());
-
-
-                for (final SamLocusIterator.RecordAndOffset rec : iter.next().getRecordAndPositions()) {
-
-                    final SAMRecord samrec = rec.getRecord();
-
-                    final byte base = rec.getReadBase();
-
-                    final byte baseAsRead = samrec.getReadNegativeStrandFlag() ? SequenceUtil.complement(base) : base;
-                    System.out.println("Base " + baseAsRead);
-
-                }
-
-
-            }*/
-            locusIterator.close();
-
             Gene currentGene = null;
 
 
 
+
+
+
+            while (locusIterator.hasNext()) {
+
+                SamLocusIterator.LocusInfo locusIt = locusIterator.next();
+
+                int location = locusIt.getPosition();
+                String chromosome = locusIt.getSequenceName();
+
+
+                currentGene = findGene(chromosome, location, localGeneList, currentGene, 1);
+                // get reference base for location
+
+                if (currentGene != null) {
+                    //System.out.println(currentGene.getIdent());
+                    DNASequence currentsequence = currentGene.getSequence();
+
+                    byte refBase = getRefbase(chromosome,location);
+
+                    //System.out.println(currentsequence.toString());
+
+                    for (final SamLocusIterator.RecordAndOffset rec : locusIt.getRecordAndPositions()) {
+                        //System.out.println(rec.getOffset());
+                        byte base = rec.getReadBase();
+                        //System.out.println(base); // unicode , needs translating
+                        // 67 is C   84 = T    65 = A    71 = G
+                    }
+                }
+            }
+
             int count = 0;
 
+            if (count % 100000 == 0) {
+                System.out.println("[STATUS] " + count + " reads parsed ");
+            }
 
 
-
-
-          /*
-                while (iter.hasNext()){
-                    //SamLocusIterator.RecordAndOffset rec = (SamLocusIterator.RecordAndOffset) iter.next();
-                    SamLocusIterator.LocusInfo rec = (SamLocusIterator.LocusInfo) iter.next();
-                    System.out.println(rec.toString() + " hello");
-                }
-*/
-
-
-                        
-                //System.out.println(" NExt " +);
-
-                if (count % 100000 == 0) {
-                    System.out.println("[STATUS] " + count + " reads parsed ");
-                }
-
-
-
-
-
-
-
-
+            locusIterator.close();
 
         }catch (Exception e) {
             //System.out.println(e);
@@ -435,7 +351,7 @@ public class BamHandler extends FileHandler implements Callable {
         return snpArrayList;
     }
 
-    public Gene findGene(String chromosome, int start, ArrayList<Gene> geneList, Gene currentgene) {
+    private Gene findGene(String chromosome, int start, ArrayList<Gene> geneList, Gene currentgene) {
 
         // first check if read belongs to the same gene as before:  if not find the next one
         if (currentgene != null && currentgene.getChromosome() == chromosome && currentgene.getStop() > start && currentgene.getStart() < start) {
@@ -453,5 +369,39 @@ public class BamHandler extends FileHandler implements Callable {
         return null;
     }
 
+    private Gene findGene(String chromosome, int location, ArrayList<Gene> geneList, Gene currentgene, int flag) {
+        /**
+         * overloading this to check for gene location instead of read start,  due to change from read iterator to
+         *
+         */
+
+        // first check if read belongs to the same gene as before:  if not find the next one
+        if (currentgene != null && currentgene.getChromosome() == chromosome && currentgene.getStop() > location && currentgene.getStart() < location) {
+            return currentgene;
+            // same chromosome as last
+        }
+
+
+        for (Gene gene : geneList) {
+            if (gene.getChromosome().equals(chromosome)) {
+                //System.out.println(gene.getStart() + "  "  + location);
+                if (gene.getStart() < location && gene.getStop() > location) {
+                    return gene;
+                }
+            }
+        }
+        return null;
+    }
+
+
+    private byte getRefbase(String chromosome, int location){
+
+        DNASequence refseq = this.fastaMap.get(chromosome);
+        NucleotideCompound nucl = refseq.getCompoundAt(location);
+
+        return Byte.valueOf(nucl.toString());
+
+
+    }
 
 }

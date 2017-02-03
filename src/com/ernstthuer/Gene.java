@@ -25,6 +25,8 @@ public class Gene implements Cloneable {
     private HashMap<String, Double> hypothesisEval = new HashMap<>();
 
 
+
+
     @Override
     protected Object clone() throws CloneNotSupportedException {
 
@@ -260,6 +262,7 @@ public class Gene implements Cloneable {
         return sequence;
     }
 
+
     public String getChromosome() {
         return chromosome;
     }
@@ -443,6 +446,8 @@ public class Gene implements Cloneable {
 
 
 
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -467,6 +472,10 @@ public class Gene implements Cloneable {
     public List<SimpleRead> getGeneReadList() {
         return geneReadList;
     }
+
+
+
+
 }
 
 
