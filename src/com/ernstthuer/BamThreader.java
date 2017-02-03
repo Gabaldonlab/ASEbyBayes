@@ -70,13 +70,11 @@ public class BamThreader {
         for(BamHandler bhdlr:bamfiles){
             ArrayList<Gene> temporaryGeneList = listOfGenesFromThreads.get(count);
             bhdlr.setGeneList(temporaryGeneList);
-            System.out.println("initial size of Gene list = " + temporaryGeneList.size());
+            //System.out.println("initial size of Gene list = " + temporaryGeneList.size());
             Future<ArrayList<Gene>> f = service.submit(bhdlr);
             futures.add(f);
 
-
-
-            System.out.println("Bam Loading complete on file " + bhdlr.getLocale());
+            System.out.println("[STATUS] Bam Loading complete on file " + bhdlr.getLocale());
             count += 1 ;
         }
 
@@ -88,12 +86,13 @@ public class BamThreader {
             //BamHandler bhdlr = (BamHandler) f.get();
             //System.out.println(f.get().size());
             try {
-                try{
+                /*try{
                     System.out.println(f.toString());
+
 
                 }catch (NullPointerException npl){
                     System.out.println(npl);
-                }
+                }*/
                 ArrayList<Gene> geneListFromBamHandler = f.get();
                 for (Gene gene : geneListFromBamHandler) {
                     gene.findORGCoverageOfSNPs();

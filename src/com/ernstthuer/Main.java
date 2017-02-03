@@ -41,7 +41,7 @@ public class Main {
     public static void main(String[] args) {
 
 
-        System.out.println("Running ASEbyBayes Version  0.22");
+        System.out.println("Running ASEbyBayes Version  0.23");
         populateCodonConversion();
 
         // open the input files in sequence,  fasta  gff then bam
@@ -369,6 +369,10 @@ public class Main {
         catch (ClassCastException e){
             errorCaller(e);
         }
+
+        System.out.println("[STATUS] Run complete");
+
+
     }
          //*///DISABLED FOR TESTING
 

@@ -68,7 +68,7 @@ public class FastaSilencer {
                 DNASequence dna = new DNASequence(buildStringFasta.toString());
                 dna.setDescription(i);
 
-                System.out.println(dna.getLength());
+                //System.out.println(dna.getLength());
 
                 fasta.put(i, dna);
 

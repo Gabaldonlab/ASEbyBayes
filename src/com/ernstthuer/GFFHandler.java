@@ -139,7 +139,8 @@ public class GFFHandler extends FileHandler {
                 }
             }
         }
-        System.out.println("[STATUS] Annotation file found type :" + type);
+        // works
+        //System.out.println("[STATUS] Annotation file found type :" + type);
 
         switch (type) {
             case "CGD":

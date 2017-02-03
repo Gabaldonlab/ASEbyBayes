@@ -45,8 +45,6 @@ public class FastaHandler extends FileHandler {
         HashMap<String, DNASequence> fastaMap;
 
 
-        System.out.println("Reading " + geneList.size() + "  ");
-
 /** for testing purpose
         for (Gene gene : geneList) {
             System.out.println("inside Fasta parser : " + gene.getIdent() + "  " + gene.getStart());
@@ -57,8 +55,6 @@ public class FastaHandler extends FileHandler {
         try {
             File file = new File(this.locale);
             fastaMap = FastaReaderHelper.readFastaDNASequence(file);
-
-            System.out.println(fastaMap.size());
 
 
             for (Gene gene : geneList) {

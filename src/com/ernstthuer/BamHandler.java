@@ -107,12 +107,20 @@ class BamHandler extends FileHandler implements Callable {
     //  ToDo  feed gene list into the bam evaluator to check only genes
     //  Read locus by locus for each gene in the available geneList
     ArrayList<Gene> readBamLocus(HashMap fastaMap, boolean existingKnowledge) {
+
+        /**
+         * reads a Bam file, stores SNPs.  check if there are gene names used as reference, or chromosome names.
+         * associate SNPs to genes.  SNP by gene will be the main SNP storage.  SNPs are temporarily stored in the BAMreader, to ease thread ability
+         *
+         * build on the HTSJDK  locuswalker
+         */
+
         ArrayList<Gene> geneArrayList = new ArrayList<>();
 
 
         try {
 
-            //int MINIMUM_MAPPING_QUALITY = 0;
+            int MINIMUM_MAPPING_QUALITY = 0;
             final SamFileValidator validator = new SamFileValidator(new PrintWriter(System.out), 8000);
             validator.setIgnoreWarnings(true);
             validator.setVerbose(true, 1000);
@@ -139,9 +147,6 @@ class BamHandler extends FileHandler implements Callable {
                 // get reference base for location
 
                 if (currentGene != null) {
-                    //System.out.println(currentGene.getIdent());
-                    DNASequence currentsequence = currentGene.getSequence();
-
 
                     byte refBase = getRefbase(chromosome, location);
 
@@ -150,15 +155,11 @@ class BamHandler extends FileHandler implements Callable {
                     int[] threshold = new int[4];
 
                     int MINTHRESH = 3;  // get this from main
-                    boolean addSNP = false;
+
 
                     for (final SamLocusIterator.RecordAndOffset rec : locusIt.getRecordAndPositions()) {
-                        //System.out.println(rec.getOffset());
                         byte base = rec.getReadBase();
-
-                        if (refBase != base) {
-                            //System.out.println("pref " + refBase + "  " + base);
-
+                        if (refBase != base && rec.getBaseQuality() > MINIMUM_MAPPING_QUALITY) {
                             switch (base) {
                                 case 65:
                                     threshold[0] += 1;
@@ -181,12 +182,13 @@ class BamHandler extends FileHandler implements Callable {
 
                         if(threshold[i] > MINTHRESH) {
                             // NEW SNP here
-                            System.out.println("new SNP +" + location + " coverage of " + threshold[i]+ " total " + locusIt.getRecordAndPositions().size());
                             char RefNuc =  decodeRef(refBase);
                             char AltNuc =  decodeRef(decodeArray[i]);
 
                             SNP snp = new SNP(currentGene,RefNuc,AltNuc,location);
                             currentGene.addSNP(snp,false);
+                            snpArrayList.add(snp);
+
                         }
                     }
                         //System.out.println(base); // unicode , needs translating
@@ -196,10 +198,10 @@ class BamHandler extends FileHandler implements Callable {
 
             int count = 0;
 
-            if (count % 100000 == 0) {
+          /*  if (count % 100000 == 0) {
                 System.out.println("[STATUS] " + count + " reads parsed ");
             }
-
+*/
 
             locusIterator.close();
 
@@ -239,11 +241,11 @@ class BamHandler extends FileHandler implements Callable {
 
             while (iterator.hasNext()) {
 
-                count += 1;
+        /*        count += 1;
 
                 if (count % 100000 == 0) {
                     System.out.println("[STATUS] " + count + " reads parsed ");
-                }
+                }*/
 
                 // sort to the genes then parse for SNPs
 
@@ -387,7 +389,7 @@ class BamHandler extends FileHandler implements Callable {
     private Gene findGene(String chromosome, int start, ArrayList<Gene> geneList, Gene currentgene) {
 
         // first check if read belongs to the same gene as before:  if not find the next one
-        if (currentgene != null && currentgene.getChromosome() == chromosome && currentgene.getStop() > start && currentgene.getStart() < start) {
+        if (currentgene != null && currentgene.getChromosome().equals(chromosome) && currentgene.getStop() > start && currentgene.getStart() < start) {
             return currentgene;
         }
 
@@ -409,7 +411,7 @@ class BamHandler extends FileHandler implements Callable {
          */
 
         // first check if read belongs to the same gene as before:  if not find the next one
-        if (currentgene != null && currentgene.getChromosome() == chromosome && currentgene.getStop() > location && currentgene.getStart() < location) {
+        if (currentgene != null && currentgene.getChromosome().equals(chromosome) && currentgene.getStop() > location && currentgene.getStart() < location) {
             return currentgene;
             // same chromosome as last
         }
