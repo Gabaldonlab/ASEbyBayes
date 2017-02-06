@@ -13,8 +13,8 @@ public class Main {
 
     // gene List should be static
     static ArrayList<Gene> geneList = new ArrayList<>();
-    static ArrayList<SNP> snips = new ArrayList<>();
-    static HashMap<String, DNASequence> fasta = new HashMap<>();
+    private static ArrayList<SNP> snips = new ArrayList<>();
+    private static HashMap<String, DNASequence> fasta = new HashMap<>();
     static boolean verbose = true;
     static HashMap<String, String> codonConversion = new HashMap<>();
     static int numThreads = 10;
@@ -33,7 +33,7 @@ public class Main {
     static int minCovThreshold = 50;
 
     // 0= initiation state ; 1 = repeated observation  ; 2 = significant true positive expectation
-    static int validationLVL = 2;
+    private static int validationLVL = 2;
 
 
     public static void main(String[] args) {
@@ -65,6 +65,7 @@ public class Main {
         // call the argument parser
         // GFF import   Fasta reference Input
 
+
         // Try block to open obligatory Input files,  GFF import   Fasta reference Input ,  casts as GFFHandler and FastaHandler objects
         try {
             GFFHandler gffHandler = (GFFHandler) parser.returnType("GFF", "Input");
@@ -73,7 +74,8 @@ public class Main {
             geneList = gffHandler.getGeneList();
             fasta = fastaHandler.readFasta(geneList);
             try {
-                int test = geneList.get(0).getSequence().getLength();
+                // test is empty
+                geneList.get(0).getSequence().getLength();
             } catch (IndexOutOfBoundsException e) {
                 System.out.println("[ERROR] no features found in GFF file,   try specify  -F gene ");
                 System.exit(1);
@@ -110,12 +112,13 @@ public class Main {
 
         geneList = bamThreader.getOutputGeneArrayList();
 
+
         // Hypothesis implementation via Hypothesis tester
         HypothesisTester hypothesisTester = new HypothesisTester(geneList);
 
-        geneList = hypothesisTester.getGeneList();
 
-        //geneList = otherGeneList;
+
+        geneList = hypothesisTester.getGeneList();
 
         hypothesisTester.geneWiseComparison(geneList);
 
@@ -133,23 +136,9 @@ public class Main {
             }*/
 
             gene.findSynonymity(validationLVL);
+            snips.addAll(gene.getSnpsOnGene());
         }
 
-
-        for (Gene gene : geneList) {
-            gene.evaluateGeneExpression();
-            //System.out.println(gene.getHypothesisArray()[0]+" "+gene.getHypothesisArray()[1]+" "+gene.getHypothesisArray()[2]+" "+gene.getHypothesisArray()[3]);
-
-            for (SNP snp : gene.getSnpsOnGene()) {
-
-                // ToDo  implement snp validation here
-
-                snips.add(snp);
-
-            }
-        }
-
-        //System.out.println(gene.getHypothesisArray()[0]+" "+gene.getHypothesisArray()[1]+" "+gene.getHypothesisArray()[2]+" "+gene.getHypothesisArray()[3]);
 
         try {
             CSVHandler csvHandler = (CSVHandler) parser.returnType("VCF", "Output");

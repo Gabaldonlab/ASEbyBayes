@@ -66,7 +66,7 @@ class BamHandler extends FileHandler implements Callable  {
     public ArrayList<Gene> call() {
 
         //return readBam(fastaMap,existingknowledge );
-        System.out.println(readBamLocus(fastaMap, existingknowledge));
+        //System.out.println(readBamLocus(fastaMap, existingknowledge));
         return readBamLocus(fastaMap, existingknowledge);
 
     }
@@ -86,7 +86,7 @@ class BamHandler extends FileHandler implements Callable  {
 
         // create a deep copy to keep it independent
 
-        ArrayList<Gene> copy = new ArrayList<Gene>(geneList.size());
+        ArrayList<Gene> copy = new ArrayList<>(geneList.size());
 
         for (Gene gene : geneList) {
             try {
@@ -194,7 +194,6 @@ class BamHandler extends FileHandler implements Callable  {
                             snp.setALTcov(threshold[i]);
                             snp.setORGcov(ORG_COVERAGE);
 
-                            //System.out.println(threshold[i]+ "  " + ORG_COVERAGE);
 
                             currentGene.addSNP(snp,false);
                             //snpArrayList.add(snp);

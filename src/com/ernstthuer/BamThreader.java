@@ -26,7 +26,9 @@ public class BamThreader {
         this.poolSize = poolSize;
 
         try {
+
             loadBamDataViaThreading();
+
         } catch (InterruptedException e) {
             System.out.println("[ERROR] Thread loading interrupted");
             System.out.print(e);
@@ -65,12 +67,14 @@ public class BamThreader {
         ExecutorService service = Executors.newFixedThreadPool(poolSize);
         List<Future<ArrayList<Gene>>> futures = new ArrayList<>();
         for (BamHandler bhdlr : bamfiles) {
+
             ArrayList<Gene> temporaryGeneList = listOfGenesFromThreads.get(count);
             bhdlr.setGeneList(temporaryGeneList);
             Future<ArrayList<Gene>> f = service.submit(bhdlr);
             futures.add(f);
             // ToDo  parse location string to return more abbreviated file info
             System.out.println("[STATUS] Bam Loading complete on file " + bhdlr.getLocale());
+
             count += 1;
         }
 
@@ -78,10 +82,6 @@ public class BamThreader {
         for (Future<ArrayList<Gene>> f : futures) {
             try {
                 ArrayList<Gene> geneListFromBamHandler = f.get();
-                System.out.println("gene list information "  + geneListFromBamHandler.size());
-//                for (Gene gene : geneListFromBamHandler) {
-//                    gene.findORGCoverageOfSNPs();
-//                }
                 this.listOfGenesFromThreads.set(count, geneListFromBamHandler);
                 count += 1;
             } catch (NullPointerException nullpoint) {

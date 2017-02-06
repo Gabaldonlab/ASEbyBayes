@@ -191,7 +191,7 @@ class SNP implements Comparable<SNP> {
             int snpPos = (this.position) - (gene.getStart() + 3);
             this.ORG = seq.charAt(snpPos);
         } catch (Exception e) {
-            System.out.println(" -> " + gene.getStart() + this.position);
+            System.out.println("[ERROR] -> " + gene.getStart() + this.position + "  ?? ¿¿ ");
         }
     }
 
@@ -232,7 +232,7 @@ class SNP implements Comparable<SNP> {
     void combineSNPInformation(SNP snpOnOtherReplicate ){
         int foundsofar = foundInReplicates;
         foundInReplicates +=1;
-        System.out.println(ALTcov + " / "+ORGcov);
+        //System.out.println(ALTcov + " / "+ORGcov);
 
         this.ALTcov = (((ALTcov*foundsofar) + snpOnOtherReplicate.getALTcov()) /(1+foundsofar));
         this.ORGcov = (((ORGcov*foundsofar) + snpOnOtherReplicate.getORGcov()) /(1+foundsofar));
