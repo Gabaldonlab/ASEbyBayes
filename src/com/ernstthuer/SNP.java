@@ -250,9 +250,7 @@ class SNP implements Comparable<SNP> {
         outcov[0] = (((first.getALTcov()*foundInReplicates) + second.getALTcov()) /(1+foundInReplicates));
         outcov[1] = (((first.getALTcov()*foundInReplicates) + second.getORGcov()) /(1+foundInReplicates));
         first.foundInReplicates+=1;
-
-        System.out.println( first.getALTcov() + " " + second.getALTcov()  +   "  " + foundInReplicates + "   " + outcov[0]);
-
+        //System.out.println( first.getALTcov() + " " + second.getALTcov()  +   "  " + foundInReplicates + "   " + outcov[0]);
         return outcov;
 
 

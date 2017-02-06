@@ -24,11 +24,6 @@ public class Hypothesis {
      *
      *
      * needs a linear function to incorporate the observed coverage into the alpha and beta values
-     *
-     *
-     *
-     *
-     *
      */
     private double alpha;
     private double beta;
