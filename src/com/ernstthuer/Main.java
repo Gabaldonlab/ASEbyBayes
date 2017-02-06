@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 
 
@@ -114,24 +113,24 @@ public class Main {
         // Hypothesis implementation via Hypothesis tester
         HypothesisTester hypothesisTester = new HypothesisTester(geneList);
 
-        ArrayList<Gene> otherGeneList = hypothesisTester.getGeneList();
+        geneList = hypothesisTester.getGeneList();
 
-        geneList = otherGeneList;
+        //geneList = otherGeneList;
 
         hypothesisTester.geneWiseComparison(geneList);
 
         for (Gene gene : geneList) {
-            try {
+     /*       try {
                 //gene.evaluateSNPs();
                 for (SNP snp : gene.getSnpsOnGene()) {
                     if (snp.getORGcov() + snp.getALTcov() > 10 && !snp.getHypothesisEval().containsKey("NoiseHyp")) {
                         //count += 1;
-                        //System.out.println(count + " " + snp.getFoundInReplicates() + "  " + snp.getHypothesisEval() + " " + snp.getALTcov() + "  " + snp.getORGcov());
+                        //System.out.println( " " + snp.getFoundInReplicates() + "  " + snp.getHypothesisEval() + " " + snp.getALTcov() + "  " + snp.getORGcov());
                     }
                 }
             } catch (ConcurrentModificationException e) {
                 errorCaller(e);
-            }
+            }*/
 
             gene.findSynonymity(validationLVL);
         }
@@ -139,10 +138,14 @@ public class Main {
 
         for (Gene gene : geneList) {
             gene.evaluateGeneExpression();
+            //System.out.println(gene.getHypothesisArray()[0]+" "+gene.getHypothesisArray()[1]+" "+gene.getHypothesisArray()[2]+" "+gene.getHypothesisArray()[3]);
+
             for (SNP snp : gene.getSnpsOnGene()) {
-                if (snp.isValidated() >= 2) {
-                    snips.add(snp);
-                }
+
+                // ToDo  implement snp validation here
+
+                snips.add(snp);
+
             }
         }
 
@@ -157,8 +160,9 @@ public class Main {
             csvHandler.writeSNPToVCF(snips, minThresh);
 
             // reimplemented the output into a fastasilencer class
-            System.out.println("[STATUS] Writing Silenced fasta sequence of SNPs to file : " + fastaHandler.getLocale());
-            FastaSilencer fastaSilencer = new FastaSilencer(snips, fasta, fastaHandler.getLocale());
+            //System.out.println("[STATUS] Writing Silenced fasta sequence of SNPs to file : " + fastaHandler.getLocale());
+            //FastaSilencer fastaSilencer = new FastaSilencer(snips, fasta, fastaHandler.getLocale());
+            new FastaSilencer(snips, fasta, fastaHandler.getLocale());
         } catch (ClassCastException e) {
             errorCaller(e);
         }

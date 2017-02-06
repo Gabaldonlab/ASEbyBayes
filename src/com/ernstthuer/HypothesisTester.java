@@ -73,18 +73,20 @@ class HypothesisTester {
 
                 checkedhypothesis[0]+=1;
 
-                if (snp.getHypothesisEval().containsKey("EqualAllelicExpression")) {
-                    //ASEexpression += 1;
-                    checkedhypothesis[0]+=1;
-                }
                 if (snp.getHypothesisEval().containsKey("FullSNPExpression")) {
                     //FullSNPs += 1;
-                    checkedhypothesis[0]+=1;
+                    checkedhypothesis[1]+=1;
+                }
+
+                if (snp.getHypothesisEval().containsKey("EqualAllelicExpression")) {
+                    //ASEexpression += 1;
+                    checkedhypothesis[2]+=1;
+                    System.out.println(snp.getORGcov() + "  " + snp.getALTcov() + "  " + snp.getFoundInReplicates() );
                 }
 
                 if (snp.getHypothesisEval().isEmpty()) {
                     //NoHypothesisAssembled += 1;
-                    checkedhypothesis[0]+=1;
+                    checkedhypothesis[3]+=1;
                 }
             }
             gene.addHypothesisCount(checkedhypothesis);

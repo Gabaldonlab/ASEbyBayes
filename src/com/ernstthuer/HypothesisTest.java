@@ -15,6 +15,8 @@ import java.util.Random;
 public class HypothesisTest {
 
     private int length = 500;
+
+
     private static ArrayList<SNP> snpList = new ArrayList<>();
     //public String gene = "Testgene";
     private Gene testgene = new Gene("CHr1", 0, length, "+");
@@ -23,9 +25,9 @@ public class HypothesisTest {
     // make alpha a linear function of coverage
 
 
-    Hypothesis hypothesis = new Hypothesis(0.1, 10, "NoiseHyp");
-    Hypothesis hypothesisEAX = new Hypothesis(5, 5, "EqualAllelicExpression");
-    Hypothesis hypothesisFullSNP = new Hypothesis(10, 0.1, "FullSNPcall");
+    private Hypothesis hypothesis = new Hypothesis(0.1, 10, "NoiseHyp");
+    private Hypothesis hypothesisEAX = new Hypothesis(5, 5, "EqualAllelicExpression");
+    private Hypothesis hypothesisFullSNP = new Hypothesis(10, 0.1, "FullSNPcall");
 
     @Before
     public void createData() {

@@ -90,11 +90,11 @@ public class CSVHandler extends FileHandler {
         List<String> lines = new ArrayList<String>();
         int writecount = 0;
         for (SNP snp : snpArrayList) {
-            if (snp.isValidated() >= validationLvL) {
+            //if (snp.isValidated() >= validationLvL) {
                 // create String
                 lines.add(snp.toString());
                 writecount++;
-            }
+            //}
         }
 
         Path outFile = Paths.get(locale);

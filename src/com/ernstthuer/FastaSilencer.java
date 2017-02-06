@@ -1,9 +1,5 @@
 package com.ernstthuer;
 
-/**
- * Created by ethuer on 11/08/16.
- */
-
 
 import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
 import org.biojava.nbio.core.sequence.DNASequence;
@@ -16,10 +12,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 
-/**
- * Created by ethur on 7/20/16.
- */
-public class FastaSilencer {
+class FastaSilencer {
     /**
      * Invokes a set of methods to modify fasta sequences.
      * <p>
@@ -29,20 +22,12 @@ public class FastaSilencer {
      * could also transfer SNPs to genes
      */
 
+    FastaSilencer(ArrayList<SNP> snips, HashMap<String, DNASequence> fasta, String local) {
 
-    private HashMap<String, DNASequence> fasta = new HashMap<>();
-    private ArrayList<SNP> snips = new ArrayList<>();
-    private String local;
-
-
-    public FastaSilencer(ArrayList<SNP> snips, HashMap<String, DNASequence> fasta, String local) {
-        this.fasta = fasta;
-        this.snips = snips;
-        this.local = local;
         // find positions on the fasta, then silence and write to output
 
         for (String i : fasta.keySet()) {
-            //System.out.println(i + fasta.get(i));
+
             DNASequence toSilence = fasta.get(i);
             StringBuilder buildStringFasta = new StringBuilder(toSilence.getSequenceAsString());
 
@@ -53,9 +38,8 @@ public class FastaSilencer {
             while (snpIterator.hasNext()) {
                 SNP snp = snpIterator.next();
                 try {
-                    if (snp.getGene().equals(i)) {
+                    if (snp.getGene().getChromosome().equals(i)) {
                         int position = snp.getPosition();
-                        char ORG = snp.getORG();
                         buildStringFasta.setCharAt(position - 1, 'N');
                     }
 
@@ -80,11 +64,8 @@ public class FastaSilencer {
 
         try {
             BufferedOutputStream outFast = new BufferedOutputStream(new FileOutputStream(local));
-
-            //for(DNASequence outSeq : fasta.values()) {
             FastaWriterHelper.writeNucleotideSequence(outFast, fasta.values());  //(outFast, i);
-            //System.out.println("[STATUS] Writing masked FASTA to file");
-            //}
+            System.out.println("[STATUS] Writing Silenced fasta sequence of SNPs to file : " + local);
         } catch (Exception e) {
             System.out.println(e);
         }

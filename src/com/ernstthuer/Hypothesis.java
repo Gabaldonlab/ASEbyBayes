@@ -110,9 +110,10 @@ class Hypothesis {
 
             //System.out.println(gene.getIdent());
             for(SNP snp: gene.getSnpsOnGene()){
+
                 int coverage = snp.getALTcov() + snp.getORGcov();
-                int callsTotal = snp.getALTcov() + snp.getORGcov();
-                BayesClassify bcl = new BayesClassify( alphaBetaCorrection(coverage, alpha), alphaBetaCorrection(coverage, beta), snp.getALTcov(), callsTotal);
+                //int callsTotal = snp.getALTcov() + snp.getORGcov();
+                BayesClassify bcl = new BayesClassify( alphaBetaCorrection(coverage, alpha), alphaBetaCorrection(coverage, beta), snp.getALTcov(), coverage);
 
                 //double mean = bcl.getMean();
                 //double sigma = bcl.getSigma();
