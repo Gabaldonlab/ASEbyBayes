@@ -28,11 +28,12 @@ class HypothesisTester {
         this.testableHypothese.add(createASEHypothesis(this.geneList));
         this.testableHypothese.add(createFullSNPHypothesis(this.geneList));
 
-
     }
 
     // the three default hypothesis
+
     private Hypothesis createZeroHypothesis(ArrayList<Gene> geneList) {
+
         return new Hypothesis(0.1, 10, "NoiseHyp", geneList);
     }
 
@@ -56,34 +57,37 @@ class HypothesisTester {
 
         for (Gene gene : geneList) {
 
-            double ASEexpression = 0;
+        /*    double ASEexpression = 0;
             double FullSNPs = 0;
             double NoHypothesisAssembled = 0;
             double total = 0;
+            */
+            /**
+            // noise is deleted here
+            //  0:total,   1:FullSNP,  2: EqualAllelic   3:NoHyothsis
+            */
+            double[] checkedhypothesis = new double[4];
 
 
             for (SNP snp : gene.getSnpsOnGene()) {
 
-                if (!snp.getHypothesisEval().containsKey("NoiseHyp"))
-                    total += 1;
+                checkedhypothesis[0]+=1;
 
                 if (snp.getHypothesisEval().containsKey("EqualAllelicExpression")) {
-                    ASEexpression += 1;
-
+                    //ASEexpression += 1;
+                    checkedhypothesis[0]+=1;
                 }
                 if (snp.getHypothesisEval().containsKey("FullSNPExpression")) {
-                    FullSNPs += 1;
-
+                    //FullSNPs += 1;
+                    checkedhypothesis[0]+=1;
                 }
-
 
                 if (snp.getHypothesisEval().isEmpty()) {
-                    NoHypothesisAssembled += 1;
-
+                    //NoHypothesisAssembled += 1;
+                    checkedhypothesis[0]+=1;
                 }
-
-
             }
+            gene.addHypothesisCount(checkedhypothesis);
             //System.out.println("Gene : " + gene.getIdent() +" with " + gene.getSnpsOnGene().size() + " : " + total + " total snps contains " + FullSNPs +" full " + ASEexpression +" half " + NoHypothesisAssembled +" unknown SNPs"   );
 
         }

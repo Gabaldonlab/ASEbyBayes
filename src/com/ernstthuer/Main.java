@@ -69,7 +69,6 @@ public class Main {
         // Try block to open obligatory Input files,  GFF import   Fasta reference Input ,  casts as GFFHandler and FastaHandler objects
         try {
             GFFHandler gffHandler = (GFFHandler) parser.returnType("GFF", "Input");
-
             System.out.println("[STATUS] loading Fasta file");
             FastaHandler fastaHandler = (FastaHandler) parser.returnType("FASTA", "Input");
             geneList = gffHandler.getGeneList();
@@ -86,18 +85,13 @@ public class Main {
         } catch (IOException IOex) {
             System.out.println("[ERROR] File not Found exception at GFF reader input");
             errorCaller(IOex);
-
         }
-
-
         // Block to read information from the BAM files,   depends on whether a vcf input file was given ( SNPs are known) and simple quantification has to
         // be carried out,  or no VCF is provided, and SNP calling is carried out.
         if (parser.isExistingSNPinfo()) {
             // vcf was provided,  overrides SNP calling functionality
             CSVHandler csvHandler = (CSVHandler) parser.returnType("CSV", "INPUT");
             csvHandler.readVCF(); // this primes the genes with full SNP lists
-
-
         }
 
 
@@ -112,30 +106,26 @@ public class Main {
 
             }
         }
+
         BamThreader bamThreader = new BamThreader(listOfBamFilesFromParserForBamThreader, geneList, numThreads);
 
         geneList = bamThreader.getOutputGeneArrayList();
 
-
         // Hypothesis implementation via Hypothesis tester
         HypothesisTester hypothesisTester = new HypothesisTester(geneList);
 
-
         ArrayList<Gene> otherGeneList = hypothesisTester.getGeneList();
 
+        geneList = otherGeneList;
 
         hypothesisTester.geneWiseComparison(geneList);
 
-
-
-
-        int count = 0;
         for (Gene gene : geneList) {
             try {
                 //gene.evaluateSNPs();
                 for (SNP snp : gene.getSnpsOnGene()) {
                     if (snp.getORGcov() + snp.getALTcov() > 10 && !snp.getHypothesisEval().containsKey("NoiseHyp")) {
-                        count += 1;
+                        //count += 1;
                         //System.out.println(count + " " + snp.getFoundInReplicates() + "  " + snp.getHypothesisEval() + " " + snp.getALTcov() + "  " + snp.getORGcov());
                     }
                 }
@@ -155,6 +145,8 @@ public class Main {
                 }
             }
         }
+
+        //System.out.println(gene.getHypothesisArray()[0]+" "+gene.getHypothesisArray()[1]+" "+gene.getHypothesisArray()[2]+" "+gene.getHypothesisArray()[3]);
 
         try {
             CSVHandler csvHandler = (CSVHandler) parser.returnType("VCF", "Output");

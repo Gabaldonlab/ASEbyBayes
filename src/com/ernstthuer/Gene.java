@@ -28,6 +28,7 @@ public class Gene implements Cloneable {
     private LinkedHashMap<Integer, Integer> positioncount = new LinkedHashMap<>();
     private HashMap<String, Double> hypothesisEval = new HashMap<>();
 
+    private double[] hypothesisArray = new double[4];
 
     @Override
     protected Object clone() throws CloneNotSupportedException {
@@ -454,6 +455,13 @@ public class Gene implements Cloneable {
     }
 
 
+    public void addHypothesisCount(double[] hypothesisArray) {
+        this.hypothesisArray = hypothesisArray;
+    }
+
+    public double[] getHypothesisArray() {
+        return hypothesisArray;
+    }
 }
 
 
