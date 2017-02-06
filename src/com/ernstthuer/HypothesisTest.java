@@ -23,9 +23,9 @@ public class HypothesisTest {
     // make alpha a linear function of coverage
 
 
-    public Hypothesis hypothesis = new Hypothesis(0.1, 10, "NoiseHyp");
-    public Hypothesis hypothesisEAX = new Hypothesis(5, 5, "EqualAllelicExpression");
-    public Hypothesis hypothesisFullSNP = new Hypothesis(10, 0.1, "FullSNPcall");
+    Hypothesis hypothesis = new Hypothesis(0.1, 10, "NoiseHyp");
+    Hypothesis hypothesisEAX = new Hypothesis(5, 5, "EqualAllelicExpression");
+    Hypothesis hypothesisFullSNP = new Hypothesis(10, 0.1, "FullSNPcall");
 
     @Before
     public void createData() {

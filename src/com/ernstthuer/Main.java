@@ -184,6 +184,16 @@ public class Main {
 
         geneList = bamThreader.getOutputGeneArrayList();
 
+/*        for (Gene gene: geneList
+             ) {
+            for (SNP snp: gene.getSnpsOnGene()
+                 ) {
+                if(snp.getFoundInReplicates() > 1){
+                System.out.println(" coverage " + snp.getORGcov() + "  " + snp.getALTcov() + " foundin " + snp.getFoundInReplicates());
+                }
+            }
+        }*/
+
         HypothesisTester hypothesisTester = new HypothesisTester(geneList);
 
         ArrayList<Gene> otherGeneList = hypothesisTester.getGeneList();

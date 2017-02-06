@@ -112,16 +112,11 @@ public class Gene implements Cloneable {
 
     public void findORGCoverageOfSNPs() {
         // trigger this after the SNPs were loaded and the simplified reads are stored on the genes.
-
-        // geneReadList.sort();
-        // Collections.sort(geneReadList);
+        // DEPRECIATED
 
         for (SNP snip : snpsOnGene) {
             try {
-
                 // ToDO remove sout
-
-
                 // only for SNPs with at least 2 observations
                 if (snip.isValidated() > 0) {
                     int count = 0;
@@ -398,47 +393,40 @@ public class Gene implements Cloneable {
 
         }
     }
-
-
     public HashMap<String, Double> getHypothesisEval() {
         return hypothesisEval;
     }
-
     public void addToHypothesisEval(String name, Double eval) {
         this.hypothesisEval.put(name, eval);
     }
-
     public void addRead(SimpleRead read) {
         this.geneReadList.add(read);
     }
 
-
     public ArrayList<SNP> unifySNPLists(ArrayList<SNP> otherSNPList) {
-
         ArrayList<SNP> snpArrayList = new ArrayList<>();
 
         for (SNP snp : snpsOnGene) {
             snpArrayList.add(snp);
         }
-
         for (SNP snp : otherSNPList) {
-
             if (!snpArrayList.contains(snp)) {
                 snpArrayList.add(snp);
             } else {
-
                 int indexOfSNP = snpArrayList.indexOf(snp);
                 SNP orgSNP = snpArrayList.get(indexOfSNP);
-                orgSNP.combineSNPInformation(snp);
+                //orgSNP.combineSNPInformation(snp);
+
+                int[] newCov = orgSNP.combineSNPInformation(orgSNP,snp);
+
+                orgSNP.setALTcov(newCov[0]);
+                orgSNP.setORGcov(newCov[1]);
+
+
             }
-
         }
-
-
         return snpArrayList;
-
     }
-
 
     @Override
     public boolean equals(Object o) {

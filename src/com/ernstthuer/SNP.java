@@ -6,9 +6,6 @@ import org.biojava.nbio.core.sequence.DNASequence;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * Created by ethur on 7/26/16.
- */
 class SNP implements Comparable<SNP> {
 
     /**
@@ -206,7 +203,7 @@ class SNP implements Comparable<SNP> {
         return expression;
     }
 
-    public HashMap<String, Double> getHypothesisEval() {
+    HashMap<String, Double> getHypothesisEval() {
         return hypothesisEval;
     }
 
@@ -214,7 +211,7 @@ class SNP implements Comparable<SNP> {
         this.hypothesisEval = hypothesisEval;
     }
 
-    public void addHypothesisEval(String test, Double results) {
+    void addHypothesisEval(String test, Double results) {
         if(this.hypothesisEval.containsKey(test)){
 
             double valueSoFar =  this.hypothesisEval.get(test);
@@ -232,11 +229,31 @@ class SNP implements Comparable<SNP> {
 
 
 
-    public void combineSNPInformation(SNP snpOnOtherReplicate ){
-
+    void combineSNPInformation(SNP snpOnOtherReplicate ){
+        int foundsofar = foundInReplicates;
         foundInReplicates +=1;
-        this.setALTcov( (this.getALTcov() + snpOnOtherReplicate.getALTcov())/2   );
-        this.setORGcov( (this.getORGcov() + snpOnOtherReplicate.getORGcov())/2   );
+        System.out.println(ALTcov + " / "+ORGcov);
+
+        this.ALTcov = (((ALTcov*foundsofar) + snpOnOtherReplicate.getALTcov()) /(1+foundsofar));
+        this.ORGcov = (((ORGcov*foundsofar) + snpOnOtherReplicate.getORGcov()) /(1+foundsofar));
+
+    }
+
+    // improve this
+    int[] combineSNPInformation(SNP first, SNP second) {
+
+        // ToDo , treat ALtCov as ratio instead of integer values
+        // [0] is ALT,  [1] is org
+        int[] outcov = new int[2];
+        int foundInReplicates = first.foundInReplicates;
+
+        outcov[0] = (((first.getALTcov()*foundInReplicates) + second.getALTcov()) /(1+foundInReplicates));
+        outcov[1] = (((first.getALTcov()*foundInReplicates) + second.getORGcov()) /(1+foundInReplicates));
+        first.foundInReplicates+=1;
+
+        System.out.println( first.getALTcov() + " " + second.getALTcov()  +   "  " + foundInReplicates + "   " + outcov[0]);
+
+        return outcov;
 
 
     }

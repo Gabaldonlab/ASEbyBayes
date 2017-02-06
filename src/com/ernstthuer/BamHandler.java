@@ -158,6 +158,7 @@ class BamHandler extends FileHandler implements Callable  {
 
                     int MINTHRESH = 3;  // get this from main
 
+                    int ORG_COVERAGE = 0;
 
                     for (final SamLocusIterator.RecordAndOffset rec : locusIt.getRecordAndPositions()) {
                         byte base = rec.getReadBase();
@@ -176,6 +177,8 @@ class BamHandler extends FileHandler implements Callable  {
                                     threshold[3] += 1;
                                     break;
                             }
+                        }else{
+                            ORG_COVERAGE+=1;
                         }
                     }
 
@@ -188,6 +191,11 @@ class BamHandler extends FileHandler implements Callable  {
                             char AltNuc =  decodeRef(decodeArray[i]);
 
                             SNP snp = new SNP(currentGene,RefNuc,AltNuc,location);
+                            snp.setALTcov(threshold[i]);
+                            snp.setORGcov(ORG_COVERAGE);
+
+                            //System.out.println(threshold[i]+ "  " + ORG_COVERAGE);
+
                             currentGene.addSNP(snp,false);
                             //snpArrayList.add(snp);
 

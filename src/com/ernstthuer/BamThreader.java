@@ -64,26 +64,24 @@ public class BamThreader {
         //int poolSize = 10;
         ExecutorService service = Executors.newFixedThreadPool(poolSize);
         List<Future<ArrayList<Gene>>> futures = new ArrayList<>();
-
         for (BamHandler bhdlr : bamfiles) {
             ArrayList<Gene> temporaryGeneList = listOfGenesFromThreads.get(count);
             bhdlr.setGeneList(temporaryGeneList);
             Future<ArrayList<Gene>> f = service.submit(bhdlr);
-
             futures.add(f);
-
+            // ToDo  parse location string to return more abbreviated file info
             System.out.println("[STATUS] Bam Loading complete on file " + bhdlr.getLocale());
             count += 1;
         }
 
         count = 0;
         for (Future<ArrayList<Gene>> f : futures) {
-
             try {
                 ArrayList<Gene> geneListFromBamHandler = f.get();
-                for (Gene gene : geneListFromBamHandler) {
-                    gene.findORGCoverageOfSNPs();
-                }
+                System.out.println("gene list information "  + geneListFromBamHandler.size());
+//                for (Gene gene : geneListFromBamHandler) {
+//                    gene.findORGCoverageOfSNPs();
+//                }
                 this.listOfGenesFromThreads.set(count, geneListFromBamHandler);
                 count += 1;
             } catch (NullPointerException nullpoint) {
@@ -98,27 +96,26 @@ public class BamThreader {
 
 
     public ArrayList<Gene> unifyGeneLists() {
-
         ArrayList<Gene> outputGeneArrayList = new ArrayList<>();
 
+
         for (ArrayList<Gene> geneListSubset : listOfGenesFromThreads) {
-
-
             for (Gene gene : geneListSubset) {
 
                 if (outputGeneArrayList.contains(gene)) {
-
                     int indexOf = outputGeneArrayList.indexOf(gene);
                     Gene orgGene = outputGeneArrayList.get(indexOf);
-
                     orgGene.unifySNPLists(gene.getSnpsOnGene());
+
+
+
+
 
                 } else {
                     outputGeneArrayList.add(gene);
                 }
             }
         }
-
         return outputGeneArrayList;
     }
 
