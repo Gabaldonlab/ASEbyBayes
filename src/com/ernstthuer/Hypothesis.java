@@ -2,13 +2,11 @@ package com.ernstthuer;
 
 import java.util.ArrayList;
 
-/**
- * Created by ethuer on 17/10/16.
- */
-public class Hypothesis {
+
+class Hypothesis {
 
     /**
-     * Seperate the hupothesis from the code,
+     * Separate the hypothesis from the code,
      *
      * This keeps the Bayesian classification more
      * flexible
@@ -34,21 +32,17 @@ public class Hypothesis {
     private ArrayList<String> affectedGenes;
     private ArrayList<Gene> geneList;
 
-    public Hypothesis(double alpha, double beta, String name, ArrayList<Gene> geneList) {
+    Hypothesis(double alpha, double beta, String name, ArrayList<Gene> geneList) {
         this.alpha = alpha;
         this.beta = beta;
         this.name = name;
         this.geneList = geneList;
         this.affectedGenes = new ArrayList<>();
-
-
         // immediately run the calculation
         calculateHypothisForSNPsOnGenes(geneList);
-
-
     }
 
-    public Hypothesis(double alpha, double beta, String name) {
+    Hypothesis(double alpha, double beta, String name) {
         this.alpha = alpha;
         this.beta = beta;
         this.name = name;
@@ -56,15 +50,13 @@ public class Hypothesis {
         this.affectedGenes = new ArrayList<>();
     }
 
-    public void addGene(Gene gene){
+    void addGene(Gene gene){
         this.geneList.add(gene);
     }
-
-
     // evaluate geneList over their SNPs
     //
 
-    public double alphaBetaCorrection(int TotalCoverage, double alphaBeta){
+    private double alphaBetaCorrection(int TotalCoverage, double alphaBeta){
 
         double mincoverage = 0.001;
 
@@ -81,18 +73,17 @@ public class Hypothesis {
          *
          *
          */
-        double newAlphaorBeta = mincoverage + ((alphaBeta* 0.1) *TotalCoverage);
        //double newBeta = mincoverage + ((beta*0.1) *TotalCoverage);
-        return newAlphaorBeta  ;
+        return (mincoverage + ((alphaBeta* 0.1) *TotalCoverage));
     }
 
 
-    public ArrayList<Gene> getGeneList() {
+    ArrayList<Gene> getGeneList() {
         return geneList;
     }
 
 
-    public void evaluateGenesForExpression(ArrayList<Gene> geneList){
+    private void evaluateGenesForExpression(ArrayList<Gene> geneList){
 
         ArrayList<Double> observationsFromSNPs = new ArrayList<>();
         Double totalObserv =  0.0;
@@ -110,9 +101,7 @@ public class Hypothesis {
         // there should be 2x the amount of EAX snps,  since the range is 2x as high
     }
 
-
-
-    public void calculateHypothisForSNPsOnGenes(ArrayList<Gene> geneList){
+    void calculateHypothisForSNPsOnGenes(ArrayList<Gene> geneList){
 
         //ArrayList<Gene> affectedGenes;
         //ArrayList<SNP> affectedSNPs;

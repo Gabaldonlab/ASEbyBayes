@@ -2,7 +2,7 @@ package com.ernstthuer;
 
 import java.util.ArrayList;
 
-public class HypothesisTester {
+class HypothesisTester {
 
     /**
      * Takes the Gene lists provided by main , after read in of the individual BAM files
@@ -15,7 +15,7 @@ public class HypothesisTester {
     private ArrayList<Gene> unAffectedGenes;
 
 
-    public HypothesisTester(ArrayList<Gene> geneList) {
+    HypothesisTester(ArrayList<Gene> geneList) {
 
         this.testableHypothese = new ArrayList<>();
         this.geneList = geneList;
@@ -28,37 +28,31 @@ public class HypothesisTester {
         this.testableHypothese.add(createASEHypothesis(this.geneList));
         this.testableHypothese.add(createFullSNPHypothesis(this.geneList));
 
+
+    }
+
+    // the three default hypothesis
+    private Hypothesis createZeroHypothesis(ArrayList<Gene> geneList) {
+        return new Hypothesis(0.1, 10, "NoiseHyp", geneList);
+    }
+
+    private Hypothesis createASEHypothesis(ArrayList<Gene> geneList) {
+        return new Hypothesis(5, 5, "EqualAllelicExpression", geneList);
+    }
+
+    private Hypothesis createFullSNPHypothesis(ArrayList<Gene> geneList) {
+        return new Hypothesis(10, 0.1, "FullSNPExpression", geneList);
     }
 
 
-    public Hypothesis createZeroHypothesis(ArrayList<Gene> geneList) {
-
-        Hypothesis zero = new Hypothesis(0.1, 10, "NoiseHyp", geneList);
-
-        return zero;
-    }
-
-    public Hypothesis createASEHypothesis(ArrayList<Gene> geneList) {
-
-        Hypothesis ASEhypothesis = new Hypothesis(5, 5, "EqualAllelicExpression", geneList);
-
-        return ASEhypothesis;
-    }
 
 
-    public Hypothesis createFullSNPHypothesis(ArrayList<Gene> geneList) {
-
-        Hypothesis fullSNPhypothesis = new Hypothesis(10, 0.1, "FullSNPExpression", geneList);
-
-        return fullSNPhypothesis;
-    }
-
-    public ArrayList<Gene> getGeneList() {
+    ArrayList<Gene> getGeneList() {
         return geneList;
     }
 
 
-    public void geneWiseComparison(ArrayList<Gene> geneList) {
+    void geneWiseComparison(ArrayList<Gene> geneList) {
 
         for (Gene gene : geneList) {
 
