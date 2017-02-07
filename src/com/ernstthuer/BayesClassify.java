@@ -12,7 +12,7 @@ import static java.lang.Math.toRadians;
 /**
  * Created by ethuer on 2/08/16.
  */
-public class BayesClassify {
+class BayesClassify {
     /**
      * Classifier for Posterior calculation based on expectations from the data
      * <p>
@@ -35,7 +35,7 @@ public class BayesClassify {
 
     private int expectation;
 
-    public BayesClassify(double alpha, double beta, int trueCalls, int callsTotal) {
+    BayesClassify(double alpha, double beta, int trueCalls, int callsTotal) {
         this.alpha = alpha;
         this.beta = beta;
         this.TrueCalls = trueCalls;
@@ -44,7 +44,6 @@ public class BayesClassify {
         this.sigmaPosterior = getSigma();
 
     }
-
 
     public void getVerbose(double input) {
         System.out.println("Alpha and Beta : ");
@@ -57,7 +56,7 @@ public class BayesClassify {
         System.out.println(posterior.logDensity(input));
 
     }
-
+/*
     public boolean noiseTest(double sigmaMultiplier){
         // sigma multiplier assumes gaussian distibution. ERF could replace that
         // True if Truecalls are above threshold
@@ -74,6 +73,8 @@ public class BayesClassify {
     }
 
 
+
+
     public boolean fullSNPTest(double sigmaMultiplier){
         // sigma multiplier assumes gaussian distibution. ERF could replace that
         // True if Truecalls are below Totalcalls
@@ -86,10 +87,40 @@ public class BayesClassify {
         else{
             return true;
         }
+    }*/
+
+    public boolean baseSNPTest(double sigmaMultiplier, int flag){
+        // sigma multiplier assumes gaussian distibution. ERF could replace that
+        // True if Truecalls are below Totalcalls
+        //
+
+        // alpha beta implementation is important,   alpha should be < 0.5 ,  beta > 1   for fullSNP  depending on replicates available
+        // alpha beta implementation is important,   alpha should be > 1,  beta < 0.5  for noSNP   depending on replicates available
+
+        if(flag == 0) {
+            if ((Math.sqrt(this.posterior.getNumericalVariance()) * sigmaMultiplier * this.CallsTotal) > this.TrueCalls) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+
+        if(flag == 1) {
+            if ((Math.sqrt(this.posterior.getNumericalVariance()) * sigmaMultiplier * this.TrueCalls) + this.TrueCalls > this.CallsTotal) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+        else return false;
+
     }
 
 
-    public boolean equalAllelicTest(double logDensityThreshold){
+
+
+    boolean equalAllelicTest(double logDensityThreshold){
 
         double logdensity = this.posterior.logDensity(0.5);
         if(logdensity > logDensityThreshold){
@@ -99,7 +130,7 @@ public class BayesClassify {
 
 
     //
-    public BetaDistribution getBetaFunctionPosterior() {
+    private BetaDistribution getBetaFunctionPosterior() {
         double meanBeta = this.alpha / (alpha + this.beta);  // actual prior believe of theta
         double sampleSize = alpha + beta;  // directly dependent on strength of belief
         //posterior
@@ -108,13 +139,11 @@ public class BayesClassify {
         //double b = (CallsTotal - TrueCalls ) + (sampleSize * (1- meanBeta)) - 1;
         double a = (TrueCalls + (alpha) - 1);
         double b = (CallsTotal - TrueCalls) + (beta) - 1;
-        BetaDistribution betaDist = new BetaDistribution(a, b);
 
-        return betaDist;
-
+        return new BetaDistribution(a, b);
     }
 
-    public double getSigma() {
+    private double getSigma() {
         double meanBeta = alpha / (alpha + beta);  // actual prior believe of theta
         double sampleSize = alpha + beta;  // directly dependent on strength of belief
         double a = (TrueCalls + (meanBeta * sampleSize) - 1);
@@ -142,9 +171,8 @@ public class BayesClassify {
     // the intermediate functions for priors and likelihood for testing the accuracy.
     public BetaDistribution getPrior(double alpha, double beta) {
 //        int prior = 0;
-        BetaDistribution betaDist = new BetaDistribution(alpha, beta);
 
-        return betaDist;
+        return new BetaDistribution(alpha, beta);
     }
 
 
@@ -155,7 +183,7 @@ public class BayesClassify {
         return betaDist;
     }
 
-    public BetaDistribution getPosterior() {
+    BetaDistribution getPosterior() {
         return posterior;
     }
 

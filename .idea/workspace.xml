@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ec7633f8-55fd-44e2-87c1-f604e17b5f80" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ernstthuer/BamHandler.java" afterPath="$PROJECT_DIR$/src/com/ernstthuer/BamHandler.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ernstthuer/BayesClassify.java" afterPath="$PROJECT_DIR$/src/com/ernstthuer/BayesClassify.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ernstthuer/SNP.java" afterPath="$PROJECT_DIR$/src/com/ernstthuer/SNP.java" />
     </list>
     <ignored path="ASEbyBayes.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -66,20 +67,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BayesClassify.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="BayesClassify.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/BayesClassify.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="504">
-              <caret line="81" column="0" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
+            <state relative-caret-position="318">
+              <caret line="45" column="5" selection-start-line="45" selection-start-column="5" selection-end-line="45" selection-end-column="5" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BamHandler.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="BamHandler.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/BamHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3474">
+            <state relative-caret-position="-267">
               <caret line="209" column="0" selection-start-line="209" selection-start-column="0" selection-end-line="209" selection-end-column="0" />
               <folding />
             </state>
@@ -99,8 +100,8 @@
       <file leaf-file-name="SNP.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/SNP.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="846">
-              <caret line="234" column="10" selection-start-line="234" selection-start-column="10" selection-end-line="234" selection-end-column="10" />
+            <state relative-caret-position="576">
+              <caret line="154" column="52" selection-start-line="154" selection-start-column="52" selection-end-line="154" selection-end-column="52" />
               <folding />
             </state>
           </provider>
@@ -109,7 +110,7 @@
       <file leaf-file-name="HypothesisTest.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/HypothesisTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
+            <state relative-caret-position="918">
               <caret line="51" column="2" selection-start-line="51" selection-start-column="2" selection-end-line="51" selection-end-column="2" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -176,11 +177,12 @@
         <option value="$PROJECT_DIR$/src/com/ernstthuer/FastaHandler.java" />
         <option value="$PROJECT_DIR$/src/com/ernstthuer/FastaSilencer.java" />
         <option value="$PROJECT_DIR$/src/com/ernstthuer/HypothesisTester.java" />
-        <option value="$PROJECT_DIR$/src/com/ernstthuer/SNP.java" />
         <option value="$PROJECT_DIR$/src/com/ernstthuer/Gene.java" />
         <option value="$PROJECT_DIR$/src/com/ernstthuer/Main.java" />
         <option value="$PROJECT_DIR$/src/com/ernstthuer/BamThreader.java" />
         <option value="$PROJECT_DIR$/src/com/ernstthuer/BamHandler.java" />
+        <option value="$PROJECT_DIR$/src/com/ernstthuer/SNP.java" />
+        <option value="$PROJECT_DIR$/src/com/ernstthuer/BayesClassify.java" />
       </list>
     </option>
   </component>
@@ -1020,32 +1022,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/SNP.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="846">
-          <caret line="234" column="10" selection-start-line="234" selection-start-column="10" selection-end-line="234" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/HypothesisTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="51" column="2" selection-start-line="51" selection-start-column="2" selection-end-line="51" selection-end-column="2" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/BayesClassify.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="81" column="0" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/FastaHandler.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="468">
@@ -1070,14 +1046,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/Hypothesis.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1690">
-          <caret line="116" column="0" selection-start-line="116" selection-start-column="0" selection-end-line="116" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/Gene.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1531">
@@ -1095,8 +1063,42 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/BamHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3474">
+        <state relative-caret-position="-267">
           <caret line="209" column="0" selection-start-line="209" selection-start-column="0" selection-end-line="209" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/HypothesisTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="918">
+          <caret line="51" column="2" selection-start-line="51" selection-start-column="2" selection-end-line="51" selection-end-column="2" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/Hypothesis.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1690">
+          <caret line="116" column="0" selection-start-line="116" selection-start-column="0" selection-end-line="116" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/SNP.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="576">
+          <caret line="154" column="52" selection-start-line="154" selection-start-column="52" selection-end-line="154" selection-end-column="52" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/BayesClassify.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="318">
+          <caret line="45" column="5" selection-start-line="45" selection-start-column="5" selection-end-line="45" selection-end-column="5" />
           <folding />
         </state>
       </provider>

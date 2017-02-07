@@ -153,7 +153,6 @@ class SNP implements Comparable<SNP> {
             case 1:
                 // full SNP validation,  keep a seperate function from noise, although it could be regarded as the same problem
                 return bcl.fullSNPTest(sigmaCutoff);
-
             case 2:
                 // Equal allele Expression
                 return bcl.equalAllelicTest(logDensityThreshold);
