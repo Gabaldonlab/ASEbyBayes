@@ -12,7 +12,7 @@ Reads are assumed to follow a negative binomial distribution. To model our prime
 
 
 ### Workflow
-![alt tag](ernstthuer.eu/workflow.png)
+![alt tag](http://ernstthuer.eu/workflow.png)
 
 ### <i class="icon-file"></i> **Documents**
 
