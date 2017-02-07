@@ -9,9 +9,6 @@ import static java.lang.Math.exp;
 import static java.lang.Math.sqrt;
 import static java.lang.Math.toRadians;
 
-/**
- * Created by ethuer on 2/08/16.
- */
 class BayesClassify {
     /**
      * Classifier for Posterior calculation based on expectations from the data
@@ -98,20 +95,26 @@ class BayesClassify {
         // alpha beta implementation is important,   alpha should be > 1,  beta < 0.5  for noSNP   depending on replicates available
 
         if(flag == 0) {
+            /*
             if ((Math.sqrt(this.posterior.getNumericalVariance()) * sigmaMultiplier * this.CallsTotal) > this.TrueCalls) {
                 return false;
             } else {
                 return true;
-            }
+            }*/
+            return (Math.sqrt(this.posterior.getNumericalVariance()) * sigmaMultiplier * this.CallsTotal) < this.TrueCalls ;
         }
 
 
         if(flag == 1) {
-            if ((Math.sqrt(this.posterior.getNumericalVariance()) * sigmaMultiplier * this.TrueCalls) + this.TrueCalls > this.CallsTotal) {
+
+            return (Math.sqrt(this.posterior.getNumericalVariance()) * sigmaMultiplier * this.TrueCalls) + this.TrueCalls < this.CallsTotal;
+
+
+          /*  if ((Math.sqrt(this.posterior.getNumericalVariance()) * sigmaMultiplier * this.TrueCalls) + this.TrueCalls > this.CallsTotal) {
                 return false;
             } else {
                 return true;
-            }
+            }*/
         }
         else return false;
 
@@ -171,14 +174,12 @@ class BayesClassify {
     // the intermediate functions for priors and likelihood for testing the accuracy.
     public BetaDistribution getPrior(double alpha, double beta) {
 //        int prior = 0;
-
         return new BetaDistribution(alpha, beta);
     }
 
 
     public BetaDistribution likelihood(double TrueCalls, double CallsTotal) {
 //        int likelihood = 0;
-
         BetaDistribution betaDist = new BetaDistribution(TrueCalls, CallsTotal);
         return betaDist;
     }
@@ -186,8 +187,5 @@ class BayesClassify {
     BetaDistribution getPosterior() {
         return posterior;
     }
-
     // This has to be done according to expectations of ratio and the coverage of the gene / amount of SNPs per gene...
-
-
 }

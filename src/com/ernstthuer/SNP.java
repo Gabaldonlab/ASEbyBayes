@@ -149,10 +149,10 @@ class SNP implements Comparable<SNP> {
             case 0:
                 // lower bound validation
                 // alpha beta implementation is important,   alpha should be > 1,  beta < 0.5    depending on replicates available
-                return bcl.noiseTest(sigmaCutoff);
+                return bcl.baseSNPTest(sigmaCutoff,0);
             case 1:
                 // full SNP validation,  keep a seperate function from noise, although it could be regarded as the same problem
-                return bcl.fullSNPTest(sigmaCutoff);
+                return bcl.baseSNPTest(sigmaCutoff,1);
             case 2:
                 // Equal allele Expression
                 return bcl.equalAllelicTest(logDensityThreshold);
