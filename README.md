@@ -10,6 +10,10 @@ The process implemented by the software follows the assumption that the system i
 
 Reads are assumed to follow a negative binomial distribution. To model our primers we used the conjugate Beta distribution. With preset weak bimodial primers for noise detection and strong central informative primers for the assumption of equal allelic expression. Classification occurs via evaluation of posteriors, by defining credible regions following the above assumptions.
 
+
+### Workflow
+![alt tag](ernstthuer.eu/workflow.png)
+
 ### <i class="icon-file"></i> **Documents**
 
 > #### <i class="icon-download"></i>**Input:     ** [optional]
