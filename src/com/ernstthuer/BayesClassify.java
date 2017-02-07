@@ -42,6 +42,39 @@ class BayesClassify {
 
     }
 
+    public double updateAlpha(int snpCountSoFar, double avgCoverage , boolean upside_downside ){
+        // valid formulas for alpha / beta   impact on general noisyness from data,  linear function to test,
+        // quadratic function
+        // y = kx+d    d is minimum set to 0.1   ,
+        // linear function over SNPs predicted in first draft SNP assembly and average coverage of those SNPs
+        //  use quadratic to analyze impact of noise
+        // use a sigmoid function to return actual alpha and beta values
+
+        System.out.println("True");
+
+        return 0.0;
+    }
+
+
+    public double calculateAlpha(int snpCountSoFar, double lenghtOfFastaFile,  double baseValue, double avgCoverage , boolean upside_downside ){
+        // valid formulas for alpha / beta   impact on general noisyness from data,  linear function to test,
+        // quadratic function
+        // y = kx+d    d is minimum set to 0.1   ,
+        // linear function over SNPs predicted in first draft SNP assembly and average coverage of those SNPs
+        //  use quadratic to analyze impact of noise
+        // use a sigmoid function to return actual alpha and beta values
+
+            // early estimation of SNPs per kilobase mapped sequence  *  coverage/100
+        double noisynessCoefficient = ((snpCountSoFar/lenghtOfFastaFile)*1000) * avgCoverage/100;
+
+        // alpha should be higher if data is very messy 
+
+        if(upside_downside) return baseValue*(avgCoverage/100) + 0.01;
+        else return baseValue*(avgCoverage/100) + 0.01;
+
+    }
+
+
     public void getVerbose(double input) {
         System.out.println("Alpha and Beta : ");
         System.out.println(posterior.getAlpha());
