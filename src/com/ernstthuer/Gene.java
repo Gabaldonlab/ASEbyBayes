@@ -405,6 +405,8 @@ public class Gene implements Cloneable {
     public double[] getHypothesisArray() {
         return hypothesisArray;
     }
+
+
 }
 
 

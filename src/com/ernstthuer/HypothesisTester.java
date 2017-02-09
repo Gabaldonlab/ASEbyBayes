@@ -28,6 +28,8 @@ class HypothesisTester {
         this.testableHypothese.add(createASEHypothesis(this.geneList));
         this.testableHypothese.add(createFullSNPHypothesis(this.geneList));
 
+        geneWiseComparison(this.geneList);
+
     }
 
     // the three default hypothesis

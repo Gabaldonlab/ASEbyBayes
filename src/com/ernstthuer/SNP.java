@@ -27,12 +27,8 @@ class SNP implements Comparable<SNP> {
     private String expression = " ";
     private boolean isSynonymous;
     private HashMap<String, Double> hypothesisEval = new HashMap<>();
-
     private ArrayList<Integers> evaluationResults = new ArrayList<>();
-
     private int foundInReplicates;
-
-
 
     public SNP(Gene gene, char ALT, int position) {
         this.gene = gene;
@@ -59,7 +55,6 @@ class SNP implements Comparable<SNP> {
         this.validated = 0;
         this.foundInReplicates = 1;
     }
-
 
     void setSynonymous(boolean synonymous) {
         isSynonymous = synonymous;

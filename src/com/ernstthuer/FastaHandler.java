@@ -8,24 +8,22 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * Created by ethur on 7/26/16.
- */
-public class FastaHandler extends FileHandler {
+
+class FastaHandler extends FileHandler {
 
     private String locale;
     private String type;
     private String direction;
     private ArrayList<Gene> geneList;
 
-    public FastaHandler(String locale, String type, String direction) {
+    FastaHandler(String locale, String type, String direction) {
         super(locale, type, direction);
         this.locale = locale;
         this.type = type;
         this.direction = direction;
     }
 
-    public HashMap<String, DNASequence> readFasta(ArrayList<Gene> geneList) throws IOException {
+    HashMap<String, DNASequence> readFasta(ArrayList<Gene> geneList) throws IOException {
 
         /**
          * Method supplied by biojava to read fasta file into hashMap

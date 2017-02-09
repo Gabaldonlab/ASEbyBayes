@@ -56,7 +56,7 @@ class BayesClassify {
     }
 
 
-    public double calculateAlpha(int snpCountSoFar, double lenghtOfFastaFile,  double baseValue, double avgCoverage , boolean upside_downside ){
+    double calculateAlpha(int snpCountSoFar, double lenghtOfFastaFile,  double baseValue, double avgCoverage , boolean upside_downside ){
         // valid formulas for alpha / beta   impact on general noisyness from data,  linear function to test,
         // quadratic function
         // y = kx+d    d is minimum set to 0.1   ,
@@ -67,7 +67,7 @@ class BayesClassify {
             // early estimation of SNPs per kilobase mapped sequence  *  coverage/100
         double noisynessCoefficient = ((snpCountSoFar/lenghtOfFastaFile)*1000) * avgCoverage/100;
 
-        // alpha should be higher if data is very messy 
+        // alpha should be higher if data is very messy
 
         if(upside_downside) return baseValue*(avgCoverage/100) + 0.01;
         else return baseValue*(avgCoverage/100) + 0.01;
@@ -119,7 +119,7 @@ class BayesClassify {
         }
     }*/
 
-    public boolean baseSNPTest(double sigmaMultiplier, int flag){
+    boolean baseSNPTest(double sigmaMultiplier, int flag){
         // sigma multiplier assumes gaussian distibution. ERF could replace that
         // True if Truecalls are below Totalcalls
         //
@@ -198,9 +198,8 @@ class BayesClassify {
         double b = (CallsTotal - TrueCalls) + (sampleSize * (1 - meanBeta)) - 1;
 
         double sigma = sqrt((a * b) / ((a + b) * (a + b) * (a + b + 1)));
-        double mean = a / (a + b);
 
-        return mean;
+        return (a / (a + b));
     }
 
 
