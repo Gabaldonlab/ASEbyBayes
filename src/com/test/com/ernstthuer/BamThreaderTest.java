@@ -7,9 +7,7 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by ethur on 11/3/16.
- */
+
 public class BamThreaderTest {
 
     // needs to load the data from test set, or create own

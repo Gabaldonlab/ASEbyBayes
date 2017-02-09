@@ -295,6 +295,14 @@ class SNP implements Comparable<SNP> {
     }
 
 
+    public double[] deriveAlphaBeta(){
+        // this calculates the mean of the beta distribution
+        double[] alphaBeta = new double[2];
+
+        return alphaBeta;
+    }
+
+
 }
 
 

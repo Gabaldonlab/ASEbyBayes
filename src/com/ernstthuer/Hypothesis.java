@@ -32,6 +32,8 @@ class Hypothesis {
     private ArrayList<String> affectedGenes;
     private ArrayList<Gene> geneList;
 
+    private boolean adjustable;
+
     Hypothesis(double alpha, double beta, String name, ArrayList<Gene> geneList) {
         this.alpha = alpha;
         this.beta = beta;
@@ -46,6 +48,14 @@ class Hypothesis {
         this.alpha = alpha;
         this.beta = beta;
         this.name = name;
+        this.geneList = new ArrayList<>();
+        this.affectedGenes = new ArrayList<>();
+    }
+
+    Hypothesis(double alpha, double beta) {
+        this.alpha = alpha;
+        this.beta = beta;
+        this.name = "default";
         this.geneList = new ArrayList<>();
         this.affectedGenes = new ArrayList<>();
     }
@@ -126,4 +136,7 @@ class Hypothesis {
         }
         evaluateGenesForExpression(geneList);
     }
+
+
+
 }
