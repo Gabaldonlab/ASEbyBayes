@@ -189,6 +189,14 @@ class SNP implements Comparable<SNP> {
         }
     }
 
+
+    void addHypothesis(String hypothesis, double value){
+        this.hypothesisEval.put(hypothesis,value);
+    }
+
+
+
+
     void setExpression(String expression) {
         this.expression = expression;
     }

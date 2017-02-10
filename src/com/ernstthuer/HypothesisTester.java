@@ -2,149 +2,106 @@ package com.ernstthuer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 class HypothesisTester {
 
     /**
      * Takes the Gene lists provided by main , after read in of the individual BAM files
      * tests each SNP for the available hypothesis
+     *
+     *
+     * Highest level for testing,  this class creates the hypothesis, and the bayesClassifiers
+     *
+     *
+     * initiate 3 standard hypothesis,  if they explain all SNPs return the results
+     * If they do not,  create more hypothesis until all SNPs are fit.
+     *
+     * new Hypothesis are created in the following way,
+     * sample 3 random unclassified SNPs
+     *
+     * take the ratio of their expression and find the closest SNP available
+     *
+     *
+     *
      */
 
     private ArrayList<Hypothesis> testableHypothese;
     private ArrayList<Gene> geneList;
-    private ArrayList<Gene> affectedGenes;
-    private ArrayList<Gene> unAffectedGenes;
+    private ArrayList<SNP> snplist;
 
+    private Random randomGenerator;
+
+    private int FIXED_INTENSITY = 10;
 
     HypothesisTester(ArrayList<Gene> geneList) {
-
-        this.testableHypothese = new ArrayList<>();
         this.geneList = geneList;
-        this.affectedGenes = new ArrayList<>();
-        this.unAffectedGenes = new ArrayList<>();
-
-        // initiate with base hypotesis,  add more in case none fit.
-        // Information is stored on the SNPs themselves,  but maybe also on gene Level
-        this.testableHypothese.add(createZeroHypothesis(this.geneList));
-        this.testableHypothese.add(createASEHypothesis(this.geneList));
-        this.testableHypothese.add(createFullSNPHypothesis(this.geneList));
-        geneWiseComparison(this.geneList);
+        this.snplist = getSnpList();
+        testableHypothese = getDefaultHypothesis();
+        testableHypothese.addAll(extendHypothesis());
     }
 
-    // the three default hypothesis
+    private ArrayList<SNP> getSnpList (){
+        ArrayList<SNP> snps = new ArrayList<>();
 
-    private Hypothesis createZeroHypothesis(ArrayList<Gene> geneList) {
-
-        return new Hypothesis(0.1, 10, "NoiseHyp", geneList);
-    }
-
-    private Hypothesis createASEHypothesis(ArrayList<Gene> geneList) {
-        return new Hypothesis(5, 5, "EqualAllelicExpression", geneList);
-    }
-
-    private Hypothesis createFullSNPHypothesis(ArrayList<Gene> geneList) {
-        return new Hypothesis(10, 0.1, "FullSNPExpression", geneList);
-    }
-
-
-
-
-    ArrayList<Gene> getGeneList() {
-        return geneList;
-    }
-
-
-    void geneWiseComparison(ArrayList<Gene> geneList) {
-
-        for (Gene gene : geneList) {
-
-        /*    double ASEexpression = 0;
-            double FullSNPs = 0;
-            double NoHypothesisAssembled = 0;
-            double total = 0;
-            */
-            /**
-            // noise is deleted here
-            //  0:total,   1:FullSNP,  2: EqualAllelic   3:NoHyothsis
-            */
-            double[] checkedhypothesis = new double[4];
-
-
-            for (SNP snp : gene.getSnpsOnGene()) {
-
-                checkedhypothesis[0]+=1;
-
-                if (snp.getHypothesisEval().containsKey("FullSNPExpression")) {
-                    //FullSNPs += 1;
-                    checkedhypothesis[1]+=1;
-                }
-
-                if (snp.getHypothesisEval().containsKey("EqualAllelicExpression")) {
-                    //ASEexpression += 1;
-                    checkedhypothesis[2]+=1;
-                    //System.out.println(snp.getORGcov() + "  " + snp.getALTcov() + "  " + snp.getFoundInReplicates() );
-                }
-
-                if (snp.getHypothesisEval().isEmpty()) {
-                    //NoHypothesisAssembled += 1;
-                    checkedhypothesis[3]+=1;
-                }
-            }
-            gene.addHypothesisCount(checkedhypothesis);
-            //System.out.println("Gene : " + gene.getIdent() +" with " + gene.getSnpsOnGene().size() + " : " + total + " total snps contains " + FullSNPs +" full " + ASEexpression +" half " + NoHypothesisAssembled +" unknown SNPs"   );
-
+        for (Gene gene : this.geneList
+                 ) {
+            snps.addAll(gene.getSnpsOnGene());
         }
+        return snps;
     }
 
-    private Hypothesis generateHypothesis(ArrayList<SNP> indicatorSNPs){
+    private ArrayList<Hypothesis> getDefaultHypothesis(){
+        ArrayList<Hypothesis> hypothesis = new ArrayList<>();
+        // mean of 0.01    and  0.99 for noise and fullSNP
+        // mean of 0.5 for EAX
 
-        // THis method takes a list of related SNPs,  possibly a subset of the unclassified, and creates a hypothesis that fits
+        hypothesis.add(new Hypothesis(0.01,FIXED_INTENSITY ,"Noise"));
+        hypothesis.add(new Hypothesis(0.99,FIXED_INTENSITY ,"FullSNP"));
+        hypothesis.add(new Hypothesis(0.5,FIXED_INTENSITY ,"Equal Allelic Expression"));
+
+        return hypothesis;
+    }
 
 
-        double fixedRatio = 10.0; // ToDo currently alpha + beta = 10    that can be more flexible,  make depth dependant
-        // mean  = alpha / (alpha + beta)
-        // make inversible
-        // make adjustable
-        // allow only one per gene
-
-        // get SNP, assume it's mean of the distribution,  fit new distribution from mean
-
-        ArrayList<Double> ratioList = new ArrayList<>() ;
-
-        for (SNP indicator: indicatorSNPs
+    private ArrayList<Hypothesis> extendHypothesis (){
+        ArrayList<Hypothesis> newHypothesis = new ArrayList<>();
+        ArrayList<SNP> snpsWithoutExplanation = new ArrayList<>();
+        for (SNP snp: snplist
              ) {
-            ratioList.add(((double)indicator.getALTcov()/((double)indicator.getORGcov() + (double)indicator.getALTcov())));
 
-        }
+            boolean hasAnExplanation = false;
 
-        double ratio = calculateAverage(ratioList);
-
-        // ratio  = alpha / 10
-        // alpha = ratio * 10
-        // beta = 10 - alpha
-        double alpha = ratio*10;
-        double beta = 10-alpha;
-
-
-
-
-
-
-        Hypothesis morehype = new Hypothesis(alpha, beta,"AlleleSpecificExpression" );
-
-        return morehype;
-    }
-
-    private double calculateAverage(List <Double> ratios) {
-        double sum = 0;
-        if(!ratios.isEmpty()) {
-            for (double ratio : ratios) {
-                sum += ratio;
+            for (Hypothesis hype: testableHypothese
+                 ) {
+                if (!hasAnExplanation) {
+                    hasAnExplanation = hype.testSNPBCL(snp);
+                }
             }
-            return sum / ratios.size();
+
+            if(!hasAnExplanation){
+                snpsWithoutExplanation.add(snp);
+            }
         }
-        return sum;
+
+
+        // random snp as new center
+        randomGenerator = new Random();
+        int index = randomGenerator.nextInt(snpsWithoutExplanation.size());
+        SNP newcenter = snpsWithoutExplanation.get(index);
+
+        double mean = (newcenter.getALTcov() /(newcenter.getALTcov()+newcenter.getORGcov()));
+
+        Hypothesis newHype = new Hypothesis(mean,FIXED_INTENSITY,"Allele_Specific");
+        Hypothesis newHypeAntiparental = new Hypothesis((1-mean),FIXED_INTENSITY,"Allele_Specific_AntiParental");
+
+
+        newHypothesis.add(newHype);
+        newHypothesis.add(newHypeAntiparental);
+
+        return newHypothesis;
     }
+
 
 
 
