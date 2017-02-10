@@ -46,25 +46,38 @@ class Hypothesis {
             for (SNP snp : gene.getSnpsOnGene()
                  ) {
 
-                testSNPBCL(snp);
-                System.out.println(snp.getPosition() + "  "+ snp.getALTcov() + " " + name + "  " + testSNPBCL(snp));
-
+                if(name == "Noise") {
+                    System.out.println(testSNPBCL(snp, true) + " hypo " + name + " alt " + snp.getALTcov() + " org " + snp.getORGcov());
+                }
             }
-
         }
-
-
-
     }
 
 
 
     boolean testSNPBCL(SNP snp){
         // This feeds a SNP and tests it against the 'default' classifier
+
         BayesClassify bcl = new BayesClassify(this.mean,FIXED_INTENSITY,snp.getALTcov(), (snp.getALTcov()+snp.getORGcov()));
-        return bcl.baseSNPTest(STATIC_SIGMA_MULTIPLIER);
+
+
+        //return bcl.baseSNPTest(STATIC_SIGMA_MULTIPLIER);
+        double thresh =  100 /  ((double)snp.getORGcov()+(double)snp.getALTcov());
+//        System.out.println(thresh);
+        return bcl.erfSNPTest(thresh);
     }
 
+    double testSNPBCL(SNP snp, boolean flag){
+        // This feeds a SNP and tests it against the 'default' classifier
+        int callstotal = snp.getALTcov()+snp.getORGcov();
+        BayesClassify bcl = new BayesClassify(this.mean,FIXED_INTENSITY,snp.getALTcov(), (callstotal) );
+
+
+        //return bcl.baseSNPTest(STATIC_SIGMA_MULTIPLIER);
+        double thresh =  100 /  ((double)snp.getORGcov()+(double)snp.getALTcov());
+//        System.out.println(thresh);
+        return bcl.erfSNPTest(thresh,true);
+    }
 
 
 

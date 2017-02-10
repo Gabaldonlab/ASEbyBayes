@@ -8,9 +8,7 @@ import org.apache.commons.math3.special.Beta;
 import java.sql.BatchUpdateException;
 import java.util.ArrayList;
 
-import static java.lang.Math.exp;
-import static java.lang.Math.sqrt;
-import static java.lang.Math.toRadians;
+import static java.lang.Math.*;
 
 class BayesClassify {
 /**
@@ -37,6 +35,8 @@ class BayesClassify {
         this.alpha = getAlphaBeta(mean)[0];
         this.beta = getAlphaBeta(mean)[1];
 
+        this.CallsTotal = totalCov;
+        this.TrueCalls = altCov;
         this.posterior = getBetaFunctionPosterior(altCov,totalCov);
 
     }
@@ -53,53 +53,32 @@ class BayesClassify {
     }
 
 
-    boolean baseSNPTest(double sigmaMultiplier, int CallsTotal, int TrueCalls){
-        // sigma multiplier assumes gaussian distibution, testing for confidence interval around mean. ERF could replace that
-        // True if Truecalls are below Totalcalls
-        //
 
-        // Testing if Truecalls is bigger than the modified total of observations
+    boolean erfSNPTest(double Threshold){
+        double ratio = (double) TrueCalls  / (double)CallsTotal ;
+        //System.out.println(ratio + " " + this.posterior.logDensity(ratio) + " " + Threshold);
 
+        //System.out.println( " probability " + posterior.cumulativeProbability(ratio) + "  ratio " + ratio);
 
-        return (Math.sqrt(this.posterior.getNumericalVariance()) * sigmaMultiplier * CallsTotal) < TrueCalls  ;
-
-        // alpha beta implementation is important,   alpha should be < 0.5 ,  beta > 1   for fullSNP  depending on replicates available
-        // alpha beta implementation is important,   alpha should be > 1,  beta < 0.5  for noSNP   depending on replicates available
-
-        //if(flag == 0) {
-            /*
-            if ((Math.sqrt(this.posterior.getNumericalVariance()) * sigmaMultiplier * this.CallsTotal) > this.TrueCalls) {
-                return false;
-            } else {
-                return true;
-            }*/
-        //    return (Math.sqrt(this.posterior.getNumericalVariance()) * sigmaMultiplier * CallsTotal) < TrueCalls ;
-        //}
-
-
-        //if(flag == 1) {
-
-        //    return (Math.sqrt(this.posterior.getNumericalVariance()) * sigmaMultiplier * TrueCalls) + TrueCalls < CallsTotal;
-
-
-          /*  if ((Math.sqrt(this.posterior.getNumericalVariance()) * sigmaMultiplier * this.TrueCalls) + this.TrueCalls > this.CallsTotal) {
-                return false;
-            } else {
-                return true;
-            }*/
-        //}
-        //else return false;
+        return  this.posterior.logDensity(ratio) < Threshold ;
 
     }
 
+    double erfSNPTest(double Threshold, boolean giveMeProbability){
+        double ratio = (double) TrueCalls  / (double)CallsTotal ;
+        //System.out.println(ratio + " " + this.posterior.logDensity(ratio) + " " + Threshold);
+        //System.out.println( " probability " + posterior.cumulativeProbability(ratio) + "  ratio " + ratio);
+        // Returns the natural logarithm of the probability density function (PDF) of this distribution evaluated at the specified point x.
+       // System.out.println("here" + this.alpha + this.beta + " " + posterior.getAlpha() + " "+ posterior.getBeta() + " ratio " + ratio);
 
-    boolean erfSNPTest( int CallsTotal, int TrueCalls){
-        double logdensity = this.posterior.logDensity((double)CallsTotal/(double) TrueCalls);
-        return false;
+        System.out.println(posterior.logDensity(0.1) + "   XX   " +  posterior.logDensity(0.5) );
+
+        System.out.println(" ratio here " + ratio);
+        return posterior.logDensity(ratio);
     }
 
 
-    boolean baseSNPTest(double sigmaMultiplier){
+    boolean baseSNPTest(double sigmaMultiplier ){
         return (Math.sqrt(this.posterior.getNumericalVariance()) * sigmaMultiplier * CallsTotal) < TrueCalls;
     }
 

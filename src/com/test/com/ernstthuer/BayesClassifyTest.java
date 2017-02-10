@@ -18,7 +18,7 @@ public class BayesClassifyTest {
 
     @Before
     public void getNumbers(){
-        int snpcount = 300;
+        int snpcount = 200;
         // empty the list and start new
         genelist = new ArrayList<>();
         Gene gene = new Gene("chr1",0,1000000,"Gene1");
