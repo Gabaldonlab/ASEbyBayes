@@ -37,9 +37,17 @@ class HypothesisTester {
 
 
         // aif not all SNPs are accounted for,  make more hypothesis
-        while(! allSNPsAccountedForByHopethesis()) {
-            testableHypothese.addAll(extendHypothesis());
+        for (Hypothesis hyp: testableHypothese
+             ) {
+            hyp.testHypothesis(geneList);
         }
+
+//        while(! allSNPsAccountedForByHopethesis()) {
+//            testableHypothese.addAll(extendHypothesis());
+//            System.out.println("Hypothesis added" + testableHypothese.size());
+//
+//
+//        }
 
 
     }
@@ -130,7 +138,7 @@ class HypothesisTester {
         return newHypothesis;
     }
 
-
-
-
+    public ArrayList<Gene> getGeneList() {
+        return geneList;
+    }
 }

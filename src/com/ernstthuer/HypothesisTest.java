@@ -39,11 +39,12 @@ public class HypothesisTest {
             snpList.add(snp);
             testgene.addSNP(snp, false);
         }
-        hypothesis.addGene(testgene);
-        hypothesisEAX.addGene(testgene);
-        hypothesisFullSNP.addGene(testgene);
-        System.out.printf(" " + hypothesis.getGeneList().size());
-        System.out.println("populated gene List with " + testgene.getSnpsOnGene().size() + " SNPs");
+
+        ArrayList<Gene> geneList = new ArrayList<>();
+        geneList.add(testgene);
+
+        HypothesisTester hypothesisTester = new HypothesisTester(geneList);
+
     }
 
 
@@ -69,28 +70,28 @@ public class HypothesisTest {
     }
 */
 
-
-    @Test
-    public void classifyGenes() throws Exception {
-        System.out.println("Third test");
-        hypothesis.calculateHypothisForSNPsOnGenes(hypothesis.getGeneList());
-
-
-        hypothesisEAX.calculateHypothisForSNPsOnGenes(hypothesisEAX.getGeneList());
-        hypothesisFullSNP.calculateHypothisForSNPsOnGenes(hypothesisFullSNP.getGeneList());
-
-        //for(SNP snp: testgene.getSnpsOnGene()){
-        //    System.out.println("SNP classify " + snp.getHypothesisEval());
-        //}
-
-        System.out.println(testgene.getHypothesisEval().size());
-        Iterator it = testgene.getHypothesisEval().entrySet().iterator();
-        while (it.hasNext()) {
-            System.out.println(it.next());
-        }
-
-
-    }
+//
+//    @Test
+//    public void classifyGenes() throws Exception {
+//        System.out.println("Third test");
+//        hypothesis.calculateHypothisForSNPsOnGenes(hypothesis.getGeneList());
+//
+//
+//        hypothesisEAX.calculateHypothisForSNPsOnGenes(hypothesisEAX.getGeneList());
+//        hypothesisFullSNP.calculateHypothisForSNPsOnGenes(hypothesisFullSNP.getGeneList());
+//
+//        //for(SNP snp: testgene.getSnpsOnGene()){
+//        //    System.out.println("SNP classify " + snp.getHypothesisEval());
+//        //}
+//
+//        System.out.println(testgene.getHypothesisEval().size());
+//        Iterator it = testgene.getHypothesisEval().entrySet().iterator();
+//        while (it.hasNext()) {
+//            System.out.println(it.next());
+//        }
+//
+//
+//    }
 
 
 }

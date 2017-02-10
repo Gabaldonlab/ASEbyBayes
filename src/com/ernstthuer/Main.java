@@ -120,7 +120,7 @@ public class Main {
 
         geneList = hypothesisTester.getGeneList();
 
-        hypothesisTester.geneWiseComparison(geneList);
+        //hypothesisTester.geneWiseComparison(geneList);
 
         for (Gene gene : geneList) {
      /*       try {

@@ -34,18 +34,13 @@ public class BayesClassifyTest {
         genelist.add(gene);
     }
 
-    @Test
-    public void testAlpha() throws Exception {
-        // 100 SNPs detected so far, average coverage of 100, downside
-        bcl.calculateAlpha(100,10000,0.1,100,false);
-    }
 
     @Test
     public void testSNPclassify() throws Exception{
         HypothesisTester hypotester = new HypothesisTester(genelist);
-        ArrayList<Gene> testedList = hypotester.getGeneList();
+        //ArrayList<Gene> testedList = hypotester.getGeneList();
 
-        for (Gene gene: testedList
+ /*       for (Gene gene: testedList
              ) {
 
 
@@ -58,7 +53,7 @@ public class BayesClassifyTest {
             System.out.println(gene.getHypothesisArray()[0] +"  " + gene.getHypothesisArray()[1] +"  "
                     +gene.getHypothesisArray()[2] +"  " + gene.getHypothesisArray()[3]);
 
-        }
+        }*/
     }
 
 

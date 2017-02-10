@@ -39,6 +39,26 @@ class Hypothesis {
     }
 
 
+
+    void testHypothesis(ArrayList<Gene> geneList){
+        for (Gene gene: geneList
+             ) {
+            for (SNP snp : gene.getSnpsOnGene()
+                 ) {
+
+                testSNPBCL(snp);
+                System.out.println(snp.getPosition() + "  "+ snp.getALTcov() + " " + name + "  " + testSNPBCL(snp));
+
+            }
+
+        }
+
+
+
+    }
+
+
+
     boolean testSNPBCL(SNP snp){
         // This feeds a SNP and tests it against the 'default' classifier
         BayesClassify bcl = new BayesClassify(this.mean,FIXED_INTENSITY,snp.getALTcov(), (snp.getALTcov()+snp.getORGcov()));
