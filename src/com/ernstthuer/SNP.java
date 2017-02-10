@@ -126,56 +126,7 @@ class SNP implements Comparable<SNP> {
         this.foundInReplicates ++;
     }
 
-    boolean validateSNP(double alphaValue, double betaValue, int setMode) {
 
-        double sigmaCutoff = 2.5;
-        double logDensityThreshold = 1;
-
-
-        // get confidence interval for SNPs
-
-        BayesClassify bcl = new BayesClassify(alphaValue, betaValue, this.getALTcov(), this.getORGcov());
-        //if(validated > 1) {
-            //System.out.println(gene.getIdent() + " org: " + ORGcov + " alt: " + ALTcov + " alpha : " + alphaValue + " " + bcl.getBetaFunctionPosterior().logDensity(borderApproximation));
-        //}
-            //System.out.println("logdensity : " + bcl.getBetaFunctionPosterior().logDensity(borderApproximation));
-
-        switch (setMode) {
-            case 0:
-                // lower bound validation
-                // alpha beta implementation is important,   alpha should be > 1,  beta < 0.5    depending on replicates available
-                return bcl.baseSNPTest(sigmaCutoff,0);
-            case 1:
-                // full SNP validation,  keep a seperate function from noise, although it could be regarded as the same problem
-                return bcl.baseSNPTest(sigmaCutoff,1);
-            case 2:
-                // Equal allele Expression
-                return bcl.equalAllelicTest(logDensityThreshold);
-
-                /**
-                if (bcl.getBetaFunctionPosterior().logDensity(borderApproximation) > logDensityThreshold) {
-                    return false;
-                } else {
-                    return true;
-                }
-            case 1:
-                // full SNP validation
-                if (bcl.getBetaFunctionPosterior().logDensity(1 - borderApproximation) > logDensityThreshold) {
-                    return false;
-                } else {
-                    return true;
-                }
-            case 2:
-                // Equal allele Expression
-                if (bcl.getBetaFunctionPosterior().logDensity(0.5) > logDensityThreshold) {
-                    return false;
-                } else {
-                    return true;
-                }
-                 */
-        }
-        return false;
-    }
 
     public void findTrueORG() {
         DNASequence dnaseq = gene.getSequence();

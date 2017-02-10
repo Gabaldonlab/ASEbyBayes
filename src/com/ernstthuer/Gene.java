@@ -302,7 +302,7 @@ public class Gene implements Cloneable {
         */
 
 
-    public void evaluateSNPs() {
+/*    public void evaluateSNPs() {
         for (SNP snp : snpsOnGene) {
             if (snp.isValidated() >= 1) {
                 //snpsOnGene.remove(snp);
@@ -332,7 +332,7 @@ public class Gene implements Cloneable {
             }
 
         }
-    }
+    }*/
 
 
     HashMap<String, Double> getHypothesisEval() {

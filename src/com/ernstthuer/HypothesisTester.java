@@ -10,9 +10,7 @@ class HypothesisTester {
      * Takes the Gene lists provided by main , after read in of the individual BAM files
      * tests each SNP for the available hypothesis
      *
-     *
      * Highest level for testing,  this class creates the hypothesis, and the bayesClassifiers
-     *
      *
      * initiate 3 standard hypothesis,  if they explain all SNPs return the results
      * If they do not,  create more hypothesis until all SNPs are fit.
@@ -22,15 +20,13 @@ class HypothesisTester {
      *
      * take the ratio of their expression and find the closest SNP available
      *
-     *
-     *
      */
 
     private ArrayList<Hypothesis> testableHypothese;
     private ArrayList<Gene> geneList;
     private ArrayList<SNP> snplist;
 
-    private Random randomGenerator;
+
 
     private int FIXED_INTENSITY = 10;
 
@@ -38,7 +34,14 @@ class HypothesisTester {
         this.geneList = geneList;
         this.snplist = getSnpList();
         testableHypothese = getDefaultHypothesis();
-        testableHypothese.addAll(extendHypothesis());
+
+
+        // aif not all SNPs are accounted for,  make more hypothesis
+        while(! allSNPsAccountedForByHopethesis()) {
+            testableHypothese.addAll(extendHypothesis());
+        }
+
+
     }
 
     private ArrayList<SNP> getSnpList (){
@@ -50,6 +53,31 @@ class HypothesisTester {
         }
         return snps;
     }
+
+    private boolean allSNPsAccountedForByHopethesis(){
+
+        boolean allSNPsAccountedFor = false;
+        for (SNP snp: snplist
+             ) {
+            boolean hasAnExplanation = false;
+
+            for (Hypothesis hype : testableHypothese
+                    ) {
+                if (!hasAnExplanation) {
+                    hasAnExplanation = hype.testSNPBCL(snp);
+                }
+            }
+
+            if(! allSNPsAccountedFor){
+                allSNPsAccountedFor = hasAnExplanation;
+            }
+        }
+
+
+        return allSNPsAccountedFor;
+
+    }
+
 
     private ArrayList<Hypothesis> getDefaultHypothesis(){
         ArrayList<Hypothesis> hypothesis = new ArrayList<>();
@@ -78,13 +106,13 @@ class HypothesisTester {
                     hasAnExplanation = hype.testSNPBCL(snp);
                 }
             }
-
             if(!hasAnExplanation){
                 snpsWithoutExplanation.add(snp);
             }
         }
 
 
+        Random randomGenerator;
         // random snp as new center
         randomGenerator = new Random();
         int index = randomGenerator.nextInt(snpsWithoutExplanation.size());

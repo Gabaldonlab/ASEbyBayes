@@ -94,7 +94,7 @@ class BayesClassify {
 
 
     boolean erfSNPTest( int CallsTotal, int TrueCalls){
-        this.posterior.logDensity((double)CallsTotal/(double) TrueCalls);
+        double logdensity = this.posterior.logDensity((double)CallsTotal/(double) TrueCalls);
         return false;
     }
 
@@ -108,7 +108,6 @@ class BayesClassify {
         double meanBeta = this.alpha / (alpha + this.beta);  // actual prior believe of theta
         double sampleSize = alpha + beta;  // directly dependent on strength of belief
         //posterior
-
         //double a = (TrueCalls + (meanBeta * sampleSize) - 1 );
         //double b = (CallsTotal - TrueCalls ) + (sampleSize * (1- meanBeta)) - 1;
         double a = (TrueCalls + (alpha) - 1);
