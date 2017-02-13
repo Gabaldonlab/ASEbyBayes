@@ -47,7 +47,7 @@ class BayesClassify {
     private double[] getAlphaBeta(double mean) {
         double[] alphaBeta = new double[2];
         // alpha
-        alphaBeta[0] = mean*this.FIXED_INTENSITY;
+        alphaBeta[0] = mean * this.FIXED_INTENSITY;
         alphaBeta[1] = FIXED_INTENSITY - alphaBeta[0];
         return alphaBeta;
     }
@@ -57,7 +57,6 @@ class BayesClassify {
     boolean erfSNPTest(double Threshold){
         double ratio = (double) TrueCalls  / (double)CallsTotal ;
         //System.out.println(ratio + " " + this.posterior.logDensity(ratio) + " " + Threshold);
-
         //System.out.println( " probability " + posterior.cumulativeProbability(ratio) + "  ratio " + ratio);
 
         return  this.posterior.logDensity(ratio) < Threshold ;
@@ -68,13 +67,17 @@ class BayesClassify {
 
         // returns the posterior probability / probability mass function on the given ratio
 
-        double ratio = (double) TrueCalls  / (double)CallsTotal ;
+        //double ratio = (double) TrueCalls  / (double) CallsTotal ;
+        double ratio = this.mean;
         //System.out.println(ratio + " " + this.posterior.logDensity(ratio) + " " + Threshold);
         //System.out.println( " probability " + posterior.cumulativeProbability(ratio) + "  ratio " + ratio);
         // Returns the natural logarithm of the probability density function (PDF) of this distribution evaluated at the specified point x.
        // System.out.println("here" + this.alpha + this.beta + " " + posterior.getAlpha() + " "+ posterior.getBeta() + " ratio " + ratio);
 
-        System.out.println(" ratio here " + ratio + "  " + posterior.logDensity(ratio) + " alpha " + posterior.getAlpha() + " reference 0.1 " + posterior.logDensity(0.1) + "   XX   0.5 " +  posterior.logDensity(0.5) );
+        System.out.println(" ratio here " + ratio + "  " + posterior.logDensity(ratio) + " alpha " + posterior.getAlpha() + " reference 0.05 " + posterior.logDensity(0.05) + "   XX   0.5 " +  posterior.logDensity(0.5) );
+
+
+
         if(!giveMeProbability) {
             return posterior.logDensity(ratio);
         }else{
