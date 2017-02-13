@@ -42,12 +42,15 @@ class HypothesisTester {
             hyp.testHypothesis(geneList);
         }
 
-//        while(! allSNPsAccountedForByHopethesis()) {
-//            testableHypothese.addAll(extendHypothesis());
-//            System.out.println("Hypothesis added" + testableHypothese.size());
-//
-//
-//        }
+        //boolean notallSNPinHypothesis = false;
+
+        System.out.println("Check " +allSNPsAccountedForByHypethesis());
+
+        while(! allSNPsAccountedForByHypethesis()) {
+
+            testableHypothese.addAll(extendHypothesis());
+            System.out.println("Hypothesis added" + testableHypothese.size());
+        }
 
 
     }
@@ -62,7 +65,7 @@ class HypothesisTester {
         return snps;
     }
 
-    private boolean allSNPsAccountedForByHopethesis(){
+    private boolean allSNPsAccountedForByHypethesis(){
 
         boolean allSNPsAccountedFor = false;
         for (SNP snp: snplist
@@ -111,6 +114,7 @@ class HypothesisTester {
             for (Hypothesis hype: testableHypothese
                  ) {
                 if (!hasAnExplanation) {
+                    System.out.println(hype.testSNPBCL(snp));
                     hasAnExplanation = hype.testSNPBCL(snp);
                 }
             }
