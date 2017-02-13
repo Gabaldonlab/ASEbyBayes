@@ -64,17 +64,22 @@ class BayesClassify {
 
     }
 
-    double erfSNPTest(double Threshold, boolean giveMeProbability){
+    double erfSNPTest(boolean giveMeProbability){
+
+        // returns the posterior probability / probability mass function on the given ratio
+
         double ratio = (double) TrueCalls  / (double)CallsTotal ;
         //System.out.println(ratio + " " + this.posterior.logDensity(ratio) + " " + Threshold);
         //System.out.println( " probability " + posterior.cumulativeProbability(ratio) + "  ratio " + ratio);
         // Returns the natural logarithm of the probability density function (PDF) of this distribution evaluated at the specified point x.
        // System.out.println("here" + this.alpha + this.beta + " " + posterior.getAlpha() + " "+ posterior.getBeta() + " ratio " + ratio);
 
-        System.out.println(posterior.logDensity(0.1) + "   XX   " +  posterior.logDensity(0.5) );
-
-        System.out.println(" ratio here " + ratio);
-        return posterior.logDensity(ratio);
+        System.out.println(" ratio here " + ratio + "  " + posterior.logDensity(ratio) + " alpha " + posterior.getAlpha() + " reference 0.1 " + posterior.logDensity(0.1) + "   XX   0.5 " +  posterior.logDensity(0.5) );
+        if(!giveMeProbability) {
+            return posterior.logDensity(ratio);
+        }else{
+            return exp(posterior.logDensity(ratio));
+        }
     }
 
 

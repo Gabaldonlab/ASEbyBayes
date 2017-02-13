@@ -92,8 +92,8 @@ class HypothesisTester {
         // mean of 0.01    and  0.99 for noise and fullSNP
         // mean of 0.5 for EAX
 
-        hypothesis.add(new Hypothesis(0.01,FIXED_INTENSITY ,"Noise"));
-        hypothesis.add(new Hypothesis(0.99,FIXED_INTENSITY ,"FullSNP"));
+        hypothesis.add(new Hypothesis(0.001,FIXED_INTENSITY ,"Noise"));
+        hypothesis.add(new Hypothesis(1,FIXED_INTENSITY ,"FullSNP"));
         hypothesis.add(new Hypothesis(0.5,FIXED_INTENSITY ,"Equal Allelic Expression"));
 
         return hypothesis;

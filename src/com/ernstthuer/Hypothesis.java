@@ -26,7 +26,7 @@ class Hypothesis {
     private double mean;
     private double FIXED_INTENSITY ;
     private String name;
-    private double STATIC_SIGMA_MULTIPLIER = 2.0;
+    private double STATIC_SIGMA_MULTIPLIER = 2.0;   // deprecated
 
 
     Hypothesis(double mean,double fixedIntensity,  String name) {
@@ -45,8 +45,7 @@ class Hypothesis {
              ) {
             for (SNP snp : gene.getSnpsOnGene()
                  ) {
-
-                if(name == "Noise") {
+                if(name.equals("Noise")) {
                     System.out.println(testSNPBCL(snp, true) + " hypo " + name + " alt " + snp.getALTcov() + " org " + snp.getORGcov());
                 }
             }
@@ -59,8 +58,6 @@ class Hypothesis {
         // This feeds a SNP and tests it against the 'default' classifier
 
         BayesClassify bcl = new BayesClassify(this.mean,FIXED_INTENSITY,snp.getALTcov(), (snp.getALTcov()+snp.getORGcov()));
-
-
         //return bcl.baseSNPTest(STATIC_SIGMA_MULTIPLIER);
         double thresh =  100 /  ((double)snp.getORGcov()+(double)snp.getALTcov());
 //        System.out.println(thresh);
@@ -76,7 +73,7 @@ class Hypothesis {
         //return bcl.baseSNPTest(STATIC_SIGMA_MULTIPLIER);
         double thresh =  100 /  ((double)snp.getORGcov()+(double)snp.getALTcov());
 //        System.out.println(thresh);
-        return bcl.erfSNPTest(thresh,true);
+        return bcl.erfSNPTest(false);
     }
 
 
