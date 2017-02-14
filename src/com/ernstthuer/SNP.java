@@ -262,6 +262,7 @@ class SNP implements Comparable<SNP> {
     }
 
 
+
 }
 
 

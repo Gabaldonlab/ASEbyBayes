@@ -38,6 +38,11 @@ public class BayesClassifyTest {
     @Test
     public void testSNPclassify() throws Exception{
         HypothesisTester hypotester = new HypothesisTester(genelist);
+
+
+
+
+
         //ArrayList<Gene> testedList = hypotester.getGeneList();
 
  /*       for (Gene gene: testedList

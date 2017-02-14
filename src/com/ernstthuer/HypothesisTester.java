@@ -55,7 +55,53 @@ class HypothesisTester {
                 }
             }
         }
+
+        String[] keysInHypothesis =  getHypeNames(testableHypothese);
+
+
+        for (Gene gene : geneList
+             ) {
+            for (SNP snp : gene.getSnpsOnGene()
+                 ) {
+                if(snp.getHypothesisEval().containsKey("Noise")){
+                    gene.setSnpsOnGene(dropSNP(gene.getSnpsOnGene(),snp));
+                }
+
+                // Removed noise hypothesis from index 1  get estimations for the other hypothesis, abundance etc.
+                for(int i = 1; i<(keysInHypothesis.length - 1) ; i++ ){
+                    System.out.println();
+                }
+
+                //System.out.println(snp.getHypothesisEval().containsKey("Noise"));
+            }
+            //System.out.println(gene.getHypothesisArray()[0]);
+
+
+
+
+        }
     }
+
+
+    private String[] getHypeNames(ArrayList<Hypothesis> testableHypothese){
+        String[] HypothesisNames = new String[testableHypothese.size()];
+
+        int index = 0;
+        for (Hypothesis hype: testableHypothese
+             ) {
+            HypothesisNames[index] = hype.getName();
+            index++;
+        }
+
+     return HypothesisNames;
+    }
+
+    private ArrayList<SNP> dropSNP(ArrayList<SNP> snplist, SNP snp){
+        int index = snplist.indexOf(snp);
+        snplist.remove(index);
+        return snplist;
+    }
+
 
     private ArrayList<SNP> getSnpList (){
         ArrayList<SNP> snps = new ArrayList<>();

@@ -87,7 +87,12 @@ public class Gene implements Cloneable {
         }
     }
 
-/*
+    public void setSnpsOnGene(ArrayList<SNP> snpsOnGene) {
+        this.snpsOnGene = snpsOnGene;
+    }
+
+
+    /*
 
     public void findORGCoverageOfSNPs() {
         // trigger this after the SNPs were loaded and the simplified reads are stored on the genes.

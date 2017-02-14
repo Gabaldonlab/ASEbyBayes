@@ -45,6 +45,11 @@ class Hypothesis {
              ) {
             for (SNP snp : gene.getSnpsOnGene()
                  ) {
+
+                if(testSNPBCL(snp)){
+                    snp.addHypothesis(name,1.0);
+                }
+
             }
         }
     }
@@ -53,6 +58,7 @@ class Hypothesis {
 
     boolean testSNPBCL(SNP snp){
         // This feeds a SNP and tests it against the 'default' classifier
+        // returns true if SNP is associated to the current hypothesis, false if not
 
         BayesClassify bcl = new BayesClassify(this.mean,FIXED_INTENSITY,snp.getALTcov(), (snp.getALTcov()+snp.getORGcov()));
         //return bcl.baseSNPTest(STATIC_SIGMA_MULTIPLIER);
@@ -78,5 +84,9 @@ class Hypothesis {
 
     public String getName() {
         return name;
+    }
+
+    double getMean() {
+        return mean;
     }
 }
