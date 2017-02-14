@@ -39,8 +39,6 @@ class HypothesisTester {
         }
         //boolean notallSNPinHypothesis = false;
 
-        System.out.println("Check " + allSNPsAccountedForByHypothesis());
-
         int maxHypothesis = 4;
 
         for (int i = 0; i < maxHypothesis; i++) {
@@ -50,7 +48,7 @@ class HypothesisTester {
                     if (newHypes.size() > 0) {
                         this.testableHypothese.addAll(newHypes);
                     }
-                    System.out.println("Hypothesis added" + this.testableHypothese.size());
+                    //System.out.println("Hypothesis added" + this.testableHypothese.size());
                 } catch (NullPointerException e) {
                     // empty list has no value,  and causes no problem
                 }
@@ -61,12 +59,30 @@ class HypothesisTester {
 
         HashMap<String, Integer> availableHypothesis = getHypeNamesAsHashMap(testableHypothese);
 
+        for(String key: availableHypothesis.keySet()){
+            System.out.println("available " + key);
+        }
+
+
+        for (Hypothesis hyp : testableHypothese
+                ) {
+            hyp.testHypothesis(geneList);
+        }
 
         for (Gene gene: geneList
              ) {
             testGeneForKeyHypothesis(gene, availableHypothesis);
+
+            for(String key : gene.getHypothesisEval().keySet()){
+                // ToDo  remove
+                System.out.println("Gene " + key + " " + gene.getHypothesisEval().get(key));
+            }
         }
             //System.out.println(gene.getHypothesisArray()[0]);
+
+
+
+
 
     }
 
@@ -75,7 +91,8 @@ class HypothesisTester {
     private void testGeneForKeyHypothesis(Gene gene,  HashMap<String, Integer> availableHypothesis){
 
         HashMap<String, Integer> geneHypothesisCount = new HashMap<>();
-        
+
+
 
         for (SNP snp: gene.getSnpsOnGene()
              ) {
@@ -89,7 +106,6 @@ class HypothesisTester {
                 // check if the SNP contains the hypothesis, and increment
                 if (snp.getHypothesisEval().containsKey(key)) {
 
-                    System.out.println("key " + key);
                     int count = geneHypothesisCount.get(key);
                     count +=1;
                     geneHypothesisCount.put(key, count);
@@ -173,8 +189,10 @@ class HypothesisTester {
         // mean of 0.01    and  0.99 for noise and fullSNP
         // mean of 0.5 for EAX
 
-        hypothesis.add(new Hypothesis(0.01,FIXED_INTENSITY ,"Noise"));
-        hypothesis.add(new Hypothesis(1,FIXED_INTENSITY ,"FullSNP"));
+        double baseImpact = 0.01;
+
+        hypothesis.add(new Hypothesis(baseImpact,FIXED_INTENSITY ,"Noise"));
+        hypothesis.add(new Hypothesis(1-0.01,FIXED_INTENSITY ,"FullSNP"));
         hypothesis.add(new Hypothesis(0.5,FIXED_INTENSITY ,"Equal Allelic Expression"));
 
         return hypothesis;
