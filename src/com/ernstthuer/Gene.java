@@ -23,9 +23,11 @@ public class Gene implements Cloneable {
     private ArrayList<SimpleRead> geneReadList = new ArrayList<>();
     //private String ASE;
     private LinkedHashMap<Integer, Integer> positioncount = new LinkedHashMap<>();
-    private HashMap<String, Double> hypothesisEval = new HashMap<>();
+    private HashMap<String, Integer> hypothesisEval = new HashMap<>();
 
-    private double[] hypothesisArray = new double[4];
+
+    // needs to be more flexible than this array
+    //private double[] hypothesisArray = new double[4];
 
     @Override
     protected Object clone() throws CloneNotSupportedException {
@@ -92,31 +94,6 @@ public class Gene implements Cloneable {
     }
 
 
-    /*
-
-    public void findORGCoverageOfSNPs() {
-        // trigger this after the SNPs were loaded and the simplified reads are stored on the genes.
-        // DEPRECIATED
-
-        for (SNP snip : snpsOnGene) {
-            try {
-                // ToDO remove sout
-                // only for SNPs with at least 2 observations
-                if (snip.isValidated() > 0) {
-                    int count = 0;
-
-                    int index = snpsOnGene.indexOf(snip);
-
-                    if (positioncount.keySet().contains(snip.getPosition())) {
-                        snip.setORGcov(positioncount.get(snip.getPosition()));
-                    }
-                }
-            } catch (Exception e) {
-
-            }
-        }
-    }
-*/
 
     public char getOrientation() {
         return orientation;
@@ -255,8 +232,7 @@ public class Gene implements Cloneable {
         }
     }
 
-    public void loadSequence(DNASequence fullGenome, boolean fullChrom) {
-
+    void loadSequence(DNASequence fullGenome, boolean fullChrom) {
 
         if (fullChrom) {
             try {
@@ -340,17 +316,18 @@ public class Gene implements Cloneable {
     }*/
 
 
-    HashMap<String, Double> getHypothesisEval() {
+    HashMap<String, Integer> getHypothesisEval() {
         return hypothesisEval;
     }
 
-    void addToHypothesisEval(String name, Double eval) {
-        this.hypothesisEval.put(name, eval);
-    }
+    //void addToHypothesisEval(String name, Double eval) {
+    //    this.hypothesisEval.put(name, eval);
+    //}
 
     public void addRead(SimpleRead read) {
         this.geneReadList.add(read);
     }
+
 
     ArrayList<SNP> unifySNPLists(ArrayList<SNP> otherSNPList) {
         ArrayList<SNP> snpArrayList = new ArrayList<>();
@@ -402,16 +379,20 @@ public class Gene implements Cloneable {
         return geneReadList;
     }
 
+//
+//    void addHypothesisCount(double[] hypothesisArray) {
+//        this.hypothesisArray = hypothesisArray;
+//    }
+//
+//    public double[] getHypothesisArray() {
+//        return hypothesisArray;
+//    }
+//
 
-    void addHypothesisCount(double[] hypothesisArray) {
-        this.hypothesisArray = hypothesisArray;
+
+    public void setHypothesisEval(HashMap<String, Integer> hypothesisEval) {
+        this.hypothesisEval = hypothesisEval;
     }
-
-    public double[] getHypothesisArray() {
-        return hypothesisArray;
-    }
-
-
 }
 
 

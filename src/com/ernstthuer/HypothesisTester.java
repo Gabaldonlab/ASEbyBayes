@@ -1,6 +1,7 @@
 package com.ernstthuer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -31,57 +32,85 @@ class HypothesisTester {
         this.geneList = geneList;
         this.snplist = getSnpList();
         testableHypothese = getDefaultHypothesis();
-
         // aif not all SNPs are accounted for,  make more hypothesis
-        for (Hypothesis hyp: testableHypothese
-             ) {
+        for (Hypothesis hyp : testableHypothese
+                ) {
             hyp.testHypothesis(geneList);
         }
         //boolean notallSNPinHypothesis = false;
 
-        System.out.println("Check " +allSNPsAccountedForByHypothesis());
+        System.out.println("Check " + allSNPsAccountedForByHypothesis());
 
         int maxHypothesis = 4;
-        for(int i = 0; i < maxHypothesis;i++){
-            if(! allSNPsAccountedForByHypothesis()) {
+
+        for (int i = 0; i < maxHypothesis; i++) {
+            if (!allSNPsAccountedForByHypothesis()) {
                 ArrayList<Hypothesis> newHypes = extendHypothesis();
                 try {
-                    if ( newHypes.size() > 0) {
+                    if (newHypes.size() > 0) {
                         this.testableHypothese.addAll(newHypes);
                     }
                     System.out.println("Hypothesis added" + this.testableHypothese.size());
-                }catch (NullPointerException e ){
+                } catch (NullPointerException e) {
                     // empty list has no value,  and causes no problem
                 }
             }
         }
 
-        String[] keysInHypothesis =  getHypeNames(testableHypothese);
+        //String[] keysInHypothesis = getHypeNames(testableHypothese);
+
+        HashMap<String, Integer> availableHypothesis = getHypeNamesAsHashMap(testableHypothese);
 
 
-        for (Gene gene : geneList
+        for (Gene gene: geneList
              ) {
-            for (SNP snp : gene.getSnpsOnGene()
-                 ) {
-                if(snp.getHypothesisEval().containsKey("Noise")){
-                    gene.setSnpsOnGene(dropSNP(gene.getSnpsOnGene(),snp));
-                }
-
-                // Removed noise hypothesis from index 1  get estimations for the other hypothesis, abundance etc.
-                for(int i = 1; i<(keysInHypothesis.length - 1) ; i++ ){
-                    System.out.println();
-                }
-
-                //System.out.println(snp.getHypothesisEval().containsKey("Noise"));
-            }
+            testGeneForKeyHypothesis(gene, availableHypothesis);
+        }
             //System.out.println(gene.getHypothesisArray()[0]);
 
-
-
-
-        }
     }
 
+
+
+    private void testGeneForKeyHypothesis(Gene gene,  HashMap<String, Integer> availableHypothesis){
+
+        HashMap<String, Integer> geneHypothesisCount = new HashMap<>();
+        
+
+        for (SNP snp: gene.getSnpsOnGene()
+             ) {
+            for (String key : availableHypothesis.keySet()) {
+
+                // check if the hashMap contains the hypothesis, if not create
+                if(!geneHypothesisCount.containsKey(key)){
+                    geneHypothesisCount.put(key,0);
+                }
+
+                // check if the SNP contains the hypothesis, and increment
+                if (snp.getHypothesisEval().containsKey(key)) {
+
+                    System.out.println("key " + key);
+                    int count = geneHypothesisCount.get(key);
+                    count +=1;
+                    geneHypothesisCount.put(key, count);
+                    //int count = gene.getHypothesisEval().get(key);
+                    //gene.getHypothesisEval().put(key, count + 1 );
+                }
+            }
+        }
+        gene.setHypothesisEval(geneHypothesisCount);
+    }
+
+
+    private HashMap<String,Integer> getHypeNamesAsHashMap(ArrayList<Hypothesis> testableHypothese){
+        HashMap<String,Integer> HypothesisNames = new HashMap<>();
+
+        for (Hypothesis hype: testableHypothese
+                ) {
+            HypothesisNames.put(hype.getName(),0);
+        }
+        return HypothesisNames;
+    }
 
     private String[] getHypeNames(ArrayList<Hypothesis> testableHypothese){
         String[] HypothesisNames = new String[testableHypothese.size()];
@@ -170,7 +199,6 @@ class HypothesisTester {
                 snpsWithoutExplanation.add(snp);
                 //System.out.println("added snp to list " + snpsWithoutExplanation.size());
             }
-
         }
         System.out.println(snpsWithoutExplanation.size() + " snps unaccounted for");
         Random randomGenerator;
@@ -193,7 +221,6 @@ class HypothesisTester {
             return null;
         }
     }
-
     ArrayList<Gene> getGeneList() {
         return geneList;
     }
