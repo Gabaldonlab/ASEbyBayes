@@ -3,6 +3,7 @@ package com.ernstthuer;
 
 import jdk.nashorn.internal.codegen.CompilerConstants;
 import org.apache.commons.math3.distribution.BetaDistribution;
+import org.apache.commons.math3.exception.NumberIsTooSmallException;
 import org.apache.commons.math3.special.Beta;
 
 import java.sql.BatchUpdateException;
@@ -40,7 +41,6 @@ class BayesClassify {
 
     }
 
-
     private double[] getAlphaBeta(double mean) {
         double[] alphaBeta = new double[2];
         // alpha
@@ -55,10 +55,16 @@ class BayesClassify {
         double ratio = this.mean;
         //System.out.println(ratio + " " + this.posterior.logDensity(ratio) + " " + Threshold);
         //System.out.println( " probability " + posterior.cumulativeProbability(ratio) + "  ratio " + ratio);
-        // Returns the natural logarithm of the probability density function (PDF) of this distribution evaluated at the specified point x.
-        // System.out.println("here" + this.alpha + this.beta + " " + posterior.getAlpha() + " "+ posterior.getBeta() + " ratio " + ratio);
+        //Returns the natural logarithm of the probability density function (PDF) of this distribution evaluated at the specified point x.
+        //System.out.println("here" + this.alpha + this.beta + " " + posterior.getAlpha() + " "+ posterior.getBeta() + " ratio " + ratio);
         //System.out.println(" ratio here " + ratio + "  " + posterior.logDensity(ratio) + " alpha " + posterior.getAlpha() + " reference 0.05 " + posterior.logDensity(0.05) + "   XX   0.5 " +  posterior.logDensity(0.5) );
-        return (posterior.logDensity(ratio) > threshold) ;
+
+        try {
+            return (posterior.logDensity(ratio) > threshold);
+        }catch (NumberIsTooSmallException e){
+            // this is always false
+            return false;
+        }
     }
 
 

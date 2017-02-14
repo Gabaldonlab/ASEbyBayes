@@ -41,9 +41,19 @@ class HypothesisTester {
 
         System.out.println("Check " +allSNPsAccountedForByHypothesis());
 
-        while(! allSNPsAccountedForByHypothesis()) {
-            testableHypothese.addAll(extendHypothesis());
-            System.out.println("Hypothesis added" + testableHypothese.size());
+        int maxHypothesis = 4;
+        for(int i = 0; i < maxHypothesis;i++){
+            if(! allSNPsAccountedForByHypothesis()) {
+                ArrayList<Hypothesis> newHypes = extendHypothesis();
+                try {
+                    if ( newHypes.size() > 0) {
+                        this.testableHypothese.addAll(newHypes);
+                    }
+                    System.out.println("Hypothesis added" + this.testableHypothese.size());
+                }catch (NullPointerException e ){
+                    // empty list has no value,  and causes no problem
+                }
+            }
         }
     }
 
@@ -58,12 +68,11 @@ class HypothesisTester {
     }
 
     private boolean allSNPsAccountedForByHypothesis(){
-
         boolean allSNPsAccountedFor = true;
         for (SNP snp: snplist
              ) {
 
-            System.out.println(snp.getPosition());
+            //System.out.println(snp.getPosition());
 
             boolean hasAnExplanation = false;
 
@@ -71,12 +80,11 @@ class HypothesisTester {
                     ) {
                 if (!hasAnExplanation) {
                     hasAnExplanation = hype.testSNPBCL(snp);
-                    System.out.println(" snp explanation " + hasAnExplanation + "  " + hype.getName());
+                    //System.out.println(" snp explanation " + hasAnExplanation + "  " + hype.getName());
                 }
             }
-
             if(! hasAnExplanation){
-                System.out.println("SNP doesn't have a hypothesis " + snp.getPosition());
+                //System.out.println("SNP doesn't have a hypothesis " + snp.getPosition());
                 allSNPsAccountedFor = false;
             }
         }
@@ -104,7 +112,8 @@ class HypothesisTester {
         for (SNP snp: snplist
              ) {
             boolean hasAnExplanation = false;
-            for (Hypothesis hype: testableHypothese
+
+            for (Hypothesis hype: this.testableHypothese
                  ) {
                 if (!hasAnExplanation) {
                     //System.out.println(hype.testSNPBCL(snp));
@@ -113,10 +122,11 @@ class HypothesisTester {
             }
             if(!hasAnExplanation){
                 snpsWithoutExplanation.add(snp);
+                //System.out.println("added snp to list " + snpsWithoutExplanation.size());
             }
+
         }
-
-
+        System.out.println(snpsWithoutExplanation.size() + " snps unaccounted for");
         Random randomGenerator;
         // random snp as new center
         randomGenerator = new Random();
@@ -126,12 +136,9 @@ class HypothesisTester {
         }
         if(index != 0) {
             SNP newcenter = snpsWithoutExplanation.get(index);
-
-            double mean = (newcenter.getALTcov() / (newcenter.getALTcov() + newcenter.getORGcov()));
-
+            double mean = ((double) newcenter.getALTcov() / ((double) newcenter.getALTcov() + (double) newcenter.getORGcov()));
             Hypothesis newHype = new Hypothesis(mean, FIXED_INTENSITY, "Allele_Specific");
             Hypothesis newHypeAntiparental = new Hypothesis((1 - mean), FIXED_INTENSITY, "Allele_Specific_AntiParental");
-
             newHypothesis.add(newHype);
             newHypothesis.add(newHypeAntiparental);
 
@@ -139,12 +146,9 @@ class HypothesisTester {
         }else{
             return null;
         }
-
-
-
     }
 
-    public ArrayList<Gene> getGeneList() {
+    ArrayList<Gene> getGeneList() {
         return geneList;
     }
 }
