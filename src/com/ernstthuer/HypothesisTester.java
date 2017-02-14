@@ -25,9 +25,6 @@ class HypothesisTester {
     private ArrayList<Hypothesis> testableHypothese;
     private ArrayList<Gene> geneList;
     private ArrayList<SNP> snplist;
-
-
-
     private int FIXED_INTENSITY = 10;
 
     HypothesisTester(ArrayList<Gene> geneList) {
@@ -35,24 +32,19 @@ class HypothesisTester {
         this.snplist = getSnpList();
         testableHypothese = getDefaultHypothesis();
 
-
         // aif not all SNPs are accounted for,  make more hypothesis
         for (Hypothesis hyp: testableHypothese
              ) {
             hyp.testHypothesis(geneList);
         }
-
         //boolean notallSNPinHypothesis = false;
 
-        System.out.println("Check " +allSNPsAccountedForByHypethesis());
+        System.out.println("Check " +allSNPsAccountedForByHypothesis());
 
-        while(! allSNPsAccountedForByHypethesis()) {
-
+        while(! allSNPsAccountedForByHypothesis()) {
             testableHypothese.addAll(extendHypothesis());
             System.out.println("Hypothesis added" + testableHypothese.size());
         }
-
-
     }
 
     private ArrayList<SNP> getSnpList (){
@@ -65,28 +57,31 @@ class HypothesisTester {
         return snps;
     }
 
-    private boolean allSNPsAccountedForByHypethesis(){
+    private boolean allSNPsAccountedForByHypothesis(){
 
-        boolean allSNPsAccountedFor = false;
+        boolean allSNPsAccountedFor = true;
         for (SNP snp: snplist
              ) {
+
+            System.out.println(snp.getPosition());
+
             boolean hasAnExplanation = false;
 
             for (Hypothesis hype : testableHypothese
                     ) {
                 if (!hasAnExplanation) {
                     hasAnExplanation = hype.testSNPBCL(snp);
+                    System.out.println(" snp explanation " + hasAnExplanation + "  " + hype.getName());
                 }
             }
 
-            if(! allSNPsAccountedFor){
-                allSNPsAccountedFor = hasAnExplanation;
+            if(! hasAnExplanation){
+                System.out.println("SNP doesn't have a hypothesis " + snp.getPosition());
+                allSNPsAccountedFor = false;
             }
         }
-
-
+        System.out.println(allSNPsAccountedFor);
         return allSNPsAccountedFor;
-
     }
 
 
@@ -108,13 +103,11 @@ class HypothesisTester {
         ArrayList<SNP> snpsWithoutExplanation = new ArrayList<>();
         for (SNP snp: snplist
              ) {
-
             boolean hasAnExplanation = false;
-
             for (Hypothesis hype: testableHypothese
                  ) {
                 if (!hasAnExplanation) {
-                    System.out.println(hype.testSNPBCL(snp));
+                    //System.out.println(hype.testSNPBCL(snp));
                     hasAnExplanation = hype.testSNPBCL(snp);
                 }
             }
@@ -127,19 +120,28 @@ class HypothesisTester {
         Random randomGenerator;
         // random snp as new center
         randomGenerator = new Random();
-        int index = randomGenerator.nextInt(snpsWithoutExplanation.size());
-        SNP newcenter = snpsWithoutExplanation.get(index);
+        int index = 0;
+        if(snpsWithoutExplanation.size() > 0) {
+            index = randomGenerator.nextInt(snpsWithoutExplanation.size());
+        }
+        if(index != 0) {
+            SNP newcenter = snpsWithoutExplanation.get(index);
 
-        double mean = (newcenter.getALTcov() /(newcenter.getALTcov()+newcenter.getORGcov()));
+            double mean = (newcenter.getALTcov() / (newcenter.getALTcov() + newcenter.getORGcov()));
 
-        Hypothesis newHype = new Hypothesis(mean,FIXED_INTENSITY,"Allele_Specific");
-        Hypothesis newHypeAntiparental = new Hypothesis((1-mean),FIXED_INTENSITY,"Allele_Specific_AntiParental");
+            Hypothesis newHype = new Hypothesis(mean, FIXED_INTENSITY, "Allele_Specific");
+            Hypothesis newHypeAntiparental = new Hypothesis((1 - mean), FIXED_INTENSITY, "Allele_Specific_AntiParental");
+
+            newHypothesis.add(newHype);
+            newHypothesis.add(newHypeAntiparental);
+
+            return newHypothesis;
+        }else{
+            return null;
+        }
 
 
-        newHypothesis.add(newHype);
-        newHypothesis.add(newHypeAntiparental);
 
-        return newHypothesis;
     }
 
     public ArrayList<Gene> getGeneList() {

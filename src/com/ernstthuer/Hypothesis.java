@@ -76,6 +76,7 @@ class Hypothesis {
 //    }
 
 
-
-
+    public String getName() {
+        return name;
+    }
 }

@@ -58,7 +58,7 @@ class BayesClassify {
         // Returns the natural logarithm of the probability density function (PDF) of this distribution evaluated at the specified point x.
         // System.out.println("here" + this.alpha + this.beta + " " + posterior.getAlpha() + " "+ posterior.getBeta() + " ratio " + ratio);
         //System.out.println(" ratio here " + ratio + "  " + posterior.logDensity(ratio) + " alpha " + posterior.getAlpha() + " reference 0.05 " + posterior.logDensity(0.05) + "   XX   0.5 " +  posterior.logDensity(0.5) );
-        return (posterior.logDensity(ratio) < threshold) ;
+        return (posterior.logDensity(ratio) > threshold) ;
     }
 
 
