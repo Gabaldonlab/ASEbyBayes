@@ -26,7 +26,7 @@ class Hypothesis {
     private double mean;
     private double FIXED_INTENSITY ;
     private String name;
-    private double STATIC_SIGMA_MULTIPLIER = 2.0;   // deprecated
+    private double STATIC_SIGMA_MULTIPLIER = 2.0; // deprecated
 
 
     Hypothesis(double mean,double fixedIntensity,  String name) {
@@ -82,7 +82,7 @@ class Hypothesis {
 //    }
 
 
-    public String getName() {
+    String getName() {
         return name;
     }
 

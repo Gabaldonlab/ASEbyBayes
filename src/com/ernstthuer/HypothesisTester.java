@@ -59,9 +59,9 @@ class HypothesisTester {
 
         HashMap<String, Integer> availableHypothesis = getHypeNamesAsHashMap(testableHypothese);
 
-        for(String key: availableHypothesis.keySet()){
-            System.out.println("available " + key);
-        }
+//        for(String key: availableHypothesis.keySet()){
+//            System.out.println("available " + key);
+//        }
 
 
         for (Hypothesis hyp : testableHypothese
@@ -71,20 +71,26 @@ class HypothesisTester {
 
         for (Gene gene: geneList
              ) {
+            gene.findSynonymity(0);
             testGeneForKeyHypothesis(gene, availableHypothesis);
 
-            for(String key : gene.getHypothesisEval().keySet()){
-                // ToDo  remove
-                System.out.println("Gene " + key + " " + gene.getHypothesisEval().get(key));
-            }
         }
             //System.out.println(gene.getHypothesisArray()[0]);
+
+        // ToDo   implement noise reclassification by evaluating expression over replicates and synonymity
+
+
+
+        // ToDo  Ka/Ks ratio calculation and synonymity expectation
+
+
 
 
 
 
 
     }
+
 
 
 
@@ -179,7 +185,7 @@ class HypothesisTester {
                 allSNPsAccountedFor = false;
             }
         }
-        System.out.println(allSNPsAccountedFor);
+        //System.out.println(allSNPsAccountedFor);
         return allSNPsAccountedFor;
     }
 
@@ -218,7 +224,7 @@ class HypothesisTester {
                 //System.out.println("added snp to list " + snpsWithoutExplanation.size());
             }
         }
-        System.out.println(snpsWithoutExplanation.size() + " snps unaccounted for");
+        //System.out.println(snpsWithoutExplanation.size() + " snps unaccounted for");
         Random randomGenerator;
         // random snp as new center
         randomGenerator = new Random();
@@ -241,5 +247,25 @@ class HypothesisTester {
     }
     ArrayList<Gene> getGeneList() {
         return geneList;
+    }
+
+
+
+    private double checkLowExpressionSNPs(SNP snp){
+        // method to evaluate equal allelic expression, and generate an evaluation based on the available observations
+        // First check if Equal allelic Expression exists
+        // If not, test " noise SNPs "  exists in all replicates and are synonymous
+        int max = 3;
+        double confidenceModifier = (20.0/64.0);
+        double expectedConfidence = 0;
+
+        if(snp.isSynonymous()){
+            expectedConfidence = 1-(confidenceModifier)*snp.getFoundInReplicates();
+        }else{
+            expectedConfidence = confidenceModifier*snp.getFoundInReplicates();
+        }
+
+        return ((double) snp.getALTcov() / ((double) snp.getORGcov()  + (double) snp.getALTcov()) * expectedConfidence) ;
+
     }
 }

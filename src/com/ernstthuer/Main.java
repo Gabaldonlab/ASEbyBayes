@@ -115,10 +115,12 @@ public class Main {
 
         // Hypothesis implementation via Hypothesis tester
         HypothesisTester hypothesisTester = new HypothesisTester(geneList);
-
-
-
         geneList = hypothesisTester.getGeneList();
+
+
+
+
+
 
         //hypothesisTester.geneWiseComparison(geneList);
 
