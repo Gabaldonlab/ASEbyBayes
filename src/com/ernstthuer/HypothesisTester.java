@@ -2,7 +2,6 @@ package com.ernstthuer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
 
 class HypothesisTester {
@@ -111,18 +110,13 @@ class HypothesisTester {
     }
 
 
-    private double getAntiSNP(SNP snp){
-        // it is biologically feasible that the reference was wrong, and that a "FullSNP" classified SNP is in fact a noise
-        // or Allele Specific expression of the other parental
-        double mean = snp.getORGcov() /  (snp.getALTcov() + snp.getORGcov());
-        return mean;
-    }
 
 
     private void evaluateNoisySNPlist(ArrayList<SNP> snpList){
         for (SNP snp : snpList
              ) {
-            checkLowExpressionSNPs(snp);
+            double mean = checkLowExpressionSNPs(snp);
+
         }
     }
 
@@ -130,9 +124,8 @@ class HypothesisTester {
         // method to evaluate equal allelic expression, and generate an evaluation based on the available observations
         // First check if Equal allelic Expression exists
         // If not, test " noise SNPs "  exists in all replicates and are synonymous
-        int max = 3;
         double confidenceModifier = (20.0/64.0);
-        double expectedConfidence = 0;
+        double expectedConfidence;
 
         if(snp.isSynonymous()){
             expectedConfidence = 1+(confidenceModifier)*snp.getFoundInReplicates();
@@ -141,7 +134,7 @@ class HypothesisTester {
         }
         double mean = (double) snp.getALTcov() / ((double) snp.getORGcov() + (double) snp.getALTcov());
 
-
+        // ToDo  remove
         System.out.println(" reevaluate " + mean + " by " + expectedConfidence);
 
         if(snp.getHypothesisEval().containsKey("FullSNP")){
@@ -255,6 +248,7 @@ class HypothesisTester {
 
 
     private ArrayList<Hypothesis> extendHypothesis (){
+        //  If the available Hypothesis do not explain the observed SNPs, more hypothesis have to be created,
         ArrayList<Hypothesis> newHypothesis = new ArrayList<>();
         ArrayList<SNP> snpsWithoutExplanation = new ArrayList<>();
         for (SNP snp: snplist
@@ -264,17 +258,15 @@ class HypothesisTester {
             for (Hypothesis hype: this.testableHypothese
                  ) {
                 if (!hasAnExplanation) {
-                    //System.out.println(hype.testSNPBCL(snp));
                     hasAnExplanation = hype.testSNPBCL(snp);
                 }
             }
             if(!hasAnExplanation){
                 snpsWithoutExplanation.add(snp);
-                //System.out.println("added snp to list " + snpsWithoutExplanation.size());
             }
         }
-        //System.out.println(snpsWithoutExplanation.size() + " snps unaccounted for");
         Random randomGenerator;
+        // ToDo  make this more stable, by using the mean of a few SNPs
         // random snp as new center
         randomGenerator = new Random();
         int index = 0;

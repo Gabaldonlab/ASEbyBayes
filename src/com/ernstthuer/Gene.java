@@ -324,9 +324,9 @@ public class Gene implements Cloneable {
     //    this.hypothesisEval.put(name, eval);
     //}
 
-    public void addRead(SimpleRead read) {
-        this.geneReadList.add(read);
-    }
+    //public void addRead(SimpleRead read) {
+//        this.geneReadList.add(read);
+//    }
 
 
     ArrayList<SNP> unifySNPLists(ArrayList<SNP> otherSNPList) {
@@ -354,6 +354,10 @@ public class Gene implements Cloneable {
         return snpArrayList;
     }
 
+    void setHypothesisEval(HashMap<String, Integer> hypothesisEval) {
+        this.hypothesisEval = hypothesisEval;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -375,10 +379,6 @@ public class Gene implements Cloneable {
         return result;
     }
 
-    public List<SimpleRead> getGeneReadList() {
-        return geneReadList;
-    }
-
 //
 //    void addHypothesisCount(double[] hypothesisArray) {
 //        this.hypothesisArray = hypothesisArray;
@@ -390,9 +390,6 @@ public class Gene implements Cloneable {
 //
 
 
-    public void setHypothesisEval(HashMap<String, Integer> hypothesisEval) {
-        this.hypothesisEval = hypothesisEval;
-    }
 }
 
 

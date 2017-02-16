@@ -55,6 +55,7 @@ public class BayesClassifyTest {
 
     @Test
     public void testSNPclassify() throws Exception{
+        System.out.println("test starts here");
         HypothesisTester hypotester = new HypothesisTester(genelist);
 
 
