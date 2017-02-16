@@ -266,7 +266,7 @@ class HypothesisTester {
             }
         }
         Random randomGenerator;
-        // ToDo  make this more stable, by using the mean of a few SNPs
+        // ToDo  make this more stable, by using the mean of a few SNPs if they are close by mean 
         // random snp as new center
         randomGenerator = new Random();
         int index = 0;
