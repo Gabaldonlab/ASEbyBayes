@@ -32,6 +32,24 @@ public class BayesClassifyTest {
             gene.addSNP(snp1, false);
         }
         genelist.add(gene);
+
+
+        Gene gene2 = new Gene("chr1",1000000,2000000,"Gene2");
+
+        //ArrayList<SNP> snps = new ArrayList<>();
+        for(int i = 0; i <= snpcount ; i++){
+            SNP snp1 = new SNP(gene,'A','T',((i*2)+100000));
+            snp1.setALTcov(i);
+            snp1.setORGcov(snpcount-i);
+
+            snp1.setFoundInReplicates(3);
+            snp1.setSynonymous(true);
+
+            //snps.add(snp1);
+            gene.addSNP(snp1, false);
+        }
+        genelist.add(gene2);
+
     }
 
 

@@ -69,10 +69,19 @@ class HypothesisTester {
             hyp.testHypothesis(geneList);
         }
 
+
         for (Gene gene: geneList
              ) {
             gene.findSynonymity(0);
             testGeneForKeyHypothesis(gene, availableHypothesis);
+
+            // keep analysis gene wise
+            ArrayList<SNP> noisySNPs = getPotentiallyNoisySNPs(gene.getSnpsOnGene());
+
+            evaluateNoisySNPlist(noisySNPs);
+
+
+
 
         }
             //System.out.println(gene.getHypothesisArray()[0]);
@@ -81,18 +90,70 @@ class HypothesisTester {
 
 
 
+
         // ToDo  Ka/Ks ratio calculation and synonymity expectation
-
-
-
-
-
 
 
     }
 
 
+    private ArrayList<SNP> getPotentiallyNoisySNPs(ArrayList<SNP> snpList){
+        ArrayList<SNP> lowExpressionSNPList =  new ArrayList<>();
 
+        for (SNP snp: snpList
+             ) {
+
+            if(snp.getHypothesisEval().containsKey("Noise") || snp.getHypothesisEval().containsKey("FullSNP")){
+                lowExpressionSNPList.add(snp);
+            }
+        }
+        return lowExpressionSNPList;
+    }
+
+
+    private double getAntiSNP(SNP snp){
+        // it is biologically feasible that the reference was wrong, and that a "FullSNP" classified SNP is in fact a noise
+        // or Allele Specific expression of the other parental
+        double mean = snp.getORGcov() /  (snp.getALTcov() + snp.getORGcov());
+        return mean;
+    }
+
+
+    private void evaluateNoisySNPlist(ArrayList<SNP> snpList){
+        for (SNP snp : snpList
+             ) {
+            checkLowExpressionSNPs(snp);
+        }
+    }
+
+    private double checkLowExpressionSNPs(SNP snp){
+        // method to evaluate equal allelic expression, and generate an evaluation based on the available observations
+        // First check if Equal allelic Expression exists
+        // If not, test " noise SNPs "  exists in all replicates and are synonymous
+        int max = 3;
+        double confidenceModifier = (20.0/64.0);
+        double expectedConfidence = 0;
+
+        if(snp.isSynonymous()){
+            expectedConfidence = 1+(confidenceModifier)*snp.getFoundInReplicates();
+        }else{
+            expectedConfidence = confidenceModifier*snp.getFoundInReplicates();
+        }
+        double mean = (double) snp.getALTcov() / ((double) snp.getORGcov() + (double) snp.getALTcov());
+
+
+        System.out.println(" reevaluate " + mean + " by " + expectedConfidence);
+
+        if(snp.getHypothesisEval().containsKey("FullSNP")){
+            return ((double) snp.getORGcov() / ((double) snp.getORGcov() + (double) snp.getALTcov()) * expectedConfidence);
+        }
+
+        else {
+            return ((double) snp.getALTcov() / ((double) snp.getORGcov() + (double) snp.getALTcov()) * expectedConfidence);
+        }
+
+
+    }
 
     private void testGeneForKeyHypothesis(Gene gene,  HashMap<String, Integer> availableHypothesis){
 
@@ -134,18 +195,6 @@ class HypothesisTester {
         return HypothesisNames;
     }
 
-    private String[] getHypeNames(ArrayList<Hypothesis> testableHypothese){
-        String[] HypothesisNames = new String[testableHypothese.size()];
-
-        int index = 0;
-        for (Hypothesis hype: testableHypothese
-             ) {
-            HypothesisNames[index] = hype.getName();
-            index++;
-        }
-
-     return HypothesisNames;
-    }
 
     private ArrayList<SNP> dropSNP(ArrayList<SNP> snplist, SNP snp){
         int index = snplist.indexOf(snp);
@@ -251,21 +300,4 @@ class HypothesisTester {
 
 
 
-    private double checkLowExpressionSNPs(SNP snp){
-        // method to evaluate equal allelic expression, and generate an evaluation based on the available observations
-        // First check if Equal allelic Expression exists
-        // If not, test " noise SNPs "  exists in all replicates and are synonymous
-        int max = 3;
-        double confidenceModifier = (20.0/64.0);
-        double expectedConfidence = 0;
-
-        if(snp.isSynonymous()){
-            expectedConfidence = 1-(confidenceModifier)*snp.getFoundInReplicates();
-        }else{
-            expectedConfidence = confidenceModifier*snp.getFoundInReplicates();
-        }
-
-        return ((double) snp.getALTcov() / ((double) snp.getORGcov()  + (double) snp.getALTcov()) * expectedConfidence) ;
-
-    }
 }
