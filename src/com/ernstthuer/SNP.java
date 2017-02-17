@@ -60,7 +60,7 @@ class SNP implements Comparable<SNP> {
         isSynonymous = synonymous;
     }
 
-    public boolean isSynonymous() {
+    boolean isSynonymous() {
         return isSynonymous;
     }
 
@@ -72,7 +72,7 @@ class SNP implements Comparable<SNP> {
         return ORG;
     }
 
-     char getALT() {
+    char getALT() {
         return ALT;
     }
 
@@ -111,9 +111,10 @@ class SNP implements Comparable<SNP> {
     void raiseValidation() {
         this.validated++;
     }
-    void disableValidation(){ this.validated = -5;}
 
-
+    void disableValidation() {
+        this.validated = -5;
+    }
 
     int getFoundInReplicates() {
         return foundInReplicates;
@@ -122,11 +123,10 @@ class SNP implements Comparable<SNP> {
     void setFoundInReplicates(int foundInReplicates) {
         this.foundInReplicates = foundInReplicates;
     }
-    void incrementFOundInReplicates(){
-        this.foundInReplicates ++;
+
+    void incrementFOundInReplicates() {
+        this.foundInReplicates++;
     }
-
-
 
     public void findTrueORG() {
         DNASequence dnaseq = gene.getSequence();
@@ -140,13 +140,9 @@ class SNP implements Comparable<SNP> {
         }
     }
 
-
-    void addHypothesis(String hypothesis, double value){
-        this.hypothesisEval.put(hypothesis,value);
+    void addHypothesis(String hypothesis, double value) {
+        this.hypothesisEval.put(hypothesis, value);
     }
-
-
-
 
     void setExpression(String expression) {
         this.expression = expression;
@@ -160,43 +156,43 @@ class SNP implements Comparable<SNP> {
         return hypothesisEval;
     }
 
-    public void setHypothesisEval(HashMap<String, Double> hypothesisEval) {
+    void setHypothesisEval(HashMap<String, Double> hypothesisEval) {
         this.hypothesisEval = hypothesisEval;
     }
 
     void addHypothesisEval(String test, Double results) {
-        if(this.hypothesisEval.containsKey(test)){
+        if (this.hypothesisEval.containsKey(test)) {
 
-            double valueSoFar =  this.hypothesisEval.get(test);
-            if(results > logDensityThreshold) {
+            double valueSoFar = this.hypothesisEval.get(test);
+            if (results > logDensityThreshold) {
                 double newValue = valueSoFar + 1;
-                this.hypothesisEval.replace(test,newValue);
+                this.hypothesisEval.replace(test, newValue);
             }
-        }else {
-            if(results > logDensityThreshold) {
+        } else {
+            if (results > logDensityThreshold) {
                 this.hypothesisEval.put(test, 1.0);
             }
         }
         //this.hypothesisEval = hypothesisEval;
     }
 
-    void removeHypothesisEval(String key){
+    void removeHypothesisEval(String key) {
 
-        if(this.hypothesisEval.containsKey(key)){
+        if (this.hypothesisEval.containsKey(key)) {
             this.hypothesisEval.remove(key);
-        }else{
-            System.out.println("Cannot remove hypothesis,   not found");
+        } else {
+            //System.out.println("Cannot remove hypothesis,   not found");
         }
     }
 
 
-    void combineSNPInformation(SNP snpOnOtherReplicate ){
+    void combineSNPInformation(SNP snpOnOtherReplicate) {
         int foundsofar = foundInReplicates;
-        foundInReplicates +=1;
+        foundInReplicates += 1;
         //System.out.println(ALTcov + " / "+ORGcov);
 
-        this.ALTcov = (((ALTcov*foundsofar) + snpOnOtherReplicate.getALTcov()) /(1+foundsofar));
-        this.ORGcov = (((ORGcov*foundsofar) + snpOnOtherReplicate.getORGcov()) /(1+foundsofar));
+        this.ALTcov = (((ALTcov * foundsofar) + snpOnOtherReplicate.getALTcov()) / (1 + foundsofar));
+        this.ORGcov = (((ORGcov * foundsofar) + snpOnOtherReplicate.getORGcov()) / (1 + foundsofar));
 
     }
 
@@ -208,15 +204,14 @@ class SNP implements Comparable<SNP> {
         int[] outcov = new int[2];
         int foundInReplicates = first.foundInReplicates;
 
-        outcov[0] = (((first.getALTcov()*foundInReplicates) + second.getALTcov()) /(1+foundInReplicates));
-        outcov[1] = (((first.getALTcov()*foundInReplicates) + second.getORGcov()) /(1+foundInReplicates));
-        first.foundInReplicates+=1;
+        outcov[0] = (((first.getALTcov() * foundInReplicates) + second.getALTcov()) / (1 + foundInReplicates));
+        outcov[1] = (((first.getALTcov() * foundInReplicates) + second.getORGcov()) / (1 + foundInReplicates));
+        first.foundInReplicates += 1;
         //System.out.println( first.getALTcov() + " " + second.getALTcov()  +   "  " + foundInReplicates + "   " + outcov[0]);
         return outcov;
 
 
     }
-
 
 
     @Override
@@ -249,7 +244,7 @@ class SNP implements Comparable<SNP> {
                 this.getALTcov() + "\t" + this.getORGcov() +
                 "\t" + "TestInfo" + "\t" + this.expression +
                 "\t" + this.isSynonymous + "\t" +
-                this.isValidated() + "\t" + this.foundInReplicates ;
+                this.isValidated() + "\t" + this.foundInReplicates;
     }
 
     @Override
@@ -262,13 +257,12 @@ class SNP implements Comparable<SNP> {
     }
 
 
-    public double[] deriveAlphaBeta(){
+    public double[] deriveAlphaBeta() {
         // this calculates the mean of the beta distribution
         double[] alphaBeta = new double[2];
 
         return alphaBeta;
     }
-
 
 
 }

@@ -8,7 +8,6 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 public class Gene implements Cloneable {
 
@@ -31,10 +30,8 @@ public class Gene implements Cloneable {
 
     @Override
     protected Object clone() throws CloneNotSupportedException {
-
         this.snpsOnGene = new ArrayList<>();
         return super.clone();
-
     }
 
     public Gene(String chromosome, int start, int stop, String ident) {
@@ -52,9 +49,9 @@ public class Gene implements Cloneable {
 
     }
 
-    public LinkedHashMap<Integer, Integer> getPositioncount() {
-        return positioncount;
-    }
+    //public LinkedHashMap<Integer, Integer> getPositioncount() {
+//        return positioncount;
+//    }
 
     ArrayList<SNP> getSnpsOnGene() {
         return snpsOnGene;
@@ -92,7 +89,6 @@ public class Gene implements Cloneable {
     public void setSnpsOnGene(ArrayList<SNP> snpsOnGene) {
         this.snpsOnGene = snpsOnGene;
     }
-
 
 
     public char getOrientation() {
@@ -365,7 +361,7 @@ public class Gene implements Cloneable {
 
         Gene gene = (Gene) o;
 
-        if (start != gene.start || stop != gene.stop ) return false;
+        if (start != gene.start || stop != gene.stop) return false;
         return chromosome != null ? chromosome.equals(gene.chromosome) : gene.chromosome == null;
 
     }
