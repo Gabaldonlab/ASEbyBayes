@@ -34,6 +34,7 @@ class HypothesisTester {
         for (Hypothesis hyp : testableHypothese
                 ) {
             hyp.testHypothesis(geneList);
+
         }
         //boolean notallSNPinHypothesis = false;
 
@@ -48,6 +49,18 @@ class HypothesisTester {
             // keep analysis gene wise
             ArrayList<SNP> noisySNPs = getPotentiallyNoisySNPs(gene.getSnpsOnGene());
             evaluateNoisySNPlist(noisySNPs);
+
+
+            for (SNP newSNP: noisySNPs
+                 ) {
+                int index = gene.getSnpsOnGene().indexOf(newSNP);
+                if(gene.getSnpsOnGene().get(index).getHypothesisEval().containsKey("Noise")) {
+                    gene.getSnpsOnGene().get(index).removeHypothesisEval("Noise");
+                }
+                if(gene.getSnpsOnGene().get(index).getHypothesisEval().containsKey("FullSNP")) {
+                    gene.getSnpsOnGene().get(index).removeHypothesisEval("FullSNP");
+                }
+            }
         }
 
         int maxHypothesis = 4;
@@ -70,7 +83,7 @@ class HypothesisTester {
                 ) {
             hyp.testHypothesis(geneList);
         }
-        availableHypothesis = getHypeNamesAsHashMap(testableHypothese);
+        //availableHypothesis = getHypeNamesAsHashMap(testableHypothese);
         //String[] keysInHypothesis = getHypeNames(testableHypothese);
 //        for(String key: availableHypothesis.keySet()){
 //            System.out.println("available " + key);

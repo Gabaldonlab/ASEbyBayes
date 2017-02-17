@@ -59,11 +59,6 @@ public class BayesClassifyTest {
     public void testSNPclassify() throws Exception{
         System.out.println("test starts here");
         HypothesisTester hypotester = new HypothesisTester(genelist);
-
-
-
-
-
         //ArrayList<Gene> testedList = hypotester.getGeneList();
 
  /*       for (Gene gene: testedList
