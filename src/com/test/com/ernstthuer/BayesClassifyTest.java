@@ -28,6 +28,9 @@ public class BayesClassifyTest {
             SNP snp1 = new SNP(gene,'A','T',(i*2));
             snp1.setALTcov(i);
             snp1.setORGcov(snpcount-i);
+
+            snp1.setFoundInReplicates(3);
+            snp1.setSynonymous(true);
             //snps.add(snp1);
             gene.addSNP(snp1, false);
         }

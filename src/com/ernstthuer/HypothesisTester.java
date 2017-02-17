@@ -76,13 +76,18 @@ class HypothesisTester {
             // keep analysis gene wise
 
             ArrayList<SNP> noisySNPs = getPotentiallyNoisySNPs(gene.getSnpsOnGene());
+
+
             evaluateNoisySNPlist(noisySNPs);
+
+
+
         }
             //System.out.println(gene.getHypothesisArray()[0]);
 
         // ToDo   implement noise reclassification by evaluating expression over replicates and synonymity
 
-        
+
         // ToDo  Ka/Ks ratio calculation and synonymity expectation
 
 
@@ -104,12 +109,36 @@ class HypothesisTester {
     }
 
 
+    private SNP makeSNPgreatAgain(SNP snp, double ratioALT){
+        // returns a temporary SNP with the same configuration as the input, but modified to fit the input mean of expression
+        SNP outSNP = new SNP(snp.getGene(),snp.getORG(),snp.getALT(),snp.getPosition());
+
+        outSNP.setHypothesisEval(snp.getHypothesisEval());
+
+        outSNP.setALTcov((int) Math.round(snp.getALTcov()*ratioALT));
+        outSNP.setORGcov((int) Math.round( (snp.getALTcov()+snp.getORGcov()) -  snp.getALTcov()*ratioALT));
+
+        System.out.println("makeSNPgreat " +  ratioALT +  snp.getALTcov() + "  :  " + outSNP.getALTcov());
+
+        return outSNP;
+
+    }
 
 
     private void evaluateNoisySNPlist(ArrayList<SNP> snpList){
+        Hypothesis noiseHypothesis = testableHypothese.get(0); // the noise  hypothesis is at position 0
+        System.out.println(noiseHypothesis.getName());
+
         for (SNP snp : snpList
              ) {
             double mean = adjustSNPmeanBySynonymity(snp);
+            SNP changedSNP = makeSNPgreatAgain(snp,mean);
+            System.out.println("synonymous " + snp.isSynonymous() + "  mean " + mean);
+            System.out.println(snp.getGene().getIdent());
+            System.out.println(noiseHypothesis.testSNPBCL(snp) +  "  org "  + snp.getALTcov() + " " +snp.getORGcov() );
+            System.out.println(noiseHypothesis.testSNPBCL(changedSNP) +  "  alt  "  + changedSNP.getALTcov() + " " +changedSNP.getORGcov() );
+
+
 
             //System.out.println( (double) snp.getORGcov() / ((double) snp.getORGcov() + (double) snp.getALTcov())+ "  : new mean"  +  mean );
 
@@ -128,17 +157,16 @@ class HypothesisTester {
         }else{
             expectedConfidence = confidenceModifier*snp.getFoundInReplicates();
         }
-        double mean = (double) snp.getALTcov() / ((double) snp.getORGcov() + (double) snp.getALTcov());
 
         // ToDo  remove
         //System.out.println(" reevaluate " + mean + " by " + expectedConfidence);
 
         if(snp.getHypothesisEval().containsKey("FullSNP")){
-            return ((double) snp.getORGcov() / ((double) snp.getORGcov() + (double) snp.getALTcov()) * expectedConfidence);
+            return ((double) snp.getORGcov() * expectedConfidence / ((double) snp.getORGcov()* expectedConfidence + (double) snp.getALTcov()) );
         }
 
         else {
-            return ((double) snp.getALTcov() / ((double) snp.getORGcov() + (double) snp.getALTcov()) * expectedConfidence);
+            return ((double) snp.getALTcov() * expectedConfidence / ((double) snp.getORGcov() + (double) snp.getALTcov()) * expectedConfidence);
         }
 
 
@@ -147,8 +175,6 @@ class HypothesisTester {
     private void testGeneForKeyHypothesis(Gene gene,  HashMap<String, Integer> availableHypothesis){
 
         HashMap<String, Integer> geneHypothesisCount = new HashMap<>();
-
-
 
         for (SNP snp: gene.getSnpsOnGene()
              ) {
@@ -184,12 +210,6 @@ class HypothesisTester {
         return HypothesisNames;
     }
 
-
-    private ArrayList<SNP> dropSNP(ArrayList<SNP> snplist, SNP snp){
-        int index = snplist.indexOf(snp);
-        snplist.remove(index);
-        return snplist;
-    }
 
 
     private ArrayList<SNP> getSnpList (){
