@@ -38,6 +38,19 @@ class HypothesisTester {
         }
         //boolean notallSNPinHypothesis = false;
 
+
+        HashMap<String, Integer> availableHypothesis = getHypeNamesAsHashMap(testableHypothese);
+        // This should happen before noise extension
+        for (Gene gene: geneList
+                ) {
+            gene.findSynonymity(0);
+            testGeneForKeyHypothesis(gene, availableHypothesis );
+            // keep analysis gene wise
+
+            ArrayList<SNP> noisySNPs = getPotentiallyNoisySNPs(gene.getSnpsOnGene());
+            evaluateNoisySNPlist(noisySNPs);
+        }
+
         int maxHypothesis = 4;
 
         for (int i = 0; i < maxHypothesis; i++) {
@@ -54,35 +67,26 @@ class HypothesisTester {
             }
         }
 
+        for (Hypothesis hyp : testableHypothese
+                ) {
+            hyp.testHypothesis(geneList);
+        }
+
+        availableHypothesis = getHypeNamesAsHashMap(testableHypothese);
+
         //String[] keysInHypothesis = getHypeNames(testableHypothese);
 
-        HashMap<String, Integer> availableHypothesis = getHypeNamesAsHashMap(testableHypothese);
+
 
 //        for(String key: availableHypothesis.keySet()){
 //            System.out.println("available " + key);
 //        }
 
 
-        for (Hypothesis hyp : testableHypothese
-                ) {
-            hyp.testHypothesis(geneList);
-        }
-
-
-        for (Gene gene: geneList
-             ) {
-            gene.findSynonymity(0);
-            testGeneForKeyHypothesis(gene, availableHypothesis);
-            // keep analysis gene wise
-
-            ArrayList<SNP> noisySNPs = getPotentiallyNoisySNPs(gene.getSnpsOnGene());
-
-
-            evaluateNoisySNPlist(noisySNPs);
 
 
 
-        }
+
             //System.out.println(gene.getHypothesisArray()[0]);
 
         // ToDo   implement noise reclassification by evaluating expression over replicates and synonymity
@@ -115,10 +119,10 @@ class HypothesisTester {
 
         outSNP.setHypothesisEval(snp.getHypothesisEval());
 
-        outSNP.setALTcov((int) Math.round(snp.getALTcov()*ratioALT));
-        outSNP.setORGcov((int) Math.round( (snp.getALTcov()+snp.getORGcov()) -  snp.getALTcov()*ratioALT));
+        outSNP.setALTcov((int) Math.round((snp.getALTcov() +snp.getORGcov())  *ratioALT));
+        outSNP.setORGcov((int) Math.round((snp.getALTcov() +snp.getORGcov()) - (snp.getALTcov() +snp.getORGcov())  *ratioALT) );
 
-        System.out.println("makeSNPgreat " +  ratioALT +  snp.getALTcov() + "  :  " + outSNP.getALTcov());
+        //System.out.println("makeSNPgreat " +  ratioALT + " " + snp.getALTcov() + "  :  " + outSNP.getALTcov());
 
         return outSNP;
 
@@ -133,15 +137,20 @@ class HypothesisTester {
              ) {
             double mean = adjustSNPmeanBySynonymity(snp);
             SNP changedSNP = makeSNPgreatAgain(snp,mean);
-            System.out.println("synonymous " + snp.isSynonymous() + "  mean " + mean);
-            System.out.println(snp.getGene().getIdent());
-            System.out.println(noiseHypothesis.testSNPBCL(snp) +  "  org "  + snp.getALTcov() + " " +snp.getORGcov() );
-            System.out.println(noiseHypothesis.testSNPBCL(changedSNP) +  "  alt  "  + changedSNP.getALTcov() + " " +changedSNP.getORGcov() );
 
 
+
+            if(! noiseHypothesis.testSNPBCL(changedSNP) || snp.getHypothesisEval().containsKey("Noise") ) {
+                snp.removeHypothesisEval("Noise");
+            }
+            if(! noiseHypothesis.testSNPBCL(changedSNP) || snp.getHypothesisEval().containsKey("FullSNP") ) {
+                snp.removeHypothesisEval("FullSNP");
+            }
+
+//            System.out.println("before  "  + noiseHypothesis.testSNPBCL(snp) +  "  org "  + snp.getALTcov() + " " +snp.getORGcov() );
+//            System.out.println("after  "  + noiseHypothesis.testSNPBCL(changedSNP) +  "  alt  "  + changedSNP.getALTcov() + " " +changedSNP.getORGcov() );
 
             //System.out.println( (double) snp.getORGcov() / ((double) snp.getORGcov() + (double) snp.getALTcov())+ "  : new mean"  +  mean );
-
         }
     }
 

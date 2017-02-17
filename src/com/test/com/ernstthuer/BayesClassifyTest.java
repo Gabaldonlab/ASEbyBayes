@@ -36,7 +36,6 @@ public class BayesClassifyTest {
         }
         genelist.add(gene);
 
-
         Gene gene2 = new Gene("chr1",1000000,2000000,"Gene2");
 
         //ArrayList<SNP> snps = new ArrayList<>();

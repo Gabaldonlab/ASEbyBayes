@@ -180,6 +180,14 @@ class SNP implements Comparable<SNP> {
         //this.hypothesisEval = hypothesisEval;
     }
 
+    void removeHypothesisEval(String key){
+
+        if(this.hypothesisEval.containsKey(key)){
+            this.hypothesisEval.remove(key);
+        }else{
+            System.out.println("Cannot remove hypothesis,   not found");
+        }
+    }
 
 
     void combineSNPInformation(SNP snpOnOtherReplicate ){
