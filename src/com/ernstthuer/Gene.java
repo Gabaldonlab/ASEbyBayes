@@ -166,7 +166,7 @@ public class Gene implements Cloneable {
                     snp.setSynonymous(altCodon.equals(refCodon));
 
                 } catch (NullPointerException e) {
-                    System.out.println(snp.getPosition() + "  " + snp.getGene().getIdent());
+                    //System.out.println(snp.getPosition() + "  " + snp.getGene().getIdent());
                 }
                 //String altCodon = getAltCodon(0, snp.getALT(), refCodon.getSequence());
                 //altCodon = snp.getALT() + altCodon.substring(1,2);
@@ -365,8 +365,7 @@ public class Gene implements Cloneable {
 
         Gene gene = (Gene) o;
 
-        if (start != gene.start) return false;
-        if (stop != gene.stop) return false;
+        if (start != gene.start || stop != gene.stop ) return false;
         return chromosome != null ? chromosome.equals(gene.chromosome) : gene.chromosome == null;
 
     }

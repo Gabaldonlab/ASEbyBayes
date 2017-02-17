@@ -73,23 +73,16 @@ class HypothesisTester {
              ) {
             gene.findSynonymity(0);
             testGeneForKeyHypothesis(gene, availableHypothesis);
-
             // keep analysis gene wise
+
             ArrayList<SNP> noisySNPs = getPotentiallyNoisySNPs(gene.getSnpsOnGene());
-
             evaluateNoisySNPlist(noisySNPs);
-
-
-
-
         }
             //System.out.println(gene.getHypothesisArray()[0]);
 
         // ToDo   implement noise reclassification by evaluating expression over replicates and synonymity
 
-
-
-
+        
         // ToDo  Ka/Ks ratio calculation and synonymity expectation
 
 
@@ -106,6 +99,7 @@ class HypothesisTester {
                 lowExpressionSNPList.add(snp);
             }
         }
+        System.out.println(lowExpressionSNPList.size());
         return lowExpressionSNPList;
     }
 
@@ -115,12 +109,14 @@ class HypothesisTester {
     private void evaluateNoisySNPlist(ArrayList<SNP> snpList){
         for (SNP snp : snpList
              ) {
-            double mean = checkLowExpressionSNPs(snp);
+            double mean = adjustSNPmeanBySynonymity(snp);
+
+            //System.out.println( (double) snp.getORGcov() / ((double) snp.getORGcov() + (double) snp.getALTcov())+ "  : new mean"  +  mean );
 
         }
     }
 
-    private double checkLowExpressionSNPs(SNP snp){
+    private double adjustSNPmeanBySynonymity(SNP snp){
         // method to evaluate equal allelic expression, and generate an evaluation based on the available observations
         // First check if Equal allelic Expression exists
         // If not, test " noise SNPs "  exists in all replicates and are synonymous
@@ -128,14 +124,14 @@ class HypothesisTester {
         double expectedConfidence;
 
         if(snp.isSynonymous()){
-            expectedConfidence = 1+(confidenceModifier)*snp.getFoundInReplicates();
+            expectedConfidence = (1-confidenceModifier)*snp.getFoundInReplicates();  // this doubles the confidence towards the SNP if it's synonymous.
         }else{
             expectedConfidence = confidenceModifier*snp.getFoundInReplicates();
         }
         double mean = (double) snp.getALTcov() / ((double) snp.getORGcov() + (double) snp.getALTcov());
 
         // ToDo  remove
-        System.out.println(" reevaluate " + mean + " by " + expectedConfidence);
+        //System.out.println(" reevaluate " + mean + " by " + expectedConfidence);
 
         if(snp.getHypothesisEval().containsKey("FullSNP")){
             return ((double) snp.getORGcov() / ((double) snp.getORGcov() + (double) snp.getALTcov()) * expectedConfidence);
@@ -266,7 +262,7 @@ class HypothesisTester {
             }
         }
         Random randomGenerator;
-        // ToDo  make this more stable, by using the mean of a few SNPs if they are close by mean 
+        // ToDo  make this more stable, by using the mean of a few SNPs if they are close by mean
         // random snp as new center
         randomGenerator = new Random();
         int index = 0;
