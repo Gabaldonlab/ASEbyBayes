@@ -256,60 +256,7 @@ public class Gene implements Cloneable {
         }
 
     }
-/*
 
-    public void evaluateGeneExpression() {
-
-        // THis is for the whole gene
-        for (SNP snp: snpsOnGene) {
-
-            boolean FullSNPevidence = snp.validateSNP(bimodalPrimersForNoise, bimodalPrimersForNoise, 1);
-            boolean CentralExpressionEvidence = snp.validateSNP(strongCentralInformativePrimers, strongCentralInformativePrimers, 2);
-
-
-
-            if (FullSNPevidence) {
-                snp.setExpression("FULLSNP");
-            }
-            if (CentralExpressionEvidence) {
-                snp.setExpression("EQUALALLELICEXPRESSION");
-            }
-        }
-        }
-        */
-
-
-/*    public void evaluateSNPs() {
-        for (SNP snp : snpsOnGene) {
-            if (snp.isValidated() >= 1) {
-                //snpsOnGene.remove(snp);
-                //}
-                //else{
-                if (!snp.validateSNP(10, -1, 0)) {
-                    //snpsOnGene.remove(snp);
-                    snp.disableValidation();
-                } else {
-                    snp.raiseValidation();
-                }
-
-                if (snp.validateSNP(-1, 10, 1)) {
-                    snp.setExpression("FULLSNP");
-                } else {
-                    snp.raiseValidation();
-                }
-
-                if (snp.validateSNP(10, 10, 2)) {
-                    snp.setExpression("EQUALALLELICEXPRESSION");
-
-                } else {
-                    snp.raiseValidation();
-                }
-
-
-            }
-
-        }
-    }*/
 
 
     HashMap<String, Integer> getHypothesisEval() {
@@ -374,15 +321,42 @@ public class Gene implements Cloneable {
         return result;
     }
 
-//
-//    void addHypothesisCount(double[] hypothesisArray) {
-//        this.hypothesisArray = hypothesisArray;
-//    }
-//
-//    public double[] getHypothesisArray() {
-//        return hypothesisArray;
-//    }
-//
+
+    public String evaluateAvailableHypothesis(){
+        // this takes the observed SNPs hypothesis and returns an informed guess on Allele Specific Expression
+        //
+
+        int snpsOnGeneTotal = snpsOnGene.size();
+        int SUPPORTEQUALALLELIC = 0;
+        int SUPPORTNONEQUAL = 0;
+        HashMap<String, Double> hypothesis = new HashMap<>();
+
+
+        for (SNP snp: this.snpsOnGene
+             ) {
+
+            HashMap<String, Double> observ =  snp.getHypothesisEval();
+            for (String key: observ.keySet()
+                 ) {
+
+                if(hypothesis.containsKey(key)){
+
+                    double temp_new = observ.get(key);
+                    double temp_old = hypothesis.get(key);
+
+                    hypothesis.put(key,(temp_new+temp_old));
+                }
+            }
+        }
+
+
+
+        return null;
+
+
+    }
+
+
 
 
 }

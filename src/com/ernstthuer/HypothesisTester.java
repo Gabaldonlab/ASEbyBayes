@@ -89,8 +89,14 @@ class HypothesisTester {
 //            System.out.println("available " + key);
 //        }
         //System.out.println(gene.getHypothesisArray()[0]);
-        // ToDo   implement noise reclassification by evaluating expression over replicates and synonymity
-        // ToDo  Ka/Ks ratio calculation and synonymity expectation
+        // ToDo   implement noise reclassification by evaluating expression over replicates and synonymity / DONE
+        // ToDo  Ka/Ks ratio calculation and synonymity expectation  / DONE
+
+
+
+
+
+
     }
 
 

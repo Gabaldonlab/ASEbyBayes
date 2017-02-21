@@ -125,6 +125,11 @@ public class Main {
         //hypothesisTester.geneWiseComparison(geneList);
 
         for (Gene gene : geneList) {
+
+
+
+
+
      /*       try {
                 //gene.evaluateSNPs();
                 for (SNP snp : gene.getSnpsOnGene()) {
@@ -137,7 +142,7 @@ public class Main {
                 errorCaller(e);
             }*/
 
-            gene.findSynonymity(validationLVL);
+            //gene.findSynonymity(validationLVL);
             snips.addAll(gene.getSnpsOnGene());
         }
 
