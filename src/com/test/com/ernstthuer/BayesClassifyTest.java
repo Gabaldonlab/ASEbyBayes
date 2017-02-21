@@ -57,7 +57,7 @@ public class BayesClassifyTest {
         for (Gene gene :hypotester.getGeneList()
              ) {
             System.out.println(gene.getIdent());
-            gene.evaluateAvailableHypothesis();
+            System.out.println(gene.evaluateAvailableHypothesis());
         }
         //ArrayList<Gene> testedList = hypotester.getGeneList();
 
