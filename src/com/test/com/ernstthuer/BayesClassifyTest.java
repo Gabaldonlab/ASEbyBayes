@@ -9,11 +9,8 @@ import java.util.ArrayList;
 public class BayesClassifyTest {
 
     private BayesClassify bcl = new BayesClassify(0.1,10,100,1000);
-
     private ArrayList<Gene> genelist = new ArrayList<>();
     // test file 1
-
-
     @Before
     public void getNumbers(){
         int snpcount = 200;
@@ -41,7 +38,6 @@ public class BayesClassifyTest {
             SNP snp1 = new SNP(gene2,'A','T',((i*2)+100000));
             snp1.setALTcov(i);
             snp1.setORGcov(snpcount-i);
-
             snp1.setFoundInReplicates(3);
             snp1.setSynonymous(true);
 
@@ -63,7 +59,6 @@ public class BayesClassifyTest {
             System.out.println(gene.getIdent());
             gene.evaluateAvailableHypothesis();
         }
-
         //ArrayList<Gene> testedList = hypotester.getGeneList();
 
  /*       for (Gene gene: testedList

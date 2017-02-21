@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="ec7633f8-55fd-44e2-87c1-f604e17b5f80" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ernstthuer/Gene.java" afterPath="$PROJECT_DIR$/src/com/ernstthuer/Gene.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ernstthuer/HypothesisTester.java" afterPath="$PROJECT_DIR$/src/com/ernstthuer/HypothesisTester.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/test/com/ernstthuer/BayesClassifyTest.java" afterPath="$PROJECT_DIR$/src/com/test/com/ernstthuer/BayesClassifyTest.java" />
     </list>
     <ignored path="ASEbyBayes.iws" />
@@ -61,16 +60,16 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Gene.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Gene.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/Gene.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1150">
-              <caret line="376" column="0" selection-start-line="376" selection-start-column="0" selection-end-line="376" selection-end-column="0" />
+            <state relative-caret-position="1024">
+              <caret line="379" column="13" selection-start-line="379" selection-start-column="13" selection-end-line="379" selection-end-column="13" />
               <folding>
                 <element signature="e#2829#2830#0" expanded="true" />
                 <element signature="e#2873#2874#0" expanded="true" />
-                <element signature="e#9157#9158#0" expanded="true" />
-                <element signature="e#9209#9210#0" expanded="true" />
+                <element signature="e#9156#9157#0" expanded="true" />
+                <element signature="e#9208#9209#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -79,7 +78,7 @@
       <file leaf-file-name="HypothesisTester.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/HypothesisTester.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1260">
+            <state relative-caret-position="-612">
               <caret line="116" column="0" selection-start-line="116" selection-start-column="0" selection-end-line="116" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -90,11 +89,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BayesClassifyTest.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="BayesClassifyTest.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/test/com/ernstthuer/BayesClassifyTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="108">
-              <caret line="18" column="27" selection-start-line="18" selection-start-column="27" selection-end-line="18" selection-end-column="27" />
+            <state relative-caret-position="1080">
+              <caret line="60" column="9" selection-start-line="60" selection-start-column="9" selection-end-line="60" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -180,9 +179,9 @@
         <option value="$PROJECT_DIR$/src/com/ernstthuer/Hypothesis.java" />
         <option value="$PROJECT_DIR$/src/com/ernstthuer/SNP.java" />
         <option value="$PROJECT_DIR$/src/com/ernstthuer/Main.java" />
-        <option value="$PROJECT_DIR$/src/com/ernstthuer/Gene.java" />
-        <option value="$PROJECT_DIR$/src/com/test/com/ernstthuer/BayesClassifyTest.java" />
         <option value="$PROJECT_DIR$/src/com/ernstthuer/HypothesisTester.java" />
+        <option value="$PROJECT_DIR$/src/com/test/com/ernstthuer/BayesClassifyTest.java" />
+        <option value="$PROJECT_DIR$/src/com/ernstthuer/Gene.java" />
       </list>
     </option>
   </component>
@@ -1152,22 +1151,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/Gene.java">
+    <entry file="file://$PROJECT_DIR$/src/com/test/com/ernstthuer/BayesClassifyTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1150">
-          <caret line="376" column="0" selection-start-line="376" selection-start-column="0" selection-end-line="376" selection-end-column="0" />
+        <state relative-caret-position="1080">
+          <caret line="60" column="9" selection-start-line="60" selection-start-column="9" selection-end-line="60" selection-end-column="9" />
           <folding>
-            <element signature="e#2829#2830#0" expanded="true" />
-            <element signature="e#2873#2874#0" expanded="true" />
-            <element signature="e#9157#9158#0" expanded="true" />
-            <element signature="e#9209#9210#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/HypothesisTester.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1260">
+        <state relative-caret-position="-612">
           <caret line="116" column="0" selection-start-line="116" selection-start-column="0" selection-end-line="116" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -1177,12 +1173,15 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/test/com/ernstthuer/BayesClassifyTest.java">
+    <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/Gene.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="18" column="27" selection-start-line="18" selection-start-column="27" selection-end-line="18" selection-end-column="27" />
+        <state relative-caret-position="1024">
+          <caret line="379" column="13" selection-start-line="379" selection-start-column="13" selection-end-line="379" selection-end-column="13" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#2829#2830#0" expanded="true" />
+            <element signature="e#2873#2874#0" expanded="true" />
+            <element signature="e#9156#9157#0" expanded="true" />
+            <element signature="e#9208#9209#0" expanded="true" />
           </folding>
         </state>
       </provider>
