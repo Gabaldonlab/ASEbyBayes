@@ -322,36 +322,57 @@ public class Gene implements Cloneable {
     }
 
 
-    public String evaluateAvailableHypothesis(){
+    String evaluateAvailableHypothesis(){
         // this takes the observed SNPs hypothesis and returns an informed guess on Allele Specific Expression
         //
 
         int snpsOnGeneTotal = snpsOnGene.size();
-        int SUPPORTEQUALALLELIC = 0;
-        int SUPPORTNONEQUAL = 0;
+        double SUPPORTEQUALALLELIC = 0;
+        double SUPPORTNONEQUAL = 0;
         HashMap<String, Double> hypothesis = new HashMap<>();
 
 
+        // combine the SNP maps to one single map
         for (SNP snp: this.snpsOnGene
              ) {
 
             HashMap<String, Double> observ =  snp.getHypothesisEval();
             for (String key: observ.keySet()
                  ) {
-
                 if(hypothesis.containsKey(key)){
 
                     double temp_new = observ.get(key);
                     double temp_old = hypothesis.get(key);
 
                     hypothesis.put(key,(temp_new+temp_old));
+                }else{
+                    hypothesis.put(key,observ.get(key));
                 }
             }
         }
 
+        for (String key: hypothesis.keySet()
+             ) {
+            System.out.println( ident + " Gene " + key+"  " + hypothesis.get(key));
+        }
+
+        if(hypothesis.containsKey("Equal Allelic Expression")) {
+        SUPPORTEQUALALLELIC = hypothesis.get("Equal Allelic Expression");
+        }
+
+        for (String key: hypothesis.keySet()
+             ) {
+            if(!key.equals("Equal Allelic Expression") && !key.equals("Noise") && !key.equals("FullSNP") ){
+                SUPPORTNONEQUAL+= hypothesis.get(key);
+            }
 
 
+        }
+
+        System.out.println("Supported " + SUPPORTEQUALALLELIC);
+        System.out.println("NotSupported " + SUPPORTNONEQUAL);
         return null;
+
 
 
     }

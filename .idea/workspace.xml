@@ -7,7 +7,7 @@
     <list default="true" id="ec7633f8-55fd-44e2-87c1-f604e17b5f80" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ernstthuer/Gene.java" afterPath="$PROJECT_DIR$/src/com/ernstthuer/Gene.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ernstthuer/HypothesisTester.java" afterPath="$PROJECT_DIR$/src/com/ernstthuer/HypothesisTester.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ernstthuer/Main.java" afterPath="$PROJECT_DIR$/src/com/ernstthuer/Main.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/test/com/ernstthuer/BayesClassifyTest.java" afterPath="$PROJECT_DIR$/src/com/test/com/ernstthuer/BayesClassifyTest.java" />
     </list>
     <ignored path="ASEbyBayes.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -61,11 +61,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Gene.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Gene.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/Gene.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2">
-              <caret line="258" column="0" selection-start-line="258" selection-start-column="0" selection-end-line="258" selection-end-column="0" />
+            <state relative-caret-position="1150">
+              <caret line="376" column="0" selection-start-line="376" selection-start-column="0" selection-end-line="376" selection-end-column="0" />
               <folding>
                 <element signature="e#2829#2830#0" expanded="true" />
                 <element signature="e#2873#2874#0" expanded="true" />
@@ -79,23 +79,25 @@
       <file leaf-file-name="HypothesisTester.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/HypothesisTester.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1458">
-              <caret line="87" column="56" selection-start-line="87" selection-start-column="56" selection-end-line="87" selection-end-column="56" />
+            <state relative-caret-position="-1260">
+              <caret line="116" column="0" selection-start-line="116" selection-start-column="0" selection-end-line="116" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#12172#12173#0" expanded="true" />
-                <element signature="e#12203#12204#0" expanded="true" />
+                <element signature="e#12164#12165#0" expanded="true" />
+                <element signature="e#12195#12196#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BayesClassifyTest.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="BayesClassifyTest.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/test/com/ernstthuer/BayesClassifyTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="36" column="27" selection-start-line="36" selection-start-column="27" selection-end-line="36" selection-end-column="27" />
-              <folding />
+            <state relative-caret-position="108">
+              <caret line="18" column="27" selection-start-line="18" selection-start-column="27" selection-end-line="18" selection-end-column="27" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -177,10 +179,10 @@
         <option value="$PROJECT_DIR$/src/com/ernstthuer/BayesClassify.java" />
         <option value="$PROJECT_DIR$/src/com/ernstthuer/Hypothesis.java" />
         <option value="$PROJECT_DIR$/src/com/ernstthuer/SNP.java" />
-        <option value="$PROJECT_DIR$/src/com/test/com/ernstthuer/BayesClassifyTest.java" />
-        <option value="$PROJECT_DIR$/src/com/ernstthuer/HypothesisTester.java" />
         <option value="$PROJECT_DIR$/src/com/ernstthuer/Main.java" />
         <option value="$PROJECT_DIR$/src/com/ernstthuer/Gene.java" />
+        <option value="$PROJECT_DIR$/src/com/test/com/ernstthuer/BayesClassifyTest.java" />
+        <option value="$PROJECT_DIR$/src/com/ernstthuer/HypothesisTester.java" />
       </list>
     </option>
   </component>
@@ -687,34 +689,34 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="BayesClassifyTest_testSNPclassify - 2017.02.17 at 12h 52m 03s.xml">
-      <configuration name="BayesClassifyTest.testSNPclassify" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="BayesClassifyTest_testSNPclassify - 2017.02.17 at 12h 52m 22s.xml">
-      <configuration name="BayesClassifyTest.testSNPclassify" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="BayesClassifyTest_testSNPclassify - 2017.02.17 at 12h 52m 47s.xml">
-      <configuration name="BayesClassifyTest.testSNPclassify" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="BayesClassifyTest_testSNPclassify - 2017.02.17 at 12h 54m 26s.xml">
-      <configuration name="BayesClassifyTest.testSNPclassify" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="BayesClassifyTest_testSNPclassify - 2017.02.17 at 12h 54m 58s.xml">
-      <configuration name="BayesClassifyTest.testSNPclassify" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="BayesClassifyTest_testSNPclassify - 2017.02.17 at 12h 55m 22s.xml">
-      <configuration name="BayesClassifyTest.testSNPclassify" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="BayesClassifyTest_testSNPclassify - 2017.02.17 at 12h 57m 37s.xml">
-      <configuration name="BayesClassifyTest.testSNPclassify" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="BayesClassifyTest_testSNPclassify - 2017.02.17 at 13h 22m 21s.xml">
-      <configuration name="BayesClassifyTest.testSNPclassify" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="BayesClassifyTest_testSNPclassify - 2017.02.17 at 13h 29m 38s.xml">
-      <configuration name="BayesClassifyTest.testSNPclassify" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="BayesClassifyTest_testSNPclassify - 2017.02.21 at 11h 07m 50s.xml">
+      <configuration name="BayesClassifyTest.testSNPclassify" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="BayesClassifyTest_testSNPclassify - 2017.02.21 at 11h 50m 58s.xml">
+      <configuration name="BayesClassifyTest.testSNPclassify" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="BayesClassifyTest_testSNPclassify - 2017.02.21 at 11h 52m 03s.xml">
+      <configuration name="BayesClassifyTest.testSNPclassify" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="BayesClassifyTest_testSNPclassify - 2017.02.21 at 11h 52m 38s.xml">
+      <configuration name="BayesClassifyTest.testSNPclassify" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="BayesClassifyTest_testSNPclassify - 2017.02.21 at 11h 53m 13s.xml">
+      <configuration name="BayesClassifyTest.testSNPclassify" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="BayesClassifyTest_testSNPclassify - 2017.02.21 at 11h 53m 34s.xml">
+      <configuration name="BayesClassifyTest.testSNPclassify" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="BayesClassifyTest_testSNPclassify - 2017.02.21 at 11h 54m 07s.xml">
+      <configuration name="BayesClassifyTest.testSNPclassify" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="BayesClassifyTest_testSNPclassify - 2017.02.21 at 12h 04m 32s.xml">
+      <configuration name="BayesClassifyTest.testSNPclassify" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="BayesClassifyTest_testSNPclassify - 2017.02.21 at 12h 23m 12s.xml">
+      <configuration name="BayesClassifyTest.testSNPclassify" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="BayesClassifyTest_testSNPclassify - 2017.02.21 at 12h 26m 44s.xml">
       <configuration name="BayesClassifyTest.testSNPclassify" configurationId="JUnit" />
     </history-entry>
   </component>
@@ -1128,18 +1130,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/HypothesisTester.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1458">
-          <caret line="87" column="56" selection-start-line="87" selection-start-column="56" selection-end-line="87" selection-end-column="56" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#12172#12173#0" expanded="true" />
-            <element signature="e#12203#12204#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/SNP.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="455">
@@ -1162,23 +1152,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/test/com/ernstthuer/BayesClassifyTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="36" column="27" selection-start-line="36" selection-start-column="27" selection-end-line="36" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/Gene.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2">
-          <caret line="258" column="0" selection-start-line="258" selection-start-column="0" selection-end-line="258" selection-end-column="0" />
+        <state relative-caret-position="1150">
+          <caret line="376" column="0" selection-start-line="376" selection-start-column="0" selection-end-line="376" selection-end-column="0" />
           <folding>
             <element signature="e#2829#2830#0" expanded="true" />
             <element signature="e#2873#2874#0" expanded="true" />
             <element signature="e#9157#9158#0" expanded="true" />
             <element signature="e#9209#9210#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/HypothesisTester.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1260">
+          <caret line="116" column="0" selection-start-line="116" selection-start-column="0" selection-end-line="116" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#12164#12165#0" expanded="true" />
+            <element signature="e#12195#12196#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/test/com/ernstthuer/BayesClassifyTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="18" column="27" selection-start-line="18" selection-start-column="27" selection-end-line="18" selection-end-column="27" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

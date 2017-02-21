@@ -4,9 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import static org.junit.Assert.*;
 
 public class BayesClassifyTest {
 
@@ -40,7 +38,7 @@ public class BayesClassifyTest {
 
         //ArrayList<SNP> snps = new ArrayList<>();
         for(int i = 0; i <= snpcount ; i++){
-            SNP snp1 = new SNP(gene,'A','T',((i*2)+100000));
+            SNP snp1 = new SNP(gene2,'A','T',((i*2)+100000));
             snp1.setALTcov(i);
             snp1.setORGcov(snpcount-i);
 
@@ -48,7 +46,7 @@ public class BayesClassifyTest {
             snp1.setSynonymous(true);
 
             //snps.add(snp1);
-            gene.addSNP(snp1, false);
+            gene2.addSNP(snp1, false);
         }
         genelist.add(gene2);
 
@@ -59,6 +57,13 @@ public class BayesClassifyTest {
     public void testSNPclassify() throws Exception{
         System.out.println("test starts here");
         HypothesisTester hypotester = new HypothesisTester(genelist);
+
+        for (Gene gene :hypotester.getGeneList()
+             ) {
+            System.out.println(gene.getIdent());
+            gene.evaluateAvailableHypothesis();
+        }
+
         //ArrayList<Gene> testedList = hypotester.getGeneList();
 
  /*       for (Gene gene: testedList

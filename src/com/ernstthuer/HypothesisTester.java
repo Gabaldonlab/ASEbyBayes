@@ -34,7 +34,6 @@ class HypothesisTester {
         for (Hypothesis hyp : testableHypothese
                 ) {
             hyp.testHypothesis(geneList);
-
         }
         //boolean notallSNPinHypothesis = false;
 
@@ -62,7 +61,6 @@ class HypothesisTester {
                 }
             }
         }
-
         int maxHypothesis = 4;
 
         for (int i = 0; i < maxHypothesis; i++) {
@@ -78,7 +76,6 @@ class HypothesisTester {
                 }
             }
         }
-
         for (Hypothesis hyp : testableHypothese
                 ) {
             hyp.testHypothesis(geneList);
@@ -88,15 +85,9 @@ class HypothesisTester {
 //        for(String key: availableHypothesis.keySet()){
 //            System.out.println("available " + key);
 //        }
-        //System.out.println(gene.getHypothesisArray()[0]);
+        // System.out.println(gene.getHypothesisArray()[0]);
         // ToDo   implement noise reclassification by evaluating expression over replicates and synonymity / DONE
         // ToDo  Ka/Ks ratio calculation and synonymity expectation  / DONE
-
-
-
-
-
-
     }
 
 
