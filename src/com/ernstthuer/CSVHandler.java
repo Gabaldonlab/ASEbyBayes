@@ -35,7 +35,7 @@ public class CSVHandler extends FileHandler {
     private int qualityThreshold = 30;
 
 
-    public CSVHandler(String locale, String type, String direction) {
+    CSVHandler(String locale, String type, String direction) {
         super(locale, type, direction);
         this.locale = locale;
         this.direction = direction;
@@ -47,7 +47,7 @@ public class CSVHandler extends FileHandler {
         super(locale, type, direction, feature);
     }
 
-    public ArrayList<SNP> readVCF() {
+    ArrayList<SNP> readVCF() {
 
         ArrayList<SNP> snpArrayList = new ArrayList<>();
 
@@ -72,6 +72,7 @@ public class CSVHandler extends FileHandler {
                 for (Gene gene : geneList) {
                     if (gene.getChromosome() == Chromosome && gene.getStart() < position && gene.getStop() > position && quality >= qualityThreshold) {
                         SNP snp = new SNP(gene, ORG, ALT, position);
+                        gene.addSNP(snp,true);  // ToDO  follow up on the true setting of SNPs for exosting information, this has to override any attempt on removal
                         /////  REIMPLEMENT THIS gene.addSNP(snp);
                     }
                 }
@@ -86,7 +87,7 @@ public class CSVHandler extends FileHandler {
     }
 
 
-    public boolean writeSNPToVCF(ArrayList<SNP> snpArrayList, int validationLvL) {
+    boolean writeSNPToVCF(ArrayList<SNP> snpArrayList, int validationLvL) {
         List<String> lines = new ArrayList<String>();
         int writecount = 0;
         for (SNP snp : snpArrayList) {

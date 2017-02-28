@@ -2,9 +2,13 @@ package com.ernstthuer;
 
 /**
  * Created by ethur on 7/27/16.
+ *
+ *
+ * Deprecate this
+ *
  */
 //public class SimpleRead implements Comparable<SimpleRead> {
-public class SimpleRead {
+class SimpleRead {
 
     /**
      * Has to be simplified

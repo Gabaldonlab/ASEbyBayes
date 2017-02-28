@@ -101,7 +101,7 @@ class HypothesisTester {
                 lowExpressionSNPList.add(snp);
             }
         }
-        System.out.println(lowExpressionSNPList.size());
+        //System.out.println(lowExpressionSNPList.size());
         return lowExpressionSNPList;
     }
 
@@ -119,7 +119,7 @@ class HypothesisTester {
 
     private void evaluateNoisySNPlist(ArrayList<SNP> snpList) {
         Hypothesis noiseHypothesis = testableHypothese.get(0); // the noise  hypothesis is at position 0
-        System.out.println(noiseHypothesis.getName());
+        //System.out.println(noiseHypothesis.getName());
         int count = 0;
         for (SNP snp : snpList
                 ) {
@@ -129,7 +129,7 @@ class HypothesisTester {
 
             if (!noiseHypothesis.testSNPBCL(changedSNP) && snp.getHypothesisEval().containsKey("Noise")) {
                 snp.removeHypothesisEval("Noise");
-                System.out.println(snp.getORGcov() +" " + snp.getALTcov() + " changed " + changedSNP.getORGcov() + " " + changedSNP.getALTcov() + " ");
+                //System.out.println(snp.getORGcov() +" " + snp.getALTcov() + " changed " + changedSNP.getORGcov() + " " + changedSNP.getALTcov() + " ");
                 count++;
             }
             if (!noiseHypothesis.testSNPBCL(changedSNP) && snp.getHypothesisEval().containsKey("FullSNP")) {
@@ -142,7 +142,7 @@ class HypothesisTester {
         }
 
 
-        System.out.println("[STATUs] Clearing Hypothesis for " + count + " Noisy SNPs ");
+        //System.out.println("[STATUs] Clearing Hypothesis for " + count + " Noisy SNPs ");
     }
 
     private double adjustSNPmeanBySynonymity(SNP snp) {

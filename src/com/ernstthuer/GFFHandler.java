@@ -11,7 +11,7 @@ import static java.lang.Integer.parseInt;
 /**
  * Created by ethur on 7/26/16.
  */
-public class GFFHandler extends FileHandler {
+class GFFHandler extends FileHandler {
 
     // GFF contain the gene positions, needed for fasta import, and classification
 
@@ -25,7 +25,7 @@ public class GFFHandler extends FileHandler {
     //private ArrayList<String> lineList = new ArrayList<>();
 
 
-    public GFFHandler(String locale, String type, String direction, String feature) {
+    GFFHandler(String locale, String type, String direction, String feature) {
         super(locale, type, direction);
         this.locale = locale;
         this.feature = feature;
@@ -42,7 +42,7 @@ public class GFFHandler extends FileHandler {
         System.out.println("[STATUS] " + geneList.size() + "  " + this.feature + "s found ");// + geneList.get(0).getStart() + "  TEMP  " + geneList.get(0).getStop());
     }
 
-    public String[] openGFF(String locale) throws IOException {
+    String[] openGFF(String locale) throws IOException {
         ArrayList<String> outList = new ArrayList<String>();
         //System.out.println("This is where the file is " + direction);
         try (BufferedReader br = new BufferedReader(new FileReader(locale))) {
@@ -63,7 +63,7 @@ public class GFFHandler extends FileHandler {
     }
 
 
-    public ArrayList<Gene> geneList(String[] featureList) {
+    ArrayList<Gene> geneList(String[] featureList) {
 
         ArrayList<Gene> outList = new ArrayList<>();
         System.out.println("[STATUS] Parsing gff file for : " + this.feature + "s");
@@ -111,7 +111,7 @@ public class GFFHandler extends FileHandler {
     }
 
 
-    public String descriptionParser(String fullDescription) {
+    String descriptionParser(String fullDescription) {
 
         String featureID;
         String[] desc = fullDescription.split(";");
@@ -179,7 +179,7 @@ public class GFFHandler extends FileHandler {
 
     }
 
-    public ArrayList<Gene> getGeneList() {
+    ArrayList<Gene> getGeneList() {
         return geneList;
     }
 }

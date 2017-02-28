@@ -1,10 +1,8 @@
 package com.ernstthuer;
 
-import java.util.HashMap;
-
 import static com.ernstthuer.Main.codonConversion;
 
-public class Codon implements Comparable<Codon> {
+class Codon implements Comparable<Codon> {
 
     /**
      * simple implementation of Codon class, to ease access to the CodonList
@@ -15,20 +13,19 @@ public class Codon implements Comparable<Codon> {
     private String aminoAcid;
 
 
-    public Codon(String sequence) {
+    Codon(String sequence) {
         this.sequence = sequence;
         seqToAA();
-        //this.conversion = conversion;
     }
 
-    public void seqToAA() {
+    private void seqToAA() {
         if (codonConversion.containsKey(sequence)) {
             this.aminoAcid = codonConversion.get(sequence);
         }
     }
 
 
-    public String getSequence() {
+    String getSequence() {
         return sequence;
     }
 

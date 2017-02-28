@@ -5,7 +5,7 @@ import java.io.File;
 /**
  * Created by ethur on 7/26/16.
  */
-public abstract class FileHandler {
+abstract class FileHandler {
     /**
      * Abstract class ??   maybe yes
      */
@@ -16,13 +16,13 @@ public abstract class FileHandler {
     private String direction;
     private String feature;
 
-    public FileHandler(String locale, String type, String direction) {
+    FileHandler(String locale, String type, String direction) {
         this.locale = locale;
         this.type = type;
         this.direction = direction;
     }
 
-    public FileHandler(String locale, String type, String direction, String feature) {
+    FileHandler(String locale, String type, String direction, String feature) {
         this.locale = locale;
         this.type = type;
         this.direction = direction;
@@ -38,7 +38,7 @@ public abstract class FileHandler {
         return type;
     }
 
-    public String getDirection() {
+    String getDirection() {
         return direction;
     }
 

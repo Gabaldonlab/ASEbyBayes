@@ -331,49 +331,51 @@ public class Gene implements Cloneable {
         HashMap<String, Double> hypothesis = new HashMap<>();
 
 
+        // combine the SNP maps to one single map
+        for (SNP snp : this.snpsOnGene
+                ) {
 
-            // combine the SNP maps to one single map
-            for (SNP snp : this.snpsOnGene
+            HashMap<String, Double> observ = snp.getHypothesisEval();
+            for (String key : observ.keySet()
                     ) {
+                if (hypothesis.containsKey(key)) {
 
-                HashMap<String, Double> observ = snp.getHypothesisEval();
-                for (String key : observ.keySet()
-                        ) {
-                    if (hypothesis.containsKey(key)) {
+                    double temp_new = observ.get(key);
+                    double temp_old = hypothesis.get(key);
 
-                        double temp_new = observ.get(key);
-                        double temp_old = hypothesis.get(key);
-
-                        hypothesis.put(key, (temp_new + temp_old));
-                    } else {
-                        hypothesis.put(key, observ.get(key));
-                    }
+                    hypothesis.put(key, (temp_new + temp_old));
+                } else {
+                    hypothesis.put(key, observ.get(key));
                 }
             }
+        }
 
 
+        System.out.println(hypothesis.size());
 
-            for (String key : hypothesis.keySet()
-                    ) {
-                System.out.println(ident + " Gene " + key + "  " + hypothesis.get(key));
+        for (String key : hypothesis.keySet()
+                ) {
+            System.out.println(ident + " Gene " + key + "  " + hypothesis.get(key));
+        }
+
+        if (hypothesis.containsKey("Equal Allelic Expression")) {
+            SUPPORTEQUALALLELIC = hypothesis.get("Equal Allelic Expression");
+        }
+
+        for (String key : hypothesis.keySet()
+                ) {
+            if (!key.equals("Equal Allelic Expression") && !key.equals("Noise") && !key.equals("FullSNP")) {
+                SUPPORTNONEQUAL += hypothesis.get(key);
             }
 
-            if (hypothesis.containsKey("Equal Allelic Expression")) {
-                SUPPORTEQUALALLELIC = hypothesis.get("Equal Allelic Expression");
-            }
 
-            for (String key : hypothesis.keySet()
-                    ) {
-                if (!key.equals("Equal Allelic Expression") && !key.equals("Noise") && !key.equals("FullSNP")) {
-                    SUPPORTNONEQUAL += hypothesis.get(key);
-                }
+        }
 
 
-            }
-
-
-        System.out.println("Supported " + SUPPORTEQUALALLELIC);
-        System.out.println("NotSupported " + SUPPORTNONEQUAL);
+//
+////
+//        System.out.println("Supported " + SUPPORTEQUALALLELIC);
+//        System.out.println("NotSupported " + SUPPORTNONEQUAL);
 
 
         if (snpsOnGeneTotal > 3) {
@@ -389,11 +391,25 @@ public class Gene implements Cloneable {
                 return "Insufficient SNP count";
             }
 
-        }else{
+        } else {
             return "Insufficient SNP count";
+        }
+    }
+
+
+    ArrayList<SNP> getInformativeSnpsOnGene() {
+        ArrayList<SNP> snpsToReturn = new ArrayList<>();
+
+        for (SNP snp: snpsOnGene
+             ) {
+
+            if(!snp.getHypothesisEval().containsKey("Noise")){
+                snpsToReturn.add(snp);
+            }
         }
 
 
+        return snpsToReturn;
     }
 
 

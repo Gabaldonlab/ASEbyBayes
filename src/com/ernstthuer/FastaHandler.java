@@ -49,8 +49,6 @@ class FastaHandler extends FileHandler {
             fastaMap = FastaReaderHelper.readFastaDNASequence(file);
 
 
-
-
             for (Gene gene : geneList) {
                 if (fastaMap.containsKey(gene.getChromosome())) {
                     //it's on the chromosome
@@ -66,9 +64,7 @@ class FastaHandler extends FileHandler {
 
                 }
             }
-        /*    for (Map.Entry<String, DNASequence> entry : fastaMap.entrySet()) {
-                System.out.println(entry.getValue().getOriginalHeader());
-            }*/
+
             return fastaMap;
         } catch (IOException e) {
             e.printStackTrace();

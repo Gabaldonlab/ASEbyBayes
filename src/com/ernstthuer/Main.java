@@ -140,7 +140,8 @@ public class Main {
                 errorCaller(e);
             }*/
             //gene.findSynonymity(validationLVL);
-            snips.addAll(gene.getSnpsOnGene());
+            gene.evaluateAvailableHypothesis();
+            snips.addAll(gene.getInformativeSnpsOnGene());
         }
 
 
