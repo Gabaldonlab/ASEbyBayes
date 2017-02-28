@@ -351,6 +351,8 @@ public class Gene implements Cloneable {
                 }
             }
 
+
+
             for (String key : hypothesis.keySet()
                     ) {
                 System.out.println(ident + " Gene " + key + "  " + hypothesis.get(key));

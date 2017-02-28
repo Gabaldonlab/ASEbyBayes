@@ -114,7 +114,6 @@ class HypothesisTester {
         outSNP.setORGcov((int) Math.round((snp.getALTcov() + snp.getORGcov()) - (snp.getALTcov() + snp.getORGcov()) * ratioALT));
         //System.out.println("makeSNPgreat " +  ratioALT + " " + snp.getALTcov() + "  :  " + outSNP.getALTcov());
         return outSNP;
-
     }
 
 
@@ -128,11 +127,12 @@ class HypothesisTester {
             SNP changedSNP = makeSNPgreatAgain(snp, mean);
 
 
-            if (!noiseHypothesis.testSNPBCL(changedSNP) || snp.getHypothesisEval().containsKey("Noise")) {
+            if (!noiseHypothesis.testSNPBCL(changedSNP) && snp.getHypothesisEval().containsKey("Noise")) {
                 snp.removeHypothesisEval("Noise");
+                System.out.println(snp.getORGcov() +" " + snp.getALTcov() + " changed " + changedSNP.getORGcov() + " " + changedSNP.getALTcov() + " ");
                 count++;
             }
-            if (!noiseHypothesis.testSNPBCL(changedSNP) || snp.getHypothesisEval().containsKey("FullSNP")) {
+            if (!noiseHypothesis.testSNPBCL(changedSNP) && snp.getHypothesisEval().containsKey("FullSNP")) {
                 snp.removeHypothesisEval("FullSNP");
                 count++;
             }
@@ -140,6 +140,7 @@ class HypothesisTester {
 //            System.out.println("after  "  + noiseHypothesis.testSNPBCL(changedSNP) +  "  alt  "  + changedSNP.getALTcov() + " " +changedSNP.getORGcov() );
             //System.out.println( (double) snp.getORGcov() / ((double) snp.getORGcov() + (double) snp.getALTcov())+ "  : new mean"  +  mean );
         }
+
 
         System.out.println("[STATUs] Clearing Hypothesis for " + count + " Noisy SNPs ");
     }

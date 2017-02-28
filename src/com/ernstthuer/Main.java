@@ -15,9 +15,12 @@ public class Main {
     static ArrayList<Gene> geneList = new ArrayList<>();
     private static ArrayList<SNP> snips = new ArrayList<>();
     private static HashMap<String, DNASequence> fasta = new HashMap<>();
-    static boolean verbose = true;
+    private static boolean verbose = true;
     static HashMap<String, String> codonConversion = new HashMap<>();
-    static int numThreads = 10;
+    private static int numThreads = 10;
+
+    static float alphaModifier;
+    static float betaModifier ;
 
     // Core Hypothesis with preset alpha beta values
     public static Hypothesis hypothesisZero = new Hypothesis(0.1, 10, "NullExpHyp");
@@ -39,7 +42,7 @@ public class Main {
     public static void main(String[] args) {
 
 
-        System.out.println("Running ASEbyBayes Version  0.23");
+        System.out.println("Running ASEbyBayes Version  0.24");
         populateCodonConversion();
 
 
@@ -125,11 +128,6 @@ public class Main {
         //hypothesisTester.geneWiseComparison(geneList);
 
         for (Gene gene : geneList) {
-
-
-
-
-
      /*       try {
                 //gene.evaluateSNPs();
                 for (SNP snp : gene.getSnpsOnGene()) {
@@ -141,7 +139,6 @@ public class Main {
             } catch (ConcurrentModificationException e) {
                 errorCaller(e);
             }*/
-
             //gene.findSynonymity(validationLVL);
             snips.addAll(gene.getSnpsOnGene());
         }
@@ -150,7 +147,6 @@ public class Main {
         try {
             CSVHandler csvHandler = (CSVHandler) parser.returnType("VCF", "Output");
             FastaHandler fastaHandler = (FastaHandler) parser.returnType("FASTA", "Output");
-
             int minThresh = 2;
 
             csvHandler.writeSNPToVCF(snips, minThresh);
@@ -158,7 +154,11 @@ public class Main {
             // reimplemented the output into a fastasilencer class
             //System.out.println("[STATUS] Writing Silenced fasta sequence of SNPs to file : " + fastaHandler.getLocale());
             //FastaSilencer fastaSilencer = new FastaSilencer(snips, fasta, fastaHandler.getLocale());
-            new FastaSilencer(snips, fasta, fastaHandler.getLocale());
+
+            if(!fastaHandler.getLocale().equals("")) {
+                System.out.println("Writing to file here : " + fastaHandler.getLocale());
+                new FastaSilencer(snips, fasta, fastaHandler.getLocale());
+            }
         } catch (ClassCastException e) {
             errorCaller(e);
         }

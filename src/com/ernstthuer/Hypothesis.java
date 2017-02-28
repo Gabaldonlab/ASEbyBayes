@@ -65,7 +65,15 @@ class Hypothesis {
         //double thresh =  100 /  ((double)snp.getORGcov()+(double)snp.getALTcov());
         double thresh = 1;
 //        System.out.println(thresh);
-        return bcl.erfSNPTest(thresh);
+
+
+        // implement minimum threshold here,  min of > 2
+        if(snp.getALTcov() > 2 && snp.getORGcov() > 2) {
+            return bcl.erfSNPTest(thresh);
+        }
+        else{
+            return true;
+        }
     }
 
 //    private double testSNPBCL(SNP snp, boolean flag){

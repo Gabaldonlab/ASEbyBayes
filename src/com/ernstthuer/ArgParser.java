@@ -36,7 +36,7 @@ class ArgParser {
         parser.addArgument("-m", "--mask")
                 .choices("True", "False").setDefault(true).dest("mask").help("create an intermediate masked FASTA");
         parser.addArgument("-mo", "--maskFastaOutput")
-                .dest("mOut").setDefault("null").help("write an intermediate masked FASTA to file");
+                .dest("mOut").setDefault("").help("write an intermediate masked FASTA to file");
         parser.addArgument("-b", "--bamInput")
                 .required(true).dest("bamInput").nargs("+");
 
