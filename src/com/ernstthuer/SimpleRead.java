@@ -4,7 +4,7 @@ package com.ernstthuer;
  * Created by ethur on 7/27/16.
  *
  *
- * Deprecate this
+ * Deprecate this due to introduction of locuswalker
  *
  */
 //public class SimpleRead implements Comparable<SimpleRead> {

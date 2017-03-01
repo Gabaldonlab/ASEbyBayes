@@ -7,11 +7,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
-/**
- * Created by ethuer on 18/10/16.
- */
-
-
 public class HypothesisTest {
 
     private int length = 500;

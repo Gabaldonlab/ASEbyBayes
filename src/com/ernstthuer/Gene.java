@@ -399,16 +399,13 @@ public class Gene implements Cloneable {
 
     ArrayList<SNP> getInformativeSnpsOnGene() {
         ArrayList<SNP> snpsToReturn = new ArrayList<>();
-
         for (SNP snp: snpsOnGene
              ) {
-
+            System.out.println("synonymity : " + snp.isSynonymous());
             if(!snp.getHypothesisEval().containsKey("Noise")){
                 snpsToReturn.add(snp);
             }
         }
-
-
         return snpsToReturn;
     }
 
