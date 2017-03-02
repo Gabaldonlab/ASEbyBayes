@@ -39,7 +39,7 @@ SNPs, even on the same gene, may derive from different sources.  With each addit
 In our core hypothesis, SNPs are modelled around the central limit, meaning the most highly weighted analysis is the Equal Allelic Expression hypothesis. Given enough evidence, the gene will be marked as Equal allelic expressed. While SNPs that contradict the hypothesis will be marked as CONT/ISO , meaning derived from contamination, or an isoform of the gene.
 Contamination in this regard refers to the possibility of subpopulations. SNPs that are not derived from the diploidy of the organism, but rather from a subpopulation of the cells observed. This analysis is strengthened by the repeteated observation of the same expression pattern.
 
-![alt tag](http://ernstthuer.eu/workflow_v2.png "Essential workflow")
+![alt tag](http://ernstthuer.eu/triplot_1.jpeg "Distributions")
 
 ####Fig2 : 
 Examples of distributions,  plot left: showing Priors before addition of SNP values,  plot center,  Equal Allelic expression does not shift the distributions, returns a high density for the observed SNPs expression value and does not trigger new distributions to be considered. Plot right: observed allele specific expression. Triggers adaption of existing hypothesis, but fails for the mean to be classified as equal allelic expression. An allele specific Expression hypothesis takes the SNP.
