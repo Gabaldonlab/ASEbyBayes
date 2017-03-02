@@ -47,7 +47,16 @@ Examples of distributions,  plot left: showing Priors before addition of SNP val
 #### Behind the curtain
 ASEbyBayes as the name suggests uses a Bayes inspired approach for classification. Instead of modelling frequentist distributions, we model a set of priors into each hypothesis test. The idea behind the approach stems from the limited set of potential hypothesis that can explain the observed patterns. Not all possibilities are equally likely, and the approach has both the large amount of data and knowledge about the biological background (synonymity and availablitiy over replicates). We found that modeling mildly informative, but robust, priors improved qualification. 
 
-Our analysis is based around the Beta distribution, a conjugate to the Negative Binomial used by Deseq2, but also the conjugate function to the otherwise used Poisson distribution. Alpha and Beta values 
+Our analysis is based around the Beta distribution, a conjugate to the Negative Binomial used by Deseq2, but also the conjugate function to the otherwise used Poisson distribution.
+
+The implementation of the Beta function used was obtained from the apache Math module 
+http://commons.apache.org/proper/commons-math/javadocs/api-3.5/org/apache/commons/math3/distribution/BetaDistribution.html
+
+Details on the Beta function can be found in Abramowitz and Steguns Handbook of Mathematical formula, it is defined as  *Γ(a+b)/(Γ(a)Γ(b))x^(a-1)(1-x)^(b-1)*,   
+
+Γ (the gamma function) is a shifted down version of the factorial function Γ(n) = (n-1)!
+
+
 
 
 ### <i class="icon-file"></i> **Documents**
