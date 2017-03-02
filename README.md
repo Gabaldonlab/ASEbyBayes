@@ -23,6 +23,7 @@ ASEbyBayes takes over from the mapped reference genome. As shown in the workflow
 
 ### How it works 
 
+
 ASEbyBayes reads the regions indicated by the gff file, and assesses SNPS on the genes.  SNP expression is considered as a ratio between 0 and 1. In a diploid organism, if a SNP is present on one allele, and the organism does not regulate the expression, the observed ratio will be 0.5. 
 
 Our classification approach, like other commonly used workflows in RNAseq data analysis, are build around hypothesis testing. For example, differential gene expression (DE) models distributions according to the genes coverage of reads over different conditions. In our approach, we are limited to a range between 0 and 1 for our expression values, so we model a central hypothesis, always dependant on the coverage of SNPs.
@@ -37,6 +38,11 @@ Replicates are an important part of RNA sequencing experimental design. As other
 SNPs, even on the same gene, may derive from different sources.  With each additional SNP detected giving more evidence to any hypothesis for the final qualification of the whole gene.
 In our core hypothesis, SNPs are modelled around the central limit, meaning the most highly weighted analysis is the Equal Allelic Expression hypothesis. Given enough evidence, the gene will be marked as Equal allelic expressed. While SNPs that contradict the hypothesis will be marked as CONT/ISO , meaning derived from contamination, or an isoform of the gene.
 Contamination in this regard refers to the possibility of subpopulations. SNPs that are not derived from the diploidy of the organism, but rather from a subpopulation of the cells observed. This analysis is strengthened by the repeteated observation of the same expression pattern.
+
+![alt tag](http://ernstthuer.eu/workflow_v2.png "Essential workflow")
+
+####Fig2 : 
+Examples of distributions,  plot left: showing Priors before addition of SNP values,  plot center,  Equal Allelic expression does not shift the distributions, returns a high density for the observed SNPs expression value and does not trigger new distributions to be considered. Plot right: observed allele specific expression. Triggers adaption of existing hypothesis, but fails for the mean to be classified as equal allelic expression. An allele specific Expression hypothesis takes the SNP.
 
 #### Behind the curtain
 ASEbyBayes as the name suggests uses a Bayes inspired approach for classification. Instead of modelling frequentist distributions, we model a set of priors into each hypothesis test. The idea behind the approach stems from the limited set of potential hypothesis that can explain the observed patterns. Not all possibilities are equally likely, and the approach has both the large amount of data and knowledge about the biological background (synonymity and availablitiy over replicates). We found that modeling mildly informative, but robust, priors improved qualification. 
