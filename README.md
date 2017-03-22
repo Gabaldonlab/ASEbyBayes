@@ -91,7 +91,24 @@ The second list contains a .vcf like investigation of SNPs that were considered 
 
 
 
+### Benchmarking
 
+#### setup of GATK
+In a new conda environment, GATK was installed with the following dependencies 
 
-
+>-    bzip2:      1.0.6-3               
+>-    gatk:       3.7-py35_0    bioconda
+>-    java-jdk:   8.0.92-1      bioconda
+>-    openssl:    1.0.2k-1              
+>-    pip:        9.0.1-py35_1          
+>-    python:     3.5.3-1               
+>-    readline:   6.2-2                 
+>-    setuptools: 27.2.0-py35_0         
+>-    sqlite:     3.13.0-0              
+>-    tk:         8.5.18-0              
+>-    wheel:      0.29.0-py35_0         
+>-    xz:         5.2.2-1               
+>-    zlib:       1.2.8-3     
+    
+Setting the used version of GATK to 3.7
 
