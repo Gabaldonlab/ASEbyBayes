@@ -58,9 +58,17 @@ public class Main {
          *The flow of data:
          * import of fasta and gff
          * import of bam
-         * storage of simplereads(mz score + location) in genes
-         * parsing gene by gene for SNPs,  storing only occurances where more than 2 mappings were found.
+         *
+         * parsing gene by gene for SNPs,  storing only occurances where more than 2 mappings were found as hard minimum threshold.
          * SNPs are validated from SNP class functions,
+         *
+         * Each SNP is given a likelihood to be part of a given hypothesis, hypothesis are adapted on the flow.
+         * An iterative loop is implemented, until convergence
+         *
+         *
+         * Important points are that the SNPs are carried until a late stage, enabling reclassification instead of discarding the SNPs.
+         *
+         *
          *
          */
 

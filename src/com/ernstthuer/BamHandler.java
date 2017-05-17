@@ -145,7 +145,7 @@ class BamHandler extends FileHandler implements Callable  {
                 String chromosome = locusIt.getSequenceName();
 
 
-                currentGene = findGene(chromosome, location, localGeneList, currentGene, 1);
+                currentGene = findGene(chromosome, location, localGeneList, currentGene);
                 // get reference base for location
 
                 if (currentGene != null) {
@@ -236,25 +236,25 @@ class BamHandler extends FileHandler implements Callable  {
         return snpArrayList;
     }
 
-    private Gene findGene(String chromosome, int start, ArrayList<Gene> geneList, Gene currentgene) {
+//    private Gene findGene(String chromosome, int start, ArrayList<Gene> geneList, Gene currentgene) {
+//
+//        // first check if read belongs to the same gene as before:  if not find the next one
+//        if (currentgene != null && currentgene.getChromosome().equals(chromosome) && currentgene.getStop() > start && currentgene.getStart() < start) {
+//            return currentgene;
+//        }
+//
+//
+//        for (Gene gene : geneList) {
+//            if (gene.getChromosome().equals(chromosome)) {
+//                if (gene.getStart() < start && gene.getStop() > start) {
+//                    return gene;
+//                }
+//            }
+//        }
+//        return null;
+//    }
 
-        // first check if read belongs to the same gene as before:  if not find the next one
-        if (currentgene != null && currentgene.getChromosome().equals(chromosome) && currentgene.getStop() > start && currentgene.getStart() < start) {
-            return currentgene;
-        }
-
-
-        for (Gene gene : geneList) {
-            if (gene.getChromosome().equals(chromosome)) {
-                if (gene.getStart() < start && gene.getStop() > start) {
-                    return gene;
-                }
-            }
-        }
-        return null;
-    }
-
-    private Gene findGene(String chromosome, int location, ArrayList<Gene> geneList, Gene currentgene, int flag) {
+    private Gene findGene(String chromosome, int location, ArrayList<Gene> geneList, Gene currentgene) {
         /**
          * overloading this to check for gene location instead of read start,  due to change from read iterator to
          *
@@ -263,7 +263,7 @@ class BamHandler extends FileHandler implements Callable  {
         // first check if read belongs to the same gene as before:  if not find the next one
         if (currentgene != null && currentgene.getChromosome().equals(chromosome) && currentgene.getStop() > location && currentgene.getStart() < location) {
             return currentgene;
-            // same chromosome as last
+            // same gene as last locus
         }
 
 

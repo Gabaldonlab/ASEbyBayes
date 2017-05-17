@@ -50,8 +50,8 @@ public class Gene implements Cloneable {
     }
 
     //public LinkedHashMap<Integer, Integer> getPositioncount() {
-//        return positioncount;
-//    }
+    //        return positioncount;
+    //    }
 
     ArrayList<SNP> getSnpsOnGene() {
         return snpsOnGene;

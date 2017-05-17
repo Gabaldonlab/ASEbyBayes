@@ -37,11 +37,11 @@ class FastaHandler extends FileHandler {
         HashMap<String, DNASequence> fastaMap;
 
 
-/** for testing purpose
- for (Gene gene : geneList) {
- System.out.println("inside Fasta parser : " + gene.getIdent() + "  " + gene.getStart());
- }
- */
+        /** for testing purpose
+         for (Gene gene : geneList) {
+         System.out.println("inside Fasta parser : " + gene.getIdent() + "  " + gene.getStart());
+         }
+         */
         //fastaMap = FastaReaderHelper.readFastaDNASequence(file)
 
         try {

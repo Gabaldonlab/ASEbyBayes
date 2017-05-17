@@ -26,6 +26,8 @@ class HypothesisTester {
     private ArrayList<SNP> snplist;
     private int FIXED_INTENSITY = 10;
 
+    private double modifier = 0.1;
+
     HypothesisTester(ArrayList<Gene> geneList) {
         this.geneList = geneList;
         this.snplist = getSnpList();
@@ -44,7 +46,11 @@ class HypothesisTester {
                 ) {
             // search for synonymous SNPs
             gene.findSynonymity(0);
+
+
             testGeneForKeyHypothesis(gene, availableHypothesis);
+
+
             // keep analysis gene wise
             ArrayList<SNP> noisySNPs = getPotentiallyNoisySNPs(gene.getSnpsOnGene());
             evaluateNoisySNPlist(noisySNPs);
@@ -196,6 +202,8 @@ class HypothesisTester {
         }
         gene.setHypothesisEval(geneHypothesisCount);
     }
+
+
 
 
     private HashMap<String, Integer> getHypeNamesAsHashMap(ArrayList<Hypothesis> testableHypothese) {

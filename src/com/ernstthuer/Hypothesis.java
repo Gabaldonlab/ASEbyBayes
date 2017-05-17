@@ -29,6 +29,10 @@ class Hypothesis {
     private double STATIC_SIGMA_MULTIPLIER = 2.0; // deprecated
 
 
+    // add prior call for hypothesis
+    private double prior_call = 0.5;
+
+
     Hypothesis(double mean,double fixedIntensity,  String name) {
         this.mean = mean;
         this.FIXED_INTENSITY = fixedIntensity;
