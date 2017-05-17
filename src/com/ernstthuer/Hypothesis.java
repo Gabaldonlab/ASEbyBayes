@@ -23,14 +23,13 @@ class Hypothesis {
  *
  */
 
-    private double mean;
-    private double FIXED_INTENSITY ;
+    private double mean;  // prior assumption of the analysis   shifts to accomodate the noise of the sample
+    private double FIXED_INTENSITY ;   // essentially dies the same as mean,  keep seperate for variability
     private String name;
     private double STATIC_SIGMA_MULTIPLIER = 2.0; // deprecated
 
 
     // add prior call for hypothesis
-    private double prior_call = 0.5;
 
 
     Hypothesis(double mean,double fixedIntensity,  String name) {
@@ -49,12 +48,14 @@ class Hypothesis {
              ) {
             for (SNP snp : gene.getSnpsOnGene()
                  ) {
-
-                if(testSNPBCL(snp)){
-                    snp.addHypothesis(name,1.0);
-                }
-
+//                if(testSNPBCL(snp)){
+//                    snp.addHypothesis(name,);
+//                }
+                snp.addHypothesis(name,testSNPBCL(snp,"FullResolve"));
             }
+
+            // add code here that rectifies genes and updates the hypothesis
+
         }
     }
 
@@ -79,6 +80,27 @@ class Hypothesis {
             return true;
         }
     }
+
+    double testSNPBCL(SNP snp, String flag){
+        // This feeds a SNP and tests it against the 'default' classifier
+        // returns true if SNP is associated to the current hypothesis, false if not
+
+        BayesClassify bcl = new BayesClassify(this.mean,FIXED_INTENSITY,snp.getALTcov(), (snp.getALTcov()+snp.getORGcov()));
+        //return bcl.baseSNPTest(STATIC_SIGMA_MULTIPLIER);
+        //double thresh =  100 /  ((double)snp.getORGcov()+(double)snp.getALTcov());
+        double thresh = 1;
+//        System.out.println(thresh);
+
+
+        // implement minimum threshold here,  min of > 2
+        if(snp.getALTcov() > 2 && snp.getORGcov() > 2) {
+            return bcl.erfSNPTest(thresh, "fullReturn");
+        }
+        else{
+            return 0.0;
+        }
+    }
+
 
 //    private double testSNPBCL(SNP snp, boolean flag){
 //        // This feeds a SNP and tests it against the 'default' classifier

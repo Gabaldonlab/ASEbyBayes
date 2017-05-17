@@ -67,6 +67,20 @@ class BayesClassify {
         }
     }
 
+    double erfSNPTest(double threshold, String flag){
+        // returns the posterior probability / probability mass function on the given ratio
+        //double ratio = (double) TrueCalls  / (double) CallsTotal ;
+        double ratio = this.mean;
+
+        try {
+            return (posterior.logDensity(ratio));
+        }catch (NumberIsTooSmallException e){
+            // this is always false
+            return 0.0;
+        }
+    }
+
+
 
     boolean baseSNPTest(double sigmaMultiplier ){
         return (Math.sqrt(this.posterior.getNumericalVariance()) * sigmaMultiplier * CallsTotal) < TrueCalls;

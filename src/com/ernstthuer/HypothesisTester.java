@@ -19,6 +19,11 @@ class HypothesisTester {
      * sample 3 random unclassified SNPs
      * <p>
      * take the ratio of their expression and find the closest SNP available
+     *
+     *
+     * implements the loop for the hypothesis for genes
+     *
+     *
      */
 
     private ArrayList<Hypothesis> testableHypothese;
@@ -36,6 +41,7 @@ class HypothesisTester {
         for (Hypothesis hyp : testableHypothese
                 ) {
             hyp.testHypothesis(geneList);
+
         }
         //boolean notallSNPinHypothesis = false;
 

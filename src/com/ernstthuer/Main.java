@@ -130,6 +130,9 @@ public class Main {
 
 
 
+        // ToDo  implement iteration loop here
+
+
 
 
 
@@ -149,6 +152,7 @@ public class Main {
             }*/
             //gene.findSynonymity(validationLVL);
             gene.evaluateAvailableHypothesis();
+
             snips.addAll(gene.getInformativeSnpsOnGene());
         }
 
@@ -160,7 +164,7 @@ public class Main {
 
             csvHandler.writeSNPToVCF(snips, minThresh);
 
-            // reimplemented the output into a fastasilencer class
+            //reimplemented the output into a fastasilencer class
             //System.out.println("[STATUS] Writing Silenced fasta sequence of SNPs to file : " + fastaHandler.getLocale());
             //FastaSilencer fastaSilencer = new FastaSilencer(snips, fasta, fastaHandler.getLocale());
 

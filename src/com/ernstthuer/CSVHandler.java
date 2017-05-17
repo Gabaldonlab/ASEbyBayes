@@ -19,7 +19,7 @@ import static com.ernstthuer.Main.geneList;
 /**
  * Created by ethur on 7/26/16.
  */
-public class CSVHandler extends FileHandler {
+class CSVHandler extends FileHandler {
 
     /**
      * implement tsv writer for the standard output in vcf format
@@ -110,4 +110,32 @@ public class CSVHandler extends FileHandler {
         //System.out.println(writecount + " SNPs written to file ");
         return false;
     }
+
+    boolean writeGenesToTsv(ArrayList<Gene> geneArrayList){
+
+        List<String> lines = new ArrayList<String>();
+        int writecount = 0;
+        for (Gene gene: geneArrayList) {
+            //if (snp.isValidated() >= validationLvL) {
+            // create String
+            lines.add(gene.toString());
+            writecount++;
+            //}
+        }
+
+        Path outFile = Paths.get(locale);
+        //if(Files.isWritable(outFile)) {
+        try {
+            System.out.println("[STATUS] Writing gene wise output file with " + writecount + " Genes ");
+            Files.write(outFile, lines, Charset.forName("UTF-8"));
+        } catch (IOException e) {
+            System.out.println("No output file created" + e);
+        }
+        //}
+        //System.out.println(writecount + " SNPs written to file ");
+        return false;
+
+    }
+
+
 }
