@@ -1,6 +1,5 @@
 <component name="libraryTable">
-  <library name="org.biojava:biojava-core:4.2.4" type="repository">
-    <properties maven-id="org.biojava:biojava-core:4.2.4" />
+  <library name="org.biojava:biojava-core:4.2.4">
     <CLASSES>
       <root url="jar://$MAVEN_REPOSITORY$/org/biojava/biojava-core/4.2.4/biojava-core-4.2.4.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.14/slf4j-api-1.7.14.jar!/" />

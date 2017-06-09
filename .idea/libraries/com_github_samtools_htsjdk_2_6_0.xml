@@ -1,6 +1,5 @@
 <component name="libraryTable">
-  <library name="com.github.samtools:htsjdk:2.6.0" type="repository">
-    <properties maven-id="com.github.samtools:htsjdk:2.6.0" />
+  <library name="com.github.samtools:htsjdk:2.6.0">
     <CLASSES>
       <root url="jar://$MAVEN_REPOSITORY$/com/github/samtools/htsjdk/2.6.0/htsjdk-2.6.0.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar!/" />

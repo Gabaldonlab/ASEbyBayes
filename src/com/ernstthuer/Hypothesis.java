@@ -24,7 +24,7 @@ class Hypothesis {
  */
 
     private double mean;  // prior assumption of the analysis   shifts to accomodate the noise of the sample
-    private double FIXED_INTENSITY ;   // essentially dies the same as mean,  keep seperate for variability
+    private double FIXED_INTENSITY ;   // essentially the same as mean amplifier,  keep seperate for variability
     private String name;
     private double STATIC_SIGMA_MULTIPLIER = 2.0; // deprecated
 
@@ -60,17 +60,14 @@ class Hypothesis {
     }
 
 
-
+    // Threshold version,   deprecated
     boolean testSNPBCL(SNP snp){
         // This feeds a SNP and tests it against the 'default' classifier
         // returns true if SNP is associated to the current hypothesis, false if not
 
         BayesClassify bcl = new BayesClassify(this.mean,FIXED_INTENSITY,snp.getALTcov(), (snp.getALTcov()+snp.getORGcov()));
-        //return bcl.baseSNPTest(STATIC_SIGMA_MULTIPLIER);
-        //double thresh =  100 /  ((double)snp.getORGcov()+(double)snp.getALTcov());
-        double thresh = 1;
-//        System.out.println(thresh);
 
+        double thresh = 1;
 
         // implement minimum threshold here,  min of > 2
         if(snp.getALTcov() > 2 && snp.getORGcov() > 2) {
@@ -81,6 +78,7 @@ class Hypothesis {
         }
     }
 
+    // Function for the accumulative comparison
     double testSNPBCL(SNP snp, String flag){
         // This feeds a SNP and tests it against the 'default' classifier
         // returns true if SNP is associated to the current hypothesis, false if not
@@ -123,4 +121,7 @@ class Hypothesis {
     double getMean() {
         return mean;
     }
+
+
+
 }

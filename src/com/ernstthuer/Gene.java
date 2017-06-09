@@ -19,7 +19,7 @@ public class Gene implements Cloneable {
     private String ident;
     private char orientation = '+';
     private HashMap<Integer, Codon> codonList = new HashMap<>();
-    private ArrayList<SimpleRead> geneReadList = new ArrayList<>();
+    //private ArrayList<SimpleRead> geneReadList = new ArrayList<>();
     //private String ASE;
     private LinkedHashMap<Integer, Integer> positioncount = new LinkedHashMap<>();
     private HashMap<String, Integer> hypothesisEval = new HashMap<>();
@@ -258,9 +258,10 @@ public class Gene implements Cloneable {
     }
 
 
-    HashMap<String, Integer> getHypothesisEval() {
-        return hypothesisEval;
-    }
+    // seperate class for this
+    //HashMap<String, Integer> getHypothesisEval() {
+    //    return hypothesisEval;
+    //}
 
     //void addToHypothesisEval(String name, Double eval) {
     //    this.hypothesisEval.put(name, eval);
