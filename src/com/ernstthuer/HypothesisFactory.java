@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-class HypothesisTester {
+class HypothesisFactory {
 
     /**
      * Takes the Gene lists provided by main , after read in of the individual BAM files
@@ -33,7 +33,7 @@ class HypothesisTester {
 
     private double modifier = 0.1;
 
-    HypothesisTester(ArrayList<Gene> geneList) {
+    HypothesisFactory(ArrayList<Gene> geneList) {
         this.geneList = geneList;
         this.snplist = getSnpList();
         testableHypothese = getDefaultHypothesis();

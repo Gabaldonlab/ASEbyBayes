@@ -1,10 +1,8 @@
 package com.ernstthuer;
 
 import org.junit.Before;
-import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Random;
 
 public class HypothesisTest {
@@ -38,7 +36,7 @@ public class HypothesisTest {
         ArrayList<Gene> geneList = new ArrayList<>();
         geneList.add(testgene);
 
-        HypothesisTester hypothesisTester = new HypothesisTester(geneList);
+        HypothesisFactory hypothesisFactory = new HypothesisFactory(geneList);
 
     }
 

@@ -123,8 +123,8 @@ public class Main {
 
 
         // Hypothesis implementation via Hypothesis tester
-        HypothesisTester hypothesisTester = new HypothesisTester(geneList);
-        geneList = hypothesisTester.getGeneList();
+        HypothesisFactory hypothesisFactory = new HypothesisFactory(geneList);
+        geneList = hypothesisFactory.getGeneList();
 
 
 
