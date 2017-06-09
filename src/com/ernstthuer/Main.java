@@ -137,10 +137,11 @@ public class Main {
 
             snips.addAll(gene.getInformativeSnpsOnGene());
 
-
-
-
         }
+
+        ArrayList<Hypothesis> hypothesises = new ArrayList<>();
+        GeneEvaluatorFactory geneEvaluatorFactory = new GeneEvaluatorFactory(geneList,hypothesises);
+        ArrayList<ResultHypothesis> resultHypothesises = geneEvaluatorFactory.getResultHypothesis();
 
 
         try {

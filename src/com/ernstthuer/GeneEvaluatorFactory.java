@@ -31,6 +31,9 @@ class GeneEvaluatorFactory {
     }
 
 
+    public ArrayList<ResultHypothesis> getResultHypothesis(){return this.resultHypos; }
+
+
 
 
 }
