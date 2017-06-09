@@ -111,11 +111,9 @@ public class Main {
 
         for (FileHandler file : parser.fileList) {
             if (file.getType().equals("Bam") && file.getDirection().equals("Input")) {
-                //make them implement Runnable   ... later
+                //implement Threading for multisample processing
                 System.out.println("[STATUS] Loading BAM file " + file.getLocale());
-
                 listOfBamFilesFromParserForBamThreader.add(new BamHandler(file.getLocale(), "Bam", "Input", fasta));
-
             }
         }
 
@@ -133,27 +131,15 @@ public class Main {
         // ToDo  implement iteration loop here
 
 
-
-
-
-        //hypothesisTester.geneWiseComparison(geneList);
-
         for (Gene gene : geneList) {
-     /*       try {
-                //gene.evaluateSNPs();
-                for (SNP snp : gene.getSnpsOnGene()) {
-                    if (snp.getORGcov() + snp.getALTcov() > 10 && !snp.getHypothesisEval().containsKey("NoiseHyp")) {
-                        //count += 1;
-                        //System.out.println( " " + snp.getFoundInReplicates() + "  " + snp.getHypothesisEval() + " " + snp.getALTcov() + "  " + snp.getORGcov());
-                    }
-                }
-            } catch (ConcurrentModificationException e) {
-                errorCaller(e);
-            }*/
-            //gene.findSynonymity(validationLVL);
+
             gene.evaluateAvailableHypothesis();
 
             snips.addAll(gene.getInformativeSnpsOnGene());
+
+
+
+
         }
 
 
@@ -175,10 +161,7 @@ public class Main {
         } catch (ClassCastException e) {
             errorCaller(e);
         }
-
         System.out.println("[STATUS] Run complete");
-
-
     }
     //*///DISABLED FOR TESTING
 

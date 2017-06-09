@@ -2,46 +2,46 @@ package com.ernstthuer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 
 /**
  * Created by ethur on 6/9/17.
  */
-public class GeneEvaluator {
+class GeneEvaluator {
 
     /**
      * Takes the information on the gene, and tests it against the available hypothesis
      *
      * Accumulates the evaluation score on each SNP
      *
-     *
-     *
      */
 
 
     private ArrayList<Hypothesis> hypothesises;
     private ArrayList<Double> scoring = new ArrayList<>();
-    private Hypothesis result;
     private Gene gene;
+    private ResultHypothesis result;
 
-    public GeneEvaluator(ArrayList<Hypothesis> hypothesises, Gene gene) {
+    GeneEvaluator(ArrayList<Hypothesis> hypothesises, Gene gene) {
         this.hypothesises = hypothesises;
         this.gene = gene;
+        HashMap<String, Double> hypeEval =  accumulateSNPdata();
+        findMajorityHypothesis(hypeEval);
+
     }
 
+    public ResultHypothesis getResult() {
+        return result;
+    }
 
-
-    private void accumulateSNPdata (){
+    private HashMap<String, Double>  accumulateSNPdata (){
 
         HashMap<String, Double> hypothesisEval = new HashMap<>();
         for (Hypothesis hype: hypothesises
              ) {
-
             // initialize empty
             hypothesisEval.put(hype.getName(),0.0);
-
         }
 
         for (SNP snp: gene.getSnpsOnGene()
@@ -52,6 +52,8 @@ public class GeneEvaluator {
                 hypothesisEval.put(hype.getName(), hypothesisEval.get(hype.getName()) + hype.testSNPBCL(snp,"quantitiative"));
             }
         }
+
+        return hypothesisEval;
     }
 
     private ResultHypothesis findMajorityHypothesis(HashMap<String,Double> hypothesisEval) {
