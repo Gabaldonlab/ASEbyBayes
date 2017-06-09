@@ -139,9 +139,11 @@ public class Main {
 
         }
 
-        ArrayList<Hypothesis> hypothesises = new ArrayList<>();
+        ArrayList<Hypothesis> hypothesises = hypothesisFactory.getTestableHypothese();
         GeneEvaluatorFactory geneEvaluatorFactory = new GeneEvaluatorFactory(geneList,hypothesises);
         ArrayList<ResultHypothesis> resultHypothesises = geneEvaluatorFactory.getResultHypothesis();
+
+
 
 
         try {

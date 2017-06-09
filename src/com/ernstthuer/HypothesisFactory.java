@@ -102,6 +102,9 @@ class HypothesisFactory {
         // ToDo  Ka/Ks ratio calculation and synonymity expectation  / DONE
     }
 
+    ArrayList<Hypothesis> getTestableHypothese() {
+        return testableHypothese;
+    }
 
     private ArrayList<SNP> getPotentiallyNoisySNPs(ArrayList<SNP> snpList) {
         ArrayList<SNP> lowExpressionSNPList = new ArrayList<>();
