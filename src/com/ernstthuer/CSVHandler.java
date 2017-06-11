@@ -87,29 +87,43 @@ class CSVHandler extends FileHandler {
     }
 
 
-    boolean writeSNPToVCF(ArrayList<SNP> snpArrayList, int validationLvL) {
+    boolean writeSNPToVCF(ArrayList<SNP> snpArrayList, int bamFiles) {
         List<String> lines = new ArrayList<String>();
         int writecount = 0;
         for (SNP snp : snpArrayList) {
-            //if (snp.isValidated() >= validationLvL) {
-                // create String
-                lines.add(snp.toString());
-                writecount++;
-            //}
-        }
 
-        Path outFile = Paths.get(locale);
-        //if(Files.isWritable(outFile)) {
-        try {
-            System.out.println("[STATUS] Writing vcf like output file with " + writecount + " SNPs");
-            Files.write(outFile, lines, Charset.forName("UTF-8"));
-        } catch (IOException e) {
-            System.out.println("No output file created" + e);
-        }
-        //}
-        //System.out.println(writecount + " SNPs written to file ");
-        return false;
+            if(bamFiles == 1){
+                // hard theshold without replicates
+                if (snp.getORGcov() > 8 && snp.getALTcov() > 8) {
+                    // create String
+                    lines.add(snp.toString());
+                    writecount++;
+                }
+            }
+
+
+            else{
+            if (snp.getORGcov() > 2 && snp.getALTcov() > 2) {
+                    // create String
+                    lines.add(snp.toString());
+                    writecount++;
+                }
+            }
+            }
+
+            Path outFile = Paths.get(locale);
+            //if(Files.isWritable(outFile)) {
+            try {
+                System.out.println("[STATUS] Writing vcf like output file with " + writecount + " SNPs");
+                Files.write(outFile, lines, Charset.forName("UTF-8"));
+            } catch (IOException e) {
+                System.out.println("No output file created" + e);
+            }
+            //}
+            //System.out.println(writecount + " SNPs written to file ");
+            return false;
     }
+
 
     boolean writeGenesToTsv(ArrayList<Gene> geneArrayList){
 

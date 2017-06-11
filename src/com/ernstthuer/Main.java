@@ -127,16 +127,20 @@ public class Main {
         geneList = hypothesisFactory.getGeneList();
 
 
-
-        // ToDo  implement iteration loop here
-
-
+//
         for (Gene gene : geneList) {
 
-            gene.evaluateAvailableHypothesis();
-
-            snips.addAll(gene.getInformativeSnpsOnGene());
-
+            //System.out.println(gene.getSnpsOnGene().size());
+            for (SNP snp: gene.getSnpsOnGene()
+                 ) {
+                //System.out.println(snp.getPosition());
+                snips.add(snp);
+            }
+//
+//            System.out.println("gene " + gene.getIdent() + " ");
+//            gene.evaluateAvailableHypothesis();
+//            snips.addAll(gene.getInformativeSnpsOnGene());
+//
         }
 
         ArrayList<Hypothesis> hypothesises = hypothesisFactory.getTestableHypothese();
@@ -144,14 +148,17 @@ public class Main {
         ArrayList<ResultHypothesis> resultHypothesises = geneEvaluatorFactory.getResultHypothesis();
 
 
-
+        for (ResultHypothesis res: resultHypothesises
+             ) {
+            System.out.println(res.getName() + "  " + res.getGene() + " " + res.getProb());
+        }
 
         try {
             CSVHandler csvHandler = (CSVHandler) parser.returnType("VCF", "Output");
             FastaHandler fastaHandler = (FastaHandler) parser.returnType("FASTA", "Output");
             int minThresh = 2;
 
-            csvHandler.writeSNPToVCF(snips, minThresh);
+            csvHandler.writeSNPToVCF(snips, listOfBamFilesFromParserForBamThreader.size());
 
             //reimplemented the output into a fastasilencer class
             //System.out.println("[STATUS] Writing Silenced fasta sequence of SNPs to file : " + fastaHandler.getLocale());
