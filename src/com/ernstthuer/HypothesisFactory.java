@@ -84,7 +84,6 @@ class HypothesisFactory {
                     if (newHypes.size() > 0) {
                         this.testableHypothese.addAll(newHypes);
                     }
-                    //System.out.println("Hypothesis added" + this.testableHypothese.size());
                 } catch (NullPointerException e) {
                     // empty list has no value,  and causes no problem
                 }
@@ -95,7 +94,7 @@ class HypothesisFactory {
             hyp.testHypothesis(geneList);
         }
 
-        System.out.println("[STATUS] " + testableHypothese.size() + " created");
+        System.out.println("[STATUS] " + testableHypothese.size() + " hypothesis observed");
 
         //availableHypothesis = getHypeNamesAsHashMap(testableHypothese);
         //String[] keysInHypothesis = getHypeNames(testableHypothese);
@@ -121,25 +120,21 @@ class HypothesisFactory {
                 lowExpressionSNPList.add(snp);
             }
         }
-        //System.out.println(lowExpressionSNPList.size());
         return lowExpressionSNPList;
     }
 
 
     private SNP makeSNPgreatAgain(SNP snp, double ratioALT) {
-        // returns a temporary SNP with the same configuration as the input, but modified to fit the input mean of expression
         SNP outSNP = new SNP(snp.getGene(), snp.getORG(), snp.getALT(), snp.getPosition());
         outSNP.setHypothesisEval(snp.getHypothesisEval());
         outSNP.setALTcov((int) Math.round((snp.getALTcov() + snp.getORGcov()) * ratioALT));
         outSNP.setORGcov((int) Math.round((snp.getALTcov() + snp.getORGcov()) - (snp.getALTcov() + snp.getORGcov()) * ratioALT));
-        //System.out.println("makeSNPgreat " +  ratioALT + " " + snp.getALTcov() + "  :  " + outSNP.getALTcov());
         return outSNP;
     }
 
 
     private void evaluateNoisySNPlist(ArrayList<SNP> snpList) {
         Hypothesis noiseHypothesis = testableHypothese.get(0); // the noise  hypothesis is at position 0
-        //System.out.println(noiseHypothesis.getName());
         int count = 0;
         for (SNP snp : snpList
                 ) {
@@ -149,20 +144,14 @@ class HypothesisFactory {
 
             if (!noiseHypothesis.testSNPBCL(changedSNP) && snp.getHypothesisEval().containsKey("Noise")) {
                 snp.removeHypothesisEval("Noise");
-                //System.out.println(snp.getORGcov() +" " + snp.getALTcov() + " changed " + changedSNP.getORGcov() + " " + changedSNP.getALTcov() + " ");
                 count++;
             }
             if (!noiseHypothesis.testSNPBCL(changedSNP) && snp.getHypothesisEval().containsKey("FullSNP")) {
                 snp.removeHypothesisEval("FullSNP");
                 count++;
             }
-//            System.out.println("before  "  + noiseHypothesis.testSNPBCL(snp) +  "  org "  + snp.getALTcov() + " " +snp.getORGcov() );
-//            System.out.println("after  "  + noiseHypothesis.testSNPBCL(changedSNP) +  "  alt  "  + changedSNP.getALTcov() + " " +changedSNP.getORGcov() );
-            //System.out.println( (double) snp.getORGcov() / ((double) snp.getORGcov() + (double) snp.getALTcov())+ "  : new mean"  +  mean );
         }
 
-
-        //System.out.println("[STATUs] Clearing Hypothesis for " + count + " Noisy SNPs ");
     }
 
     private double adjustSNPmeanBySynonymity(SNP snp) {
@@ -178,8 +167,6 @@ class HypothesisFactory {
             expectedConfidence = confidenceModifier * snp.getFoundInReplicates();
         }
 
-        // ToDo  remove
-        //System.out.println(" reevaluate " + mean + " by " + expectedConfidence);
 
         if (snp.getHypothesisEval().containsKey("FullSNP")) {
             return ((double) snp.getORGcov() * expectedConfidence / ((double) snp.getORGcov() * expectedConfidence + (double) snp.getALTcov()));

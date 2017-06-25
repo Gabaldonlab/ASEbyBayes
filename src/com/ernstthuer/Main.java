@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 
@@ -142,10 +143,15 @@ public class Main {
         ArrayList<ResultHypothesis> resultHypothesises = geneEvaluatorFactory.getResultHypothesis();
 
 
-        for (ResultHypothesis res: resultHypothesises
-             ) {
-            System.out.println(res.getName() + "  " + res.getGene() + " " + res.getProb());
-        }
+        // clean the list
+        resultHypothesises.removeAll(Collections.singleton(null));
+
+//        for (ResultHypothesis res: resultHypothesises
+//             ) {
+//            if (! (res == null)) {
+//                System.out.println(res.getName() + "  " + res.getGene() + " " + res.getProb());
+//            }
+//        }
 
         try {
             CSVHandler csvHandler = (CSVHandler) parser.returnType("VCF", "Output");
