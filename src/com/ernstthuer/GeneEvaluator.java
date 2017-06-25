@@ -27,7 +27,9 @@ class GeneEvaluator {
         this.hypothesises = hypothesises;
         this.gene = gene;
         HashMap<String, Double> hypeEval =  accumulateSNPdata();
-        result = findMajorityHypothesis(hypeEval);
+
+        // ToDo  validate, if SNP hypothesis are stored accurately
+        result = findMajorityHypothesis(gene);
 
     }
 
@@ -49,38 +51,74 @@ class GeneEvaluator {
             for (Hypothesis hype : hypothesises
                  ) {
                 // update observations per SNP
-                hypothesisEval.put(hype.getName(), hypothesisEval.get(hype.getName()) + hype.testSNPBCL(snp,"quantitiative"));
+                double currentobs = hype.testSNPBCL(snp,"quantitiative");
+                if((currentobs) >= 0.0 ) {
+                    double total = hypothesisEval.get(hype.getName()) + currentobs;
+                    hypothesisEval.put(hype.getName(), (hypothesisEval.get(hype.getName()) + currentobs));
+                }
             }
+            snp.setHypothesisEval(hypothesisEval);
         }
-
         return hypothesisEval;
     }
 
-    private ResultHypothesis findMajorityHypothesis(HashMap<String,Double> hypothesisEval) {
+    private ResultHypothesis findMajorityHypothesis(Gene gene) {
 
-        double maxval = 0.0;
-        double accumulativeValue = 0.0;
-        String bestHype = "";
 
-        // this finds the last highest entry  What if they are equally likely ?  get the global likelihood for EAX vs ASE correct by global prob, it's bayesian after all
-        for (Map.Entry<String, Double> entry : hypothesisEval.entrySet()) {
+        if(gene.getSnpsOnGene().size() > 0) {
 
-            accumulativeValue += entry.getValue();
+            // this finds the last highest entry  What if they are equally likely ?  get the global likelihood for EAX vs ASE correct by global prob, it's bayesian after all
 
-            if(hypothesisEval.get(entry.getKey()) > maxval){
-                maxval = hypothesisEval.get(entry.getKey());
-                bestHype= entry.getKey();
+
+            // collect the observations from SNPs here
+            HashMap<String, Double> geneHypothesis = new HashMap<>();
+
+            double maxval = 0.0;
+            double accumulativeValue = 0.0;
+            String bestHype = "";
+
+            for (SNP snp : gene.getSnpsOnGene()
+                    ) {
+                HashMap<String, Double> hypes = snp.getHypothesisEval();
+                Map.Entry<String, Double> maxEntry = null;
+
+                double maxSNP = 0.0;
+                for (Map.Entry<String, Double> entry : hypes.entrySet()) {
+                    if (maxSNP == 0.0 || entry.getValue().compareTo(maxEntry.getValue()) > 0) {
+                        maxEntry = entry;
+                        maxSNP = entry.getValue();
+                    }
+
+                }
+
+                if (!geneHypothesis.containsKey(maxEntry.getKey())) {
+                    geneHypothesis.put(maxEntry.getKey(), maxEntry.getValue());
+                }
+                if (geneHypothesis.containsKey(maxEntry.getKey())) {
+                    double current = (geneHypothesis.get(maxEntry.getKey()) + maxEntry.getValue());
+                    geneHypothesis.put(maxEntry.getKey(), current);
+                }
+
             }
 
-            // check a seperate loop for equally likely hypes,  if so, for the moment don't give a result
-            if(hypothesisEval.get(entry.getKey()) == maxval  && maxval > 0.0 ) {
-                maxval = hypothesisEval.get(entry.getKey());
-                return new ResultHypothesis(gene.getIdent(),maxval,"UnclearResult", accumulativeValue);
+            Map.Entry<String, Double> maxHypothesis = null;
+            double accumulatedValue = 0.0;
+            double maxHype = 0.0;
+            for (Map.Entry<String, Double> entry : geneHypothesis.entrySet()) {
+                accumulatedValue = accumulativeValue + entry.getValue();
+                if (maxHype == 0.0 || entry.getValue().compareTo(maxHypothesis.getValue()) > 0) {
+                    maxHypothesis = entry;
+                    maxHype = entry.getValue();
+
+                }
             }
+
+            return new ResultHypothesis(gene.getIdent(), maxHypothesis.getValue(), maxHypothesis.getKey(), accumulatedValue);
         }
-
-        return new ResultHypothesis(gene.getIdent(),maxval,bestHype, accumulativeValue);
+        else return null;
     }
+
+
 
 
     private void checkForEqualLikelihoods(HashMap<String,Double> hypothesisEval , HashMap<String,Double> globalProbabilities){

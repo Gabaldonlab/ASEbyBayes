@@ -2,10 +2,18 @@
 <project version="4">
   <component name="BookmarkManager">
     <bookmark url="file://$PROJECT_DIR$/src/com/ernstthuer/Gene.java" />
-    <bookmark url="file://$PROJECT_DIR$/src/com/ernstthuer/Main.java" line="130" mnemonic="7" />
+    <bookmark url="file://$PROJECT_DIR$/src/com/ernstthuer/Main.java" line="124" mnemonic="7" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ec7633f8-55fd-44e2-87c1-f604e17b5f80" name="Default" comment="" />
+    <list default="true" id="ec7633f8-55fd-44e2-87c1-f604e17b5f80" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ernstthuer/CSVHandler.java" afterPath="$PROJECT_DIR$/src/com/ernstthuer/CSVHandler.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ernstthuer/GeneEvaluator.java" afterPath="$PROJECT_DIR$/src/com/ernstthuer/GeneEvaluator.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ernstthuer/GeneEvaluatorFactory.java" afterPath="$PROJECT_DIR$/src/com/ernstthuer/GeneEvaluatorFactory.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ernstthuer/HypothesisFactory.java" afterPath="$PROJECT_DIR$/src/com/ernstthuer/HypothesisFactory.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ernstthuer/Main.java" afterPath="$PROJECT_DIR$/src/com/ernstthuer/Main.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ernstthuer/SNP.java" afterPath="$PROJECT_DIR$/src/com/ernstthuer/SNP.java" />
+    </list>
     <ignored path="ASEbyBayes.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -33,8 +41,8 @@
       <file leaf-file-name="SNP.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/SNP.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3880">
-              <caret line="244" column="53" lean-forward="false" selection-start-line="244" selection-start-column="53" selection-end-line="244" selection-end-column="53" />
+            <state relative-caret-position="226">
+              <caret line="161" column="26" lean-forward="false" selection-start-line="161" selection-start-column="9" selection-end-line="161" selection-end-column="26" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -45,8 +53,8 @@
       <file leaf-file-name="ArgParser.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/ArgParser.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1400">
-              <caret line="80" column="85" lean-forward="false" selection-start-line="80" selection-start-column="77" selection-end-line="80" selection-end-column="85" />
+            <state relative-caret-position="490">
+              <caret line="80" column="61" lean-forward="false" selection-start-line="80" selection-start-column="53" selection-end-line="80" selection-end-column="61" />
               <folding />
             </state>
           </provider>
@@ -55,43 +63,31 @@
       <file leaf-file-name="CSVHandler.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/CSVHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3040">
-              <caret line="162" column="41" lean-forward="false" selection-start-line="162" selection-start-column="41" selection-end-line="162" selection-end-column="41" />
+            <state relative-caret-position="386">
+              <caret line="161" column="0" lean-forward="false" selection-start-line="161" selection-start-column="0" selection-end-line="161" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Gene.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/Gene.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="200">
-              <caret line="17" column="21" lean-forward="false" selection-start-line="17" selection-start-column="21" selection-end-line="17" selection-end-column="21" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SNPTest.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/SNPTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="260">
-              <caret line="13" column="1" lean-forward="false" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="1" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GeneEvaluator.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="GeneEvaluator.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/GeneEvaluator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2680">
-              <caret line="138" column="149" lean-forward="false" selection-start-line="138" selection-start-column="149" selection-end-line="138" selection-end-column="149" />
+            <state relative-caret-position="491">
+              <caret line="117" column="25" lean-forward="false" selection-start-line="117" selection-start-column="25" selection-end-line="117" selection-end-column="25" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#797#798#0" expanded="true" />
-                <element signature="e#826#827#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GeneEvaluatorFactory.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/GeneEvaluatorFactory.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="60">
+              <caret line="3" column="0" lean-forward="true" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -99,7 +95,7 @@
       <file leaf-file-name="ResultHypothesis.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/ResultHypothesis.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="640">
+            <state relative-caret-position="530">
               <caret line="41" column="75" lean-forward="false" selection-start-line="41" selection-start-column="75" selection-end-line="41" selection-end-column="75" />
               <folding>
                 <element signature="e#747#748#0" expanded="true" />
@@ -109,30 +105,42 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GeneEvaluatorFactory.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/GeneEvaluatorFactory.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="700">
-              <caret line="35" column="0" lean-forward="false" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="200">
-              <caret line="16" column="42" lean-forward="false" selection-start-line="16" selection-start-column="42" selection-end-line="16" selection-end-column="42" />
+            <state relative-caret-position="300">
+              <caret line="141" column="54" lean-forward="false" selection-start-line="141" selection-start-column="36" selection-end-line="141" selection-end-column="54" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BamHandler.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/BamHandler.java">
+      <file leaf-file-name="HypothesisTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/HypothesisTest.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="140">
+              <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="HypothesisFactory.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/HypothesisFactory.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="566">
+              <caret line="98" column="0" lean-forward="true" selection-start-line="98" selection-start-column="0" selection-end-line="98" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BamHandler.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/BamHandler.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1540">
               <caret line="7" column="12" lean-forward="false" selection-start-line="7" selection-start-column="12" selection-end-line="7" selection-end-column="12" />
               <folding />
             </state>
@@ -148,6 +156,13 @@
         <option value="Class" />
       </list>
     </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>writeres</find>
+      <find>unclear</find>
+      <find>hypothesisEval</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -182,23 +197,23 @@
         <option value="$PROJECT_DIR$/src/com/ernstthuer/HypothesisTest.java" />
         <option value="$PROJECT_DIR$/src/com/ernstthuer/SimpleRead.java" />
         <option value="$PROJECT_DIR$/src/com/ernstthuer/Hypothesis.java" />
-        <option value="$PROJECT_DIR$/src/com/ernstthuer/HypothesisFactory.java" />
-        <option value="$PROJECT_DIR$/src/com/ernstthuer/SNP.java" />
         <option value="$PROJECT_DIR$/src/com/ernstthuer/Gene.java" />
-        <option value="$PROJECT_DIR$/src/com/ernstthuer/GeneEvaluator.java" />
-        <option value="$PROJECT_DIR$/src/com/ernstthuer/GeneEvaluatorFactory.java" />
         <option value="$PROJECT_DIR$/src/com/ernstthuer/ResultHypothesis.java" />
-        <option value="$PROJECT_DIR$/src/com/ernstthuer/CSVHandler.java" />
         <option value="$PROJECT_DIR$/src/com/ernstthuer/ArgParser.java" />
+        <option value="$PROJECT_DIR$/src/com/ernstthuer/HypothesisFactory.java" />
+        <option value="$PROJECT_DIR$/src/com/ernstthuer/CSVHandler.java" />
         <option value="$PROJECT_DIR$/src/com/ernstthuer/Main.java" />
+        <option value="$PROJECT_DIR$/src/com/ernstthuer/GeneEvaluatorFactory.java" />
+        <option value="$PROJECT_DIR$/src/com/ernstthuer/SNP.java" />
+        <option value="$PROJECT_DIR$/src/com/ernstthuer/GeneEvaluator.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="64" />
-    <option name="y" value="-11" />
-    <option name="width" value="1857" />
-    <option name="height" value="1092" />
+    <option name="x" value="65" />
+    <option name="y" value="-4" />
+    <option name="width" value="1855" />
+    <option name="height" value="1084" />
   </component>
   <component name="ProjectView">
     <navigator currentView="PackagesPane" proportions="" version="1">
@@ -216,6 +231,8 @@
     </navigator>
     <panes>
       <pane id="ProjectPane" />
+      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="PackagesPane">
         <subPane>
           <PATH>
@@ -258,8 +275,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -689,7 +704,8 @@
     </history-entry>
   </component>
   <component name="ToolWindowManager">
-    <frame x="64" y="-11" width="1857" height="1092" extended-state="6" />
+    <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -700,7 +716,7 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32910246" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21916412" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21916412" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -941,14 +957,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/HypothesisTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/BamThreader.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="266">
@@ -990,18 +998,8 @@
         <state relative-caret-position="2106">
           <caret line="123" column="0" lean-forward="false" selection-start-line="123" selection-start-column="0" selection-end-line="123" selection-end-column="0" />
           <folding>
-            <element signature="e#6012#6013#0" expanded="true" />
-            <element signature="e#6043#6044#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/HypothesisFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5240">
-          <caret line="266" column="40" lean-forward="false" selection-start-line="266" selection-start-column="40" selection-end-line="266" selection-end-column="40" />
-          <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#6012#6013#0" expanded="false" />
+            <element signature="e#6043#6044#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1014,37 +1012,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/GeneEvaluatorFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="700">
-          <caret line="35" column="0" lean-forward="false" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/GeneEvaluator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2680">
-          <caret line="138" column="149" lean-forward="false" selection-start-line="138" selection-start-column="149" selection-end-line="138" selection-end-column="149" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#797#798#0" expanded="true" />
-            <element signature="e#826#827#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/ResultHypothesis.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="640">
-          <caret line="41" column="75" lean-forward="false" selection-start-line="41" selection-start-column="75" selection-end-line="41" selection-end-column="75" />
-          <folding>
-            <element signature="e#747#748#0" expanded="true" />
-            <element signature="e#830#831#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/Gene.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="200">
@@ -1053,18 +1020,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/CSVHandler.java">
+    <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/BamHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3040">
-          <caret line="162" column="41" lean-forward="false" selection-start-line="162" selection-start-column="41" selection-end-line="162" selection-end-column="41" />
+        <state relative-caret-position="-1540">
+          <caret line="7" column="12" lean-forward="false" selection-start-line="7" selection-start-column="12" selection-end-line="7" selection-end-column="12" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/SNP.java">
+    <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/HypothesisTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3880">
-          <caret line="244" column="53" lean-forward="false" selection-start-line="244" selection-start-column="53" selection-end-line="244" selection-end-column="53" />
+        <state relative-caret-position="140">
+          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/ResultHypothesis.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="530">
+          <caret line="41" column="75" lean-forward="false" selection-start-line="41" selection-start-column="75" selection-end-line="41" selection-end-column="75" />
+          <folding>
+            <element signature="e#747#748#0" expanded="true" />
+            <element signature="e#830#831#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/HypothesisFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="566">
+          <caret line="98" column="0" lean-forward="true" selection-start-line="98" selection-start-column="0" selection-end-line="98" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1073,25 +1059,53 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/ArgParser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1400">
-          <caret line="80" column="85" lean-forward="false" selection-start-line="80" selection-start-column="77" selection-end-line="80" selection-end-column="85" />
+        <state relative-caret-position="490">
+          <caret line="80" column="61" lean-forward="false" selection-start-line="80" selection-start-column="53" selection-end-line="80" selection-end-column="61" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/CSVHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="386">
+          <caret line="161" column="0" lean-forward="false" selection-start-line="161" selection-start-column="0" selection-end-line="161" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="16" column="42" lean-forward="false" selection-start-line="16" selection-start-column="42" selection-end-line="16" selection-end-column="42" />
+        <state relative-caret-position="300">
+          <caret line="141" column="54" lean-forward="false" selection-start-line="141" selection-start-column="36" selection-end-line="141" selection-end-column="54" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/BamHandler.java">
+    <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/GeneEvaluatorFactory.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="7" column="12" lean-forward="false" selection-start-line="7" selection-start-column="12" selection-end-line="7" selection-end-column="12" />
+        <state relative-caret-position="60">
+          <caret line="3" column="0" lean-forward="true" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/SNP.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="226">
+          <caret line="161" column="26" lean-forward="false" selection-start-line="161" selection-start-column="9" selection-end-line="161" selection-end-column="26" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/ernstthuer/GeneEvaluator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="491">
+          <caret line="117" column="25" lean-forward="false" selection-start-line="117" selection-start-column="25" selection-end-line="117" selection-end-column="25" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

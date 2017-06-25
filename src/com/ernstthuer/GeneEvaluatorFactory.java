@@ -19,7 +19,15 @@ class GeneEvaluatorFactory {
         this.geneArrayList = geneArrayList;
         this.hypothesisList = hypothesisList;
         TestGenes();
+
+        for (Hypothesis hype: hypothesisList
+             ) {
+            System.out.println(hype.getMean()+ "  " + hype.getName());
+        }
+
     }
+
+
 
     private void TestGenes(){
         for (Gene gene: geneArrayList

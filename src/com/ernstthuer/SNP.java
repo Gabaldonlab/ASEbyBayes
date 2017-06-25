@@ -30,6 +30,7 @@ class SNP implements Comparable<SNP> {
     private ArrayList<Integers> evaluationResults = new ArrayList<>();
     private int foundInReplicates;
 
+
     public SNP(Gene gene, char ALT, int position) {
         this.gene = gene;
         this.ALT = ALT;
@@ -127,6 +128,8 @@ class SNP implements Comparable<SNP> {
     void incrementFOundInReplicates() {
         this.foundInReplicates++;
     }
+
+
 
     public void findTrueORG() {
         DNASequence dnaseq = gene.getSequence();

@@ -42,6 +42,7 @@ class HypothesisFactory {
                 ) {
             hyp.testHypothesis(geneList);
         }
+
         //boolean notallSNPinHypothesis = false;
 
 
@@ -93,6 +94,9 @@ class HypothesisFactory {
                 ) {
             hyp.testHypothesis(geneList);
         }
+
+        System.out.println("[STATUS] " + testableHypothese.size() + " created");
+
         //availableHypothesis = getHypeNamesAsHashMap(testableHypothese);
         //String[] keysInHypothesis = getHypeNames(testableHypothese);
 //        for(String key: availableHypothesis.keySet()){

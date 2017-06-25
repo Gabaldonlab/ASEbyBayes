@@ -159,6 +159,7 @@ class CSVHandler extends FileHandler {
 
             lines.add(resultHypothesis.toString());
             writecount++;
+
         }
         Path outFile = Paths.get(locale);
         try {

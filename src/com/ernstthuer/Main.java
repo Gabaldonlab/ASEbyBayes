@@ -22,13 +22,7 @@ public class Main {
     static float alphaModifier;
     static float betaModifier ;
 
-    // Core Hypothesis with preset alpha beta values
-    public static Hypothesis hypothesisZero = new Hypothesis(0.1, 10, "NullExpHyp");
-    public static Hypothesis hypothesisEAX = new Hypothesis(5, 5, "EqualAllelicExpression");
-    public static Hypothesis hypothesisFullSNP = new Hypothesis(10, 0.1, "FullSNPHyp");
-
-
-    // bimodial primers for noise correction
+     // bimodial primers for noise correction
     static double bimodalPrimersForNoise = 0.5;
 
     // strong informative primers for the assumption of 0.5 ratio expression
@@ -158,7 +152,7 @@ public class Main {
             FastaHandler fastaHandler = (FastaHandler) parser.returnType("FASTA", "Output");
             int minThresh = 2;
 
-            csvHandler.writeSNPToVCF(snips, listOfBamFilesFromParserForBamThreader.size());
+            //csvHandler.writeSNPToVCF(snips, listOfBamFilesFromParserForBamThreader.size());
 
             //reimplemented the output into a fastasilencer class
             //System.out.println("[STATUS] Writing Silenced fasta sequence of SNPs to file : " + fastaHandler.getLocale());
@@ -174,9 +168,15 @@ public class Main {
 
 
         try {
-            CSVHandler csvHandler = (CSVHandler) parser.returnType("GeneOut","Output");
-            csvHandler.writeResultsToTsv(resultHypothesises);
+            CSVHandler outwriter = (CSVHandler) parser.returnType("outFinal","Output");
 
+            try {
+                outwriter.writeResultsToTsv(resultHypothesises);
+
+            }catch (NullPointerException e){
+                System.out.println("Could not create output file");
+                e.printStackTrace();
+            }
 
 
 
