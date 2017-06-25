@@ -174,9 +174,7 @@ public class Main {
 
 
         try {
-
             CSVHandler csvHandler = (CSVHandler) parser.returnType("GeneOut","Output");
-
             csvHandler.writeResultsToTsv(resultHypothesises);
 
 
@@ -185,8 +183,6 @@ public class Main {
         }catch (ClassCastException e) {
             errorCaller(e);
         }
-
-
         System.out.println("[STATUS] Run complete");
     }
     //*///DISABLED FOR TESTING

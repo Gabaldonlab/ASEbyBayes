@@ -25,10 +25,10 @@ class ArgParser {
                 .help("input file in FASTA format").required(true).dest("inFasta");
         parser.addArgument("-g", "--gff")
                 .help("input file in GFF3 format").required(true).dest("inGFF");
-        parser.addArgument("-v", "--vcf")
-                .help("input a vcf file containing existing Allele specific SNP information").required(false).setDefault("NOVCF").dest("VCFIN");
+
         parser.addArgument("-o", "--outfile")
                 .help("output file in tsv format").required(false).setDefault("output.csv").dest("outFinal");
+
         parser.addArgument("-OF", "--outfasta")
                 .help("output silenced fasta file,  all SNPs replaced by N ").required(false).setDefault("outfasta.fasta").dest("outFasta");
         parser.addArgument("-F", "--feature")
@@ -39,7 +39,8 @@ class ArgParser {
                 .dest("mOut").setDefault("").help("write an intermediate masked FASTA to file");
         parser.addArgument("-b", "--bamInput")
                 .required(true).dest("bamInput").nargs("+");
-
+        parser.addArgument("-v", "--vcf")
+                .help("input a vcf file containing existing Allele specific SNP information").required(false).setDefault("NOVCF").dest("VCFIN");
         Namespace ns = null;
 
         try {
@@ -77,7 +78,8 @@ class ArgParser {
         GFFHandler gffreader = new GFFHandler(ns.get("inGFF").toString(), "GFF", "Input", ns.get("feature").toString());
         FastaHandler inFasta = new FastaHandler(ns.get("inFasta").toString(), "FASTA", "Input");
         FastaHandler outFasta = new FastaHandler(ns.get("mOut").toString(), "FASTA", "Output");
-        CSVHandler finalOut = new CSVHandler(ns.get("outFinal").toString(), "VCF", "Output");
+        CSVHandler finalOut = new CSVHandler(ns.get("outFinal").toString(), "outFinal", "Output");
+
 
         if (existingSNPinfo) {
             CSVHandler vcfInput = new CSVHandler(ns.get("VCFIN").toString(), "VCF", "INPUT");

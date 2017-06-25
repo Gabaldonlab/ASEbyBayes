@@ -160,6 +160,13 @@ class CSVHandler extends FileHandler {
             lines.add(resultHypothesis.toString());
             writecount++;
         }
+        Path outFile = Paths.get(locale);
+        try {
+            System.out.println("[STATUS] Writing vcf like output file with " + writecount + " SNPs");
+            Files.write(outFile, lines, Charset.forName("UTF-8"));
+        } catch (IOException e) {
+            System.out.println("No output file created" + e);
+        }
 
         return true;
     }
