@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="JAVA_MODULE" version="4">
-  <component name="NewModuleRootManager" inherit-compiler-output="false">
+  <component name="NewModuleRootManager">
     <output url="file://$MODULE_DIR$/../out" />
     <output-test url="file://$MODULE_DIR$/../out" />
     <exclude-output />
@@ -10,10 +10,11 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="com.github.samtools:htsjdk:2.6.0" level="project" />
-    <orderEntry type="library" name="org.biojava:biojava-core:4.2.4" level="project" />
-    <orderEntry type="library" name="org.apache.commons:commons-math3:3.6.1" level="project" />
-    <orderEntry type="library" name="net.sourceforge.argparse4j:argparse4j:0.7.0" level="project" />
+    <orderEntry type="library" name="com.bluecatcode.junit:junit-4.12-extended:1.0.4" level="project" />
+    <orderEntry type="library" name="com.github.samtools:htsjdk:2.6.01" level="project" />
+    <orderEntry type="library" name="net.sourceforge.argparse4j:argparse4j:0.7.01" level="project" />
+    <orderEntry type="library" name="org.apache.commons:commons-math3:3.6.11" level="project" />
+    <orderEntry type="library" name="org.biojava:biojava-core:4.2.41" level="project" />
     <orderEntry type="library" name="junit:junit:4.12" level="project" />
   </component>
 </module>
