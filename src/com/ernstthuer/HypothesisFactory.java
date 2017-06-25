@@ -37,11 +37,10 @@ class HypothesisFactory {
         this.geneList = geneList;
         this.snplist = getSnpList();
         testableHypothese = getDefaultHypothesis();
-        // aif not all SNPs are accounted for,  make more hypothesis
+        // if not all SNPs are accounted for,  make more hypothesis
         for (Hypothesis hyp : testableHypothese
                 ) {
             hyp.testHypothesis(geneList);
-
         }
         //boolean notallSNPinHypothesis = false;
 
@@ -73,7 +72,9 @@ class HypothesisFactory {
                 }
             }
         }
-        int maxHypothesis = 4;
+
+
+        int maxHypothesis = 12;
 
         for (int i = 0; i < maxHypothesis; i++) {
             if (!allSNPsAccountedForByHypothesis()) {
@@ -238,6 +239,9 @@ class HypothesisFactory {
 
     private boolean allSNPsAccountedForByHypothesis() {
         boolean allSNPsAccountedFor = true;
+
+        ArrayList<SNP> unaccountedSNPs = new ArrayList<>();
+
         for (SNP snp : snplist
                 ) {
 
@@ -255,10 +259,19 @@ class HypothesisFactory {
             if (!hasAnExplanation) {
                 //System.out.println("SNP doesn't have a hypothesis " + snp.getPosition());
                 allSNPsAccountedFor = false;
+                unaccountedSNPs.add(snp);
             }
         }
         //System.out.println(allSNPsAccountedFor);
-        return allSNPsAccountedFor;
+        // if less than 5% of snps are not accounted for by hypothesis, make more hypos
+        if(unaccountedSNPs.size() >= ((((float) snplist.size()) * 0.05)) ){
+            return false;
+        }
+        else{
+            return true;
+        }
+
+        //return allSNPsAccountedFor;
     }
 
 
@@ -270,8 +283,9 @@ class HypothesisFactory {
         double baseImpact = 0.01;
 
         hypothesis.add(new Hypothesis(baseImpact, FIXED_INTENSITY, "Noise"));
-        hypothesis.add(new Hypothesis(1 - 0.01, FIXED_INTENSITY, "FullSNP"));
+        hypothesis.add(new Hypothesis(1 - baseImpact, FIXED_INTENSITY, "FullSNP"));
         hypothesis.add(new Hypothesis(0.5, FIXED_INTENSITY, "Equal Allelic Expression"));
+        hypothesis.add(new Hypothesis(0.2, FIXED_INTENSITY, "Allele Specific Expression" ));
 
         return hypothesis;
     }

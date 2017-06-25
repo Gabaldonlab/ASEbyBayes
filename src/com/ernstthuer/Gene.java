@@ -24,6 +24,9 @@ public class Gene implements Cloneable {
     private LinkedHashMap<Integer, Integer> positioncount = new LinkedHashMap<>();
     private HashMap<String, Integer> hypothesisEval = new HashMap<>();
 
+    private String majorityHypothesis;
+    private float confidence;
+
 
     // needs to be more flexible than this array
     //private double[] hypothesisArray = new double[4];
@@ -410,7 +413,10 @@ public class Gene implements Cloneable {
         return snpsToReturn;
     }
 
-
+    @Override
+    public String toString() {
+        return chromosome +"\t" +start +"\t" + ident +"\t"+ majorityHypothesis + "\t"+ confidence;
+    }
 }
 
 

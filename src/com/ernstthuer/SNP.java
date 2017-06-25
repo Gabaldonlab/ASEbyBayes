@@ -242,9 +242,10 @@ class SNP implements Comparable<SNP> {
         return this.gene.getChromosome() + "\t" + this.position + "\t" + this.gene.getIdent()
                 + "\t" + this.ORG + "\t" + this.ALT + "\t" +
                 this.getALTcov() + "\t" + this.getORGcov() +
-                "\t" + "TestInfo" + "\t" + this.expression +
-                "\t" + this.isSynonymous + "\t" +
-                this.isValidated() + "\t" + this.foundInReplicates;
+                this.getHypothesisEval().get("Noise");
+//                "\t" + "TestInfo" + "\t" + this.expression +
+//                "\t" + this.isSynonymous + "\t" +
+//                this.isValidated() + "\t" + this.foundInReplicates;
     }
 
     @Override

@@ -171,6 +171,21 @@ public class Main {
         } catch (ClassCastException e) {
             errorCaller(e);
         }
+
+
+        try {
+
+            CSVHandler csvHandler = (CSVHandler) parser.returnType("GeneOut","Output");
+
+            csvHandler.writeGenesToTsv(geneList);
+
+
+
+        }catch (ClassCastException e) {
+            errorCaller(e);
+        }
+
+
         System.out.println("[STATUS] Run complete");
     }
     //*///DISABLED FOR TESTING

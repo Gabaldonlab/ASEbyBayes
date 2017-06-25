@@ -18,6 +18,7 @@ class GeneEvaluatorFactory {
     GeneEvaluatorFactory(ArrayList<Gene> geneArrayList, ArrayList<Hypothesis> hypothesisList) {
         this.geneArrayList = geneArrayList;
         this.hypothesisList = hypothesisList;
+        TestGenes();
     }
 
     private void TestGenes(){

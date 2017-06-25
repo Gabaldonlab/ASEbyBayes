@@ -27,11 +27,11 @@ class GeneEvaluator {
         this.hypothesises = hypothesises;
         this.gene = gene;
         HashMap<String, Double> hypeEval =  accumulateSNPdata();
-        findMajorityHypothesis(hypeEval);
+        result = findMajorityHypothesis(hypeEval);
 
     }
 
-    public ResultHypothesis getResult() {
+    ResultHypothesis getResult() {
         return result;
     }
 
@@ -134,5 +134,8 @@ class GeneEvaluator {
     }
 
 
-
+    @Override
+    public String toString() {
+        return gene.getChromosome() + "\t" + gene.getIdent() + "\t" + result.getName() + "\t" + result.getProb() + "\t" + result.getRelativeToTotal()  ;
+    }
 }
