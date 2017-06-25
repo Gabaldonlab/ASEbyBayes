@@ -35,4 +35,10 @@ final class ResultHypothesis {
     public double getRelativeToTotal() {
         return accumulativeValue;
     }
+
+
+    @Override
+    public String toString() {
+        return gene + "\t" + name + "\t" + prob + "\t" + accumulativeValue ;
+    }
 }

@@ -22,7 +22,6 @@ class GeneEvaluatorFactory {
     }
 
     private void TestGenes(){
-
         for (Gene gene: geneArrayList
              ) {
             GeneEvaluator geEv = new GeneEvaluator(hypothesisList,gene);
@@ -33,7 +32,6 @@ class GeneEvaluatorFactory {
 
 
     public ArrayList<ResultHypothesis> getResultHypothesis(){return this.resultHypos; }
-
 
 
 

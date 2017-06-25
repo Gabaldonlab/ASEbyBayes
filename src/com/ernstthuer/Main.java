@@ -177,7 +177,8 @@ public class Main {
 
             CSVHandler csvHandler = (CSVHandler) parser.returnType("GeneOut","Output");
 
-            csvHandler.writeGenesToTsv(geneList);
+            csvHandler.writeResultsToTsv(resultHypothesises);
+
 
 
 

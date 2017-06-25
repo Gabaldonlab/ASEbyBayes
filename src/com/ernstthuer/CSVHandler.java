@@ -151,5 +151,18 @@ class CSVHandler extends FileHandler {
 
     }
 
+    boolean writeResultsToTsv(ArrayList<ResultHypothesis> resultHypothesises){
+        List<String> lines = new ArrayList<>();
+        int writecount = 0;
+
+        for (ResultHypothesis resultHypothesis: resultHypothesises){
+
+            lines.add(resultHypothesis.toString());
+            writecount++;
+        }
+
+        return true;
+    }
+
 
 }
