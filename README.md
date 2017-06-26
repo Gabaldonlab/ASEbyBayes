@@ -5,7 +5,7 @@ Download the current release ASEbyBayes_1.0.0.jar (http://ernstthuer.eu/ASEbyBay
 No need to install anything. Just run  java -jar ASEbyBayes_X.jar
 
 
-Usage:
+### <i class="icon-file"></i>  **Usage**
 > #### <i class="icon-download"></i>**Input:     ** [optional]
 >- GFF file in the format of Ensembl / CGD / UCSC 
 >- FASTA reference of one of the parentals 
