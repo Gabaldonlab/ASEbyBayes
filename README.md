@@ -1,6 +1,6 @@
 # ASEbyBayes
 
-Due to restructuring, currently set back to pre-alpha version 0.22
+Download the current release ASEbyBayes_1.0.0.jar (http://ernstthuer.eu/ASEbyBayes_1.0.0.jar "Current version")
 
 ### <i class="icon-file"></i> **Introduction**
 
