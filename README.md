@@ -1,6 +1,26 @@
 # ASEbyBayes
 
+Installation:
 Download the current release ASEbyBayes_1.0.0.jar (http://ernstthuer.eu/ASEbyBayes_1.0.0.jar "Current version")
+No need to install anything. Just run  java -jar ASEbyBayes_X.jar
+
+
+Usage:
+> #### <i class="icon-download"></i>**Input:     ** [optional]
+>- GFF file in the format of Ensembl / CGD / UCSC 
+>- FASTA reference of one of the parentals 
+>- BAM files of mapped reads 
+>- [ VCF file containing the known SNPs,  SNPcalling will be deactivated]
+
+> #### <i class="icon-upload"></i> **Output: ** [optional]
+>- VCF like output containing the SNPs with their most likely association in expression
+>- [silenced FASTA,  all SNPs replaced by 'N'improves remapping accuracy be removing association bias of mapper]
+
+### <i class="icon-file"></i> **Commands**
+java -jar ASEbyBayes.jar -h 
+
+
+
 
 ### <i class="icon-file"></i> **Introduction**
 
